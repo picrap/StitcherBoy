@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD7EA735-5AE8-479A-8278-A949289EE0C8}</ProjectGuid>
+    <ProjectGuid>{8515A314-3563-465A-8303-FE26E04CFB13}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StitcherBoy</RootNamespace>
@@ -33,28 +33,36 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dnlib">
+      <HintPath>..\Libraries\dnlib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Stitcher.cs" />
-    <Compile Include="StitcherBoyTask.cs" />
-    <Compile Include="ProjectDefinition.cs" />
+    <Compile Include="Logging\ConsoleLogging.cs" />
+    <Compile Include="Logging\ILogging.cs" />
+    <Compile Include="Logging\TaskLogging.cs" />
+    <Compile Include="Project\AssemblyReference.cs" />
+    <Compile Include="Project\IReferences.cs" />
+    <Compile Include="Project\ProjectDefinition.cs" />
+    <Compile Include="Project\ProjectDefinitionExtensions.cs" />
+    <Compile Include="Utility\StitcherTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\AppDomainUtility.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BuildTasker\BuildTasker\BuildTasker.csproj">
-      <Project>{c9c6b4b8-5a42-450f-a450-823c5dcc2b73}</Project>
-      <Name>BuildTasker</Name>
-    </ProjectReference>
+    <Compile Include="Utility\AppDomainExtensions.cs" />
+    <Compile Include="Utility\DisposableAppDomain.cs" />
+    <Compile Include="Utility\EnumerableExtensions.cs" />
+    <Compile Include="Weaving\Stitcher.cs" />
+    <Compile Include="Weaving\StitchersLoader.cs" />
+    <Compile Include="Weaving\NuGetPackage.cs" />
+    <Compile Include="Weaving\Stitchers.cs" />
+    <Compile Include="Weaving\SmasherBoy.cs" />
+    <Compile Include="RetouchesTask.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
