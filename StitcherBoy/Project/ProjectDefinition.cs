@@ -103,5 +103,21 @@
             var property = _project.Properties.SingleOrDefault(p => p.Name == key);
             return property?.EvaluatedValue;
         }
+
+        /// <summary>
+        /// Gets the bool property.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public bool? GetBoolProperty(string key)
+        {
+            var value = GetProperty(key);
+            if (value == null)
+                return null;
+            bool b;
+            if (!bool.TryParse(value, out b))
+                return null;
+            return b;
+        }
     }
 }
