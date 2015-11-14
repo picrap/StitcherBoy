@@ -16,21 +16,14 @@
             bool ok;
             using (var module = ModuleDefMD.Load(assemblyPath))
             {
+                module.LoadPdb();
                 ok = Process(module);
                 if (ok)
                 {
-                    var options = new ModuleWriterOptions();
-                    var signAssembly = project.GetBoolProperty("SignAssembly") ?? false;
-                    var keyFile = project.GetProperty("AssemblyOriginatorKeyFile");
-                    if (signAssembly && keyFile != null)
-                    {
-                        if (File.Exists(keyFile))
-                        {
-                            var snk = new StrongNameKey(keyFile);
-                            options.StrongNameKey = snk;
-                        }
-                    }
-                    module.Write(tempAssemblyPath, options);
+                    if (module.IsILOnly)
+                        module.Write(tempAssemblyPath, SetWriterOptions(project, module, new ModuleWriterOptions(module)));
+                    else
+                        module.NativeWrite(tempAssemblyPath, SetWriterOptions(project, module, new NativeModuleWriterOptions(module)));
                 }
             }
             // here the module is released
@@ -42,6 +35,29 @@
                 File.Delete(tempAssemblyPath);
             }
             return ok;
+        }
+
+        private TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
+            where TOptions : ModuleWriterOptionsBase
+        {
+            options.WritePdb = true;
+            options.StrongNameKey = GetSNK(project);
+            return options;
+        }
+
+        private StrongNameKey GetSNK(ProjectDefinition project)
+        {
+            var signAssembly = project.GetBoolProperty("SignAssembly") ?? false;
+            var keyFile = project.GetProperty("AssemblyOriginatorKeyFile");
+            if (signAssembly && keyFile != null)
+            {
+                if (File.Exists(keyFile))
+                {
+                    var snk = new StrongNameKey(keyFile);
+                    return snk;
+                }
+            }
+            return null;
         }
 
         protected abstract bool Process(ModuleDefMD moduleDef);
