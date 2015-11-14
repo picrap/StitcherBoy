@@ -32,23 +32,29 @@
             }
         }
 
-        private string _targetPath;
-
         /// <summary>
         /// Gets the target path.
         /// </summary>
         /// <value>
         /// The target path.
         /// </value>
-        public string TargetPath
-        {
-            get
-            {
-                if (_targetPath == null)
-                    _targetPath = Path.Combine(_projectDirectory, GetProperty("TargetPath"));
-                return _targetPath;
-            }
-        }
+        public string TargetPath => Path.Combine(_projectDirectory, GetProperty("TargetPath"));
+
+        /// <summary>
+        /// Gets the intermediate path.
+        /// </summary>
+        /// <value>
+        /// The intermediate path.
+        /// </value>
+        public string IntermediatePath => Path.Combine(_projectDirectory, GetProperty("IntermediateOutputPath"), GetProperty("TargetFileName"));
+
+        /// <summary>
+        /// Gets or sets the properties keys.
+        /// </summary>
+        /// <value>
+        /// The properties keys.
+        /// </value>
+        public string[] PropertiesKeys => _project.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDefinition"/> class.

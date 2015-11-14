@@ -40,7 +40,8 @@
             foreach (var property in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.PropertyType == typeof(string)))
             {
                 var propertyValue = (string)property.GetValue(this);
-                yield return $"\"{property.Name}={propertyValue}\"";
+                if (propertyValue != null)
+                    yield return $"\"{property.Name}={propertyValue}\"";
             }
         }
 

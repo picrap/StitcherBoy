@@ -14,7 +14,7 @@
         public bool Process(string assemblyPath, string projectPath, string solutionPath)
         {
             var project = new ProjectDefinition(projectPath);
-            assemblyPath = assemblyPath ?? project.TargetPath;
+            assemblyPath = assemblyPath ?? project.IntermediatePath;
             var tempAssemblyPath = assemblyPath + ".out";
             bool ok;
             using (var module = ModuleDefMD.Load(assemblyPath))
