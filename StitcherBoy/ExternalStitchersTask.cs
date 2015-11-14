@@ -21,7 +21,6 @@ public class ExternalStitchersTask : ApplicationTask<ExternalStitchersTask>
     /// <value>
     /// The assembly path.
     /// </value>
-    [Required]
     public string AssemblyPath { set; get; }
 
     /// <summary>

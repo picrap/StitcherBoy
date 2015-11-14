@@ -24,7 +24,6 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     /// <value>
     /// The assembly path.
     /// </value>
-    [Required]
     public string AssemblyPath { set; get; }
 
     /// <summary>
