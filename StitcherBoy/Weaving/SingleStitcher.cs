@@ -4,10 +4,13 @@
     using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Writer;
+    using Logging;
     using Project;
 
     public abstract class SingleStitcher : MarshalByRefObject
     {
+        public ILogging Logging { get; set; }
+
         public bool Process(string assemblyPath, string projectPath, string solutionPath)
         {
             var project = new ProjectDefinition(projectPath);
@@ -17,7 +20,7 @@
             using (var module = ModuleDefMD.Load(assemblyPath))
             {
                 module.LoadPdb();
-                ok = Process(module);
+                ok = Process(module, assemblyPath, project, projectPath, solutionPath);
                 if (ok)
                 {
                     if (module.IsILOnly)
@@ -60,6 +63,6 @@
             return null;
         }
 
-        protected abstract bool Process(ModuleDefMD moduleDef);
+        protected abstract bool Process(ModuleDefMD moduleDef, string assemblyPath, ProjectDefinition project, string projectPath, string solutionPath);
     }
 }

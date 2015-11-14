@@ -1,12 +1,13 @@
 
 using System;
 using Microsoft.Build.Framework;
+using StitcherBoy.Logging;
 using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
 
 // ReSharper disable once CheckNamespace
 public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTask<TSingleStitcher>>
-    where TSingleStitcher: SingleStitcher
+    where TSingleStitcher : SingleStitcher
 {
     /// <summary>
     /// Gets or sets the project path (this is injected in the task).
@@ -42,6 +43,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
             try
             {
                 var stitcher = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<TSingleStitcher>();
+                stitcher.Logging = new RemoteLogging(Logging);
                 return stitcher.Process(AssemblyPath, ProjectPath, SolutionPath);
             }
             catch (Exception e)
