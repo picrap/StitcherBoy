@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8515A314-3563-465A-8303-FE26E04CFB13}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StitcherBoy</RootNamespace>
     <AssemblyName>StitcherBoy</AssemblyName>
@@ -40,6 +40,9 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Properties\StitcherBoy.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="dnlib">
       <HintPath>..\Libraries\dnlib.dll</HintPath>
@@ -69,12 +72,6 @@
     <Compile Include="Utility\DisposableAppDomain.cs" />
     <Compile Include="Utility\EnumerableExtensions.cs" />
     <Compile Include="Weaving\SingleStitcher.cs" />
-    <Compile Include="Weaving\Stitcher.cs" />
-    <Compile Include="Weaving\StitchersLoader.cs" />
-    <Compile Include="Weaving\NuGetPackage.cs" />
-    <Compile Include="Weaving\Stitchers.cs" />
-    <Compile Include="Weaving\SmasherBoy.cs" />
-    <Compile Include="ExternalStitchersTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\StitcherBoy.snk" />
