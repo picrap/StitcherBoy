@@ -6,6 +6,10 @@ using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
 
 // ReSharper disable once CheckNamespace
+/// <summary>
+/// Base task for stitchers
+/// </summary>
+/// <typeparam name="TSingleStitcher">The type of the single stitcher.</typeparam>
 public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTask<TSingleStitcher>>
     where TSingleStitcher : SingleStitcher
 {
@@ -34,6 +38,10 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     /// </value>
     public string SolutionPath { get; set; }
 
+    /// <summary>
+    /// Runs the task (either launched as task or application).
+    /// </summary>
+    /// <returns></returns>
     protected override bool Run()
     {
         // the weaver runs isolated, since it it is going to load other modules

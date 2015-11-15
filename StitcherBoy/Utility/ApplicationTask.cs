@@ -9,8 +9,12 @@
     using Logging;
     using Microsoft.Build.Utilities;
 
+    /// <summary>
+    /// Allows to run the task as task or application (to debug)
+    /// </summary>
+    /// <typeparam name="TActualProgram">The type of the actual program.</typeparam>
     public abstract class ApplicationTask<TActualProgram> : Task
-        where TActualProgram : ApplicationTask<TActualProgram>
+            where TActualProgram : ApplicationTask<TActualProgram>
     {
         /// <summary>
         /// Gets the logging.
@@ -39,7 +43,7 @@
         {
             foreach (var property in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.PropertyType == typeof(string)))
             {
-                var propertyValue = (string)property.GetValue(this);
+                var propertyValue = (string)property.GetValue(this, new object[0]);
                 if (propertyValue != null)
                     yield return $"\"{property.Name}={propertyValue}\"";
             }
@@ -101,6 +105,12 @@
             return Tuple.Create(propertyName, propertyValue);
         }
 
+        /// <summary>
+        /// Runs the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns></returns>
         protected static int Run(ApplicationTask<TActualProgram> instance, string[] args)
         {
             instance.Logging = new ConsoleLogging();
@@ -110,7 +120,7 @@
                 if (argument != null)
                 {
                     var propertyInfo = instance.GetType().GetProperty(argument.Item1);
-                    propertyInfo?.SetValue(instance, argument.Item2);
+                    propertyInfo?.SetValue(instance, argument.Item2, new object[0]);
                 }
             }
             return instance.Run() ? 0 : 1;

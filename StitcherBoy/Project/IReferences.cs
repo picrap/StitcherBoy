@@ -2,7 +2,10 @@
 {
     using System.Collections.Generic;
 
-    public  interface IReferences
+    /// <summary>
+    /// References interface
+    /// </summary>
+    public interface IReferences
     {
         /// <summary>
         /// Gets the references.

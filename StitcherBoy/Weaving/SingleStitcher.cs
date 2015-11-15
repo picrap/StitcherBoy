@@ -7,10 +7,26 @@
     using Logging;
     using Project;
 
+    /// <summary>
+    /// Single stitcher base class
+    /// </summary>
     public abstract class SingleStitcher : MarshalByRefObject
     {
+        /// <summary>
+        /// Gets or sets the logging.
+        /// </summary>
+        /// <value>
+        /// The logging.
+        /// </value>
         public ILogging Logging { get; set; }
 
+        /// <summary>
+        /// Processes the specified assembly.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="projectPath">The project path.</param>
+        /// <param name="solutionPath">The solution path.</param>
+        /// <returns></returns>
         public bool Process(string assemblyPath, string projectPath, string solutionPath)
         {
             var project = new ProjectDefinition(projectPath);
@@ -63,6 +79,15 @@
             return null;
         }
 
+        /// <summary>
+        /// Processes the specified module.
+        /// </summary>
+        /// <param name="moduleDef">The module definition.</param>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="project">The project.</param>
+        /// <param name="projectPath">The project path.</param>
+        /// <param name="solutionPath">The solution path.</param>
+        /// <returns></returns>
         protected abstract bool Process(ModuleDefMD moduleDef, string assemblyPath, ProjectDefinition project, string projectPath, string solutionPath);
     }
 }
