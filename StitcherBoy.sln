@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringsRetoucher", "Tests\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoy", "StitcherBoy\StitcherBoy.csproj", "{8515A314-3563-465A-8303-FE26E04CFB13}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{C190A320-9603-46F8-B09F-972CB9D08930}"
+	ProjectSection(SolutionItems) = preProject
+		Icon\StitcherBoy.ai = Icon\StitcherBoy.ai
+		Icon\StitcherBoy.png = Icon\StitcherBoy.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
