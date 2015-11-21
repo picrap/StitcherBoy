@@ -13,11 +13,18 @@
         {
             var instanceType = typeof(TInstance);
             var assembly = instanceType.Assembly;
+            var assemblyName = assembly.GetName().ToString();
+            appDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs e)
+            {
+                if (e.Name == assemblyName)
+                    return assembly;
+                return null;
+            };
             var cwd = Directory.GetCurrentDirectory();
             try
             {
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
-                return (TInstance)appDomain.CreateInstanceAndUnwrap(assembly.GetName().ToString(), instanceType.FullName);
+                return (TInstance)appDomain.CreateInstanceAndUnwrap(assemblyName, instanceType.FullName);
             }
             finally
             {
