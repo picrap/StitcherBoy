@@ -1,6 +1,7 @@
 ﻿namespace StitcherBoy.Utility
 {
     using System;
+    using System.IO;
 
     /// <summary>
     /// Extensions to AppDomain
@@ -11,7 +12,17 @@
             where TInstance : MarshalByRefObject
         {
             var instanceType = typeof(TInstance);
-            return (TInstance)appDomain.CreateInstanceAndUnwrap(instanceType.Assembly.GetName().ToString(), instanceType.FullName);
+            var assembly = instanceType.Assembly;
+            var cwd = Directory.GetCurrentDirectory();
+            try
+            {
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
+                return (TInstance)appDomain.CreateInstanceAndUnwrap(assembly.GetName().ToString(), instanceType.FullName);
+            }
+            finally
+            {
+                Directory.SetCurrentDirectory(cwd);
+            }
         }
     }
 }
