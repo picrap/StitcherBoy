@@ -46,12 +46,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StringsRetoucher\StringsRetoucher.csproj">
-      <Project>{5ab1c5d0-3f22-4504-8c97-14831db7ed89}</Project>
-      <Name>StringsRetoucher</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -49,9 +49,11 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
         {
             try
             {
-                var stitcher = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<TSingleStitcher>();
-                stitcher.Logging = new RemoteLogging(Logging);
-                return stitcher.Process(AssemblyPath, ProjectPath, SolutionPath);
+                var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
+                sticherProcessor.Logging = new RemoteLogging(Logging);
+                var type = typeof(TSingleStitcher);
+                sticherProcessor.Load(type.FullName, type.Assembly.Location);
+                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath);
             }
             catch (Exception e)
             {

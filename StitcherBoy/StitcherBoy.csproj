@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\RemoteLogging.cs" />
+    <Compile Include="Weaving\StitcherProcessor.cs" />
     <Compile Include="StitcherTask.cs" />
     <Compile Include="Logging\ConsoleLogging.cs" />
     <Compile Include="Logging\ILogging.cs" />
@@ -85,7 +86,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" $(TargetDir)dnlib.dll
+    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
+
+"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" $(TargetDir)dnlib.dll
+
+:cassos
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

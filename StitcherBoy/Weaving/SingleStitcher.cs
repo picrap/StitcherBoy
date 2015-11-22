@@ -1,6 +1,5 @@
 ﻿namespace StitcherBoy.Weaving
 {
-    using System;
     using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Writer;
@@ -10,7 +9,7 @@
     /// <summary>
     /// Single stitcher base class
     /// </summary>
-    public abstract class SingleStitcher : MarshalByRefObject
+    public abstract class SingleStitcher
     {
         /// <summary>
         /// Gets or sets the logging.
