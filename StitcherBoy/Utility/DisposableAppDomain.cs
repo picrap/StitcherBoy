@@ -13,12 +13,15 @@
         public AppDomain AppDomain { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DisposableAppDomain"/> class.
+        /// Initializes a new instance of the <see cref="DisposableAppDomain" /> class.
         /// </summary>
         /// <param name="friendlyName">Name of the friendly.</param>
-        public DisposableAppDomain(string friendlyName)
+        /// <param name="basePath">The base path.</param>
+        public DisposableAppDomain(string friendlyName, string basePath)
         {
-            AppDomain = AppDomain.CreateDomain(friendlyName);
+            var setup = new AppDomainSetup();
+            setup.ApplicationBase = basePath;
+            AppDomain = AppDomain.CreateDomain(friendlyName, null, setup);
         }
 
         /// <summary>

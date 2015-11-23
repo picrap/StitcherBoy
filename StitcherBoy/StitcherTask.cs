@@ -46,12 +46,13 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     protected override bool Run()
     {
         // the weaver runs isolated, since it it is going to load other modules
-        using (var taskAppDomain = new DisposableAppDomain("StitcherBoy"))
+        var type = typeof(TSingleStitcher);
+        var assemblyPath = type.Assembly.Location;
+        var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
+        using (var taskAppDomain = new DisposableAppDomain("StitcherBoy", assemblyDirectory))
         {
             try
             {
-                var type = typeof(TSingleStitcher);
-                var assemblyPath = type.Assembly.Location;
                 var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
                 var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
