@@ -1,5 +1,6 @@
 
 using System;
+using System.IO;
 using Microsoft.Build.Framework;
 using StitcherBoy.Logging;
 using StitcherBoy.Utility;
@@ -49,10 +50,13 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
         {
             try
             {
-                var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
-                sticherProcessor.Logging = new RemoteLogging(Logging);
                 var type = typeof(TSingleStitcher);
-                sticherProcessor.Load(type.FullName, type.Assembly.Location);
+                var assemblyPath = type.Assembly.Location;
+                var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
+                var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
+                taskAppDomain.AppDomain.Load(thisAssemblyBytes);
+                sticherProcessor.Logging = new RemoteLogging(Logging);
+                sticherProcessor.Load(type.FullName);
                 return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath);
             }
             catch (Exception e)

@@ -4,6 +4,8 @@ using StitcherBoy.Logging;
 
 namespace StitcherBoy.Weaving
 {
+    using System.Linq;
+
     /// <summary>
     /// Invokes the actual stitcher
     /// </summary>
@@ -23,11 +25,9 @@ namespace StitcherBoy.Weaving
         /// Loads the specified type (given by name and assembly).
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
-        /// <param name="assemblyPath">The assembly path.</param>
-        public void Load(string typeName, string assemblyPath)
+        public void Load(string typeName)
         {
-            var assembly = Assembly.LoadFrom(assemblyPath);
-            _type = assembly.GetType(typeName);
+            _type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(typeName)).First(t => t != null);
         }
 
         /// <summary>
