@@ -1,4 +1,7 @@
-﻿namespace StitcherBoy.Project
+﻿// Stitcher Boy - a small library to help building post-build taks
+// https://github.com/picrap/StitcherBoy
+// MIT License - http://opensource.org/licenses/MIT
+namespace StitcherBoy.Project
 {
     using System.Collections.Generic;
     using System.IO;

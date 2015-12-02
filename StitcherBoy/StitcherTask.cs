@@ -1,3 +1,6 @@
+// Stitcher Boy - a small library to help building post-build taks
+// https://github.com/picrap/StitcherBoy
+// MIT License - http://opensource.org/licenses/MIT
 
 using System;
 using System.IO;

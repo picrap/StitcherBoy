@@ -1,6 +1,10 @@
-﻿namespace StitcherBoy.Logging
+﻿// Stitcher Boy - a small library to help building post-build taks
+// https://github.com/picrap/StitcherBoy
+// MIT License - http://opensource.org/licenses/MIT
+namespace StitcherBoy.Logging
 {
     using System;
+
     internal class RemoteLogging : MarshalByRefObject, ILogging
     {
         private readonly ILogging _logging;

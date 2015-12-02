@@ -1,4 +1,7 @@
-﻿namespace StitcherBoy.Utility
+﻿// Stitcher Boy - a small library to help building post-build taks
+// https://github.com/picrap/StitcherBoy
+// MIT License - http://opensource.org/licenses/MIT
+namespace StitcherBoy.Utility
 {
     using System;
     using System.Collections.Generic;
