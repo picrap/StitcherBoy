@@ -1,10 +1,9 @@
-using System;
-using System.Reflection;
-using StitcherBoy.Logging;
 
 namespace StitcherBoy.Weaving
 {
+    using System;
     using System.Linq;
+    using Logging;
 
     /// <summary>
     /// Invokes the actual stitcher

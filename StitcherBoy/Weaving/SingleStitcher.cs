@@ -1,5 +1,6 @@
 ﻿namespace StitcherBoy.Weaving
 {
+    using System;
     using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Writer;
@@ -32,10 +33,19 @@
             assemblyPath = assemblyPath ?? project.IntermediatePath;
             var tempAssemblyPath = assemblyPath + ".out";
             bool ok;
+            bool success = true;
             using (var module = ModuleDefMD.Load(assemblyPath))
             {
                 module.LoadPdb();
-                ok = Process(module, assemblyPath, project, projectPath, solutionPath);
+                try
+                {
+                    ok = Process(module, assemblyPath, project, projectPath, solutionPath);
+                }
+                catch (Exception e)
+                {
+                    ok = false;
+                    success = false;
+                }
                 if (ok)
                 {
                     if (module.IsILOnly)
@@ -52,7 +62,7 @@
                 File.Copy(tempAssemblyPath, assemblyPath, true);
                 File.Delete(tempAssemblyPath);
             }
-            return ok;
+            return success;
         }
 
         private TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
