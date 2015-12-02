@@ -33,7 +33,10 @@ namespace StitcherBoy.Weaving
         public bool Process(string assemblyPath, string projectPath, string solutionPath)
         {
             var project = new ProjectDefinition(projectPath);
-            assemblyPath = assemblyPath ?? project.IntermediatePath;
+            if (string.IsNullOrEmpty(assemblyPath) || !File.Exists(assemblyPath))
+                assemblyPath = project.IntermediatePath;
+            if (string.IsNullOrEmpty(assemblyPath) || !File.Exists(assemblyPath))
+                assemblyPath = project.TargetPath;
             var tempAssemblyPath = assemblyPath + ".out";
             bool ok;
             bool success = true;
