@@ -33,10 +33,7 @@ namespace StitcherBoy.Weaving
         public bool Process(string assemblyPath, string projectPath, string solutionPath)
         {
             var project = new ProjectDefinition(projectPath);
-            if (string.IsNullOrEmpty(assemblyPath) || !File.Exists(assemblyPath))
-                assemblyPath = project.IntermediatePath;
-            if (string.IsNullOrEmpty(assemblyPath) || !File.Exists(assemblyPath))
-                assemblyPath = project.TargetPath;
+            assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
             var tempAssemblyPath = assemblyPath + ".out";
             bool ok;
             bool success = true;
@@ -69,6 +66,20 @@ namespace StitcherBoy.Weaving
                 File.Delete(tempAssemblyPath);
             }
             return success;
+        }
+
+        /// <summary>
+        /// Returns the path if the file exists.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
+        private string ExistingPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+            if (!File.Exists(path))
+                return null;
+            return path;
         }
 
         private TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
