@@ -36,7 +36,7 @@ namespace StitcherBoy.Utility
         private string GetWrappedTaskPath()
         {
             var thisPath = GetType().Assembly.Location;
-            var wrappedTaskPath = Path.Combine(Path.GetDirectoryName(thisPath), Path.GetFileNameWithoutExtension(thisPath));
+            var wrappedTaskPath = thisPath + ".debugTask";
             if (File.Exists(wrappedTaskPath))
                 return wrappedTaskPath;
             return null;
@@ -60,8 +60,9 @@ namespace StitcherBoy.Utility
         /// </returns>
         public override bool Execute()
         {
-            var wrappedTaskPath = GetWrappedTaskPath();
             Logging = new TaskLogging(this);
+
+            var wrappedTaskPath = GetWrappedTaskPath();
             // see if the task is just a stub, which is the case if we have a wrapped task
             // (this allows to build and debug)
             if (wrappedTaskPath == null)
