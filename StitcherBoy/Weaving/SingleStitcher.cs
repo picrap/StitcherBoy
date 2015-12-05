@@ -34,7 +34,7 @@ namespace StitcherBoy.Weaving
         {
             var project = new ProjectDefinition(projectPath);
             assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
-            var tempAssemblyPath = assemblyPath + ".out";
+            var tempAssemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".2" + Path.GetExtension(assemblyPath));
             bool ok;
             bool success = true;
             using (var module = ModuleDefMD.Load(assemblyPath))
