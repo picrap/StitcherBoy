@@ -10,6 +10,7 @@ namespace StitcherBoy.Utility
     using System.Linq;
     using System.Reflection;
     using Logging;
+    using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
     /// <summary>
@@ -26,6 +27,52 @@ namespace StitcherBoy.Utility
         /// The logging.
         /// </value>
         protected ILogging Logging { get; private set; }
+
+        private const string BuildIDKey = "StitcherBoy.BuildID";
+
+        /// <summary>
+        /// Gets the build identifier.
+        /// </summary>
+        /// <value>
+        /// The build identifier.
+        /// </value>
+        protected Guid BuildID
+        {
+            get
+            {
+                var buildIDObject = BuildEngine4.GetRegisteredTaskObject(BuildIDKey, RegisteredTaskObjectLifetime.Build);
+                if (buildIDObject != null)
+                    return (Guid)buildIDObject;
+                return BuildID = Guid.NewGuid();
+            }
+            set
+            {
+                BuildEngine4.RegisterTaskObject(BuildIDKey, value, RegisteredTaskObjectLifetime.Build, false);
+            }
+        }
+
+        private const string BuildDateKey = "StitcherBoy.BuildDate";
+
+        /// <summary>
+        /// Gets or sets the build date.
+        /// </summary>
+        /// <value>
+        /// The build date.
+        /// </value>
+        protected DateTime BuildDate
+        {
+            get
+            {
+                var buildDateObject = BuildEngine4.GetRegisteredTaskObject(BuildDateKey, RegisteredTaskObjectLifetime.Build);
+                if (buildDateObject != null)
+                    return (DateTime)buildDateObject;
+                return BuildDate = DateTime.UtcNow;
+            }
+            set
+            {
+                BuildEngine4.RegisterTaskObject(BuildDateKey, value, RegisteredTaskObjectLifetime.Build, false);
+            }
+        }
 
         /// <summary>
         /// Gets the wrapped task path.

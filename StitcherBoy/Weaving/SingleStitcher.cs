@@ -73,7 +73,7 @@ namespace StitcherBoy.Weaving
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private string ExistingPath(string path)
+        private static string ExistingPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 return null;
@@ -82,7 +82,7 @@ namespace StitcherBoy.Weaving
             return path;
         }
 
-        private TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
+        private static TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
             where TOptions : ModuleWriterOptionsBase
         {
             options.WritePdb = true;
@@ -90,7 +90,7 @@ namespace StitcherBoy.Weaving
             return options;
         }
 
-        private StrongNameKey GetSNK(ProjectDefinition project)
+        private static StrongNameKey GetSNK(ProjectDefinition project)
         {
             var signAssembly = project.GetBoolProperty("SignAssembly") ?? false;
             var keyFile = project.GetProperty("AssemblyOriginatorKeyFile");
