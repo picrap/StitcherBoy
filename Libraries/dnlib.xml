@@ -36482,6 +36482,15 @@
             </summary>
             <param name="fileName">Name of the file</param>
         </member>
+        <member name="M:dnlib.PE.PEImage.#ctor(System.Byte[],System.String,dnlib.PE.ImageLayout,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="data">The PE file data</param>
+            <param name="filename">Filename or null</param>
+            <param name="imageLayout">Image layout</param>
+            <param name="verify">Verify PE file data</param>
+        </member>
         <member name="M:dnlib.PE.PEImage.#ctor(System.Byte[],dnlib.PE.ImageLayout,System.Boolean)">
             <summary>
             Constructor
@@ -36497,11 +36506,26 @@
             <param name="data">The PE file data</param>
             <param name="verify">Verify PE file data</param>
         </member>
+        <member name="M:dnlib.PE.PEImage.#ctor(System.Byte[],System.String,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="data">The PE file data</param>
+            <param name="filename">Filename or null</param>
+            <param name="verify">Verify PE file data</param>
+        </member>
         <member name="M:dnlib.PE.PEImage.#ctor(System.Byte[])">
             <summary>
             Constructor
             </summary>
             <param name="data">The PE file data</param>
+        </member>
+        <member name="M:dnlib.PE.PEImage.#ctor(System.Byte[],System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="data">The PE file data</param>
+            <param name="filename">Filename or null</param>
         </member>
         <member name="M:dnlib.PE.PEImage.#ctor(System.IntPtr,System.Int64,dnlib.PE.ImageLayout,System.Boolean)">
             <summary>
