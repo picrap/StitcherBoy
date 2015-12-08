@@ -7,7 +7,7 @@
 
     public class StringStitcher: SingleStitcher
     {
-        protected override bool Process(ModuleDefMD moduleDef, string assemblyPath, ProjectDefinition project, string projectPath, string solutionPath)
+        protected override bool Process(StitcherContext context)
         {
             var a = AppDomain.CurrentDomain;
             var n = a.FriendlyName;

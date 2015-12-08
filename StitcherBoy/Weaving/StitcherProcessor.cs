@@ -37,12 +37,14 @@ namespace StitcherBoy.Weaving
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="projectPath">The project path.</param>
         /// <param name="solutionPath">The solution path.</param>
+        /// <param name="buildID"></param>
+        /// <param name="buildTime"></param>
         /// <returns></returns>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath)
+        public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime)
         {
             var instance = (SingleStitcher)Activator.CreateInstance(_type);
             instance.Logging = Logging;
-            return instance.Process(assemblyPath, projectPath, solutionPath);
+            return instance.Process(assemblyPath, projectPath, solutionPath, buildID, buildTime);
         }
     }
 }

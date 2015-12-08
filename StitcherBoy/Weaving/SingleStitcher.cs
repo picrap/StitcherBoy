@@ -29,8 +29,10 @@ namespace StitcherBoy.Weaving
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="projectPath">The project path.</param>
         /// <param name="solutionPath">The solution path.</param>
+        /// <param name="buildID"></param>
+        /// <param name="buildTime"></param>
         /// <returns></returns>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath)
+        public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime)
         {
             var project = new ProjectDefinition(projectPath);
             assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
@@ -42,7 +44,17 @@ namespace StitcherBoy.Weaving
                 module.LoadPdb();
                 try
                 {
-                    ok = Process(module, assemblyPath, project, projectPath, solutionPath);
+                    var context = new StitcherContext
+                    {
+                        Module = module,
+                        AssemblyPath = assemblyPath,
+                        BuildTime = buildTime,
+                        BuildID = buildID,
+                        Project = project,
+                        ProjectPath = projectPath,
+                        SolutionPath = solutionPath,
+                    };
+                    ok = Process(context);
                 }
                 catch (Exception e)
                 {
@@ -108,12 +120,8 @@ namespace StitcherBoy.Weaving
         /// <summary>
         /// Processes the specified module.
         /// </summary>
-        /// <param name="moduleDef">The module definition.</param>
-        /// <param name="assemblyPath">The assembly path.</param>
-        /// <param name="project">The project.</param>
-        /// <param name="projectPath">The project path.</param>
-        /// <param name="solutionPath">The solution path.</param>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected abstract bool Process(ModuleDefMD moduleDef, string assemblyPath, ProjectDefinition project, string projectPath, string solutionPath);
+        protected abstract bool Process(StitcherContext context);
     }
 }

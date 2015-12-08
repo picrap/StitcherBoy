@@ -61,7 +61,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
                 sticherProcessor.Logging = new RemoteLogging(Logging);
                 sticherProcessor.Load(type.FullName);
-                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath);
+                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath, BuildID, BuildTime);
             }
             catch (Exception e)
             {

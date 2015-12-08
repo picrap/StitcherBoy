@@ -6,11 +6,11 @@ namespace StitcherBoy.Utility
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using Logging;
-    using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace StitcherBoy.Utility
         /// </value>
         protected ILogging Logging { get; private set; }
 
-        private const string BuildIDKey = "StitcherBoy.BuildID";
+        private Guid? _buildID;
 
         /// <summary>
         /// Gets the build identifier.
@@ -40,18 +40,27 @@ namespace StitcherBoy.Utility
         {
             get
             {
-                var buildIDObject = BuildEngine4.GetRegisteredTaskObject(BuildIDKey, RegisteredTaskObjectLifetime.Build);
-                if (buildIDObject != null)
-                    return (Guid)buildIDObject;
-                return BuildID = Guid.NewGuid();
+                if (!_buildID.HasValue)
+                    _buildID = BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildID", Guid.NewGuid);
+                return _buildID.Value;
             }
-            set
-            {
-                BuildEngine4.RegisterTaskObject(BuildIDKey, value, RegisteredTaskObjectLifetime.Build, false);
-            }
+            set { _buildID = value; }
         }
 
-        private const string BuildDateKey = "StitcherBoy.BuildDate";
+        /// <summary>
+        /// Gets or sets the literal build identifier.
+        /// </summary>
+        /// <value>
+        /// The literal build identifier.
+        /// </value>
+        [Obsolete("Serialization-only property. Use BuildID instead.")]
+        public string LiteralBuildID
+        {
+            get { return BuildID.ToString(); }
+            set { BuildID = Guid.Parse(value); }
+        }
+
+        private DateTime? _buildDate;
 
         /// <summary>
         /// Gets or sets the build date.
@@ -59,19 +68,28 @@ namespace StitcherBoy.Utility
         /// <value>
         /// The build date.
         /// </value>
-        protected DateTime BuildDate
+        protected DateTime BuildTime
         {
             get
             {
-                var buildDateObject = BuildEngine4.GetRegisteredTaskObject(BuildDateKey, RegisteredTaskObjectLifetime.Build);
-                if (buildDateObject != null)
-                    return (DateTime)buildDateObject;
-                return BuildDate = DateTime.UtcNow;
+                if (!_buildDate.HasValue)
+                    _buildDate = BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildTime", () => DateTime.UtcNow);
+                return _buildDate.Value;
             }
-            set
-            {
-                BuildEngine4.RegisterTaskObject(BuildDateKey, value, RegisteredTaskObjectLifetime.Build, false);
-            }
+            set { _buildDate = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the literal build date.
+        /// </summary>
+        /// <value>
+        /// The literal build date.
+        /// </value>
+        [Obsolete("Serialization-only property. Use BuildTime instead.")]
+        public string LiteralBuildTime
+        {
+            get { return BuildTime.ToString("s", CultureInfo.InvariantCulture); }
+            set { BuildTime = DateTime.ParseExact(value, "s", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal); }
         }
 
         /// <summary>
@@ -121,7 +139,7 @@ namespace StitcherBoy.Utility
                 StartInfo =
                 {
                     FileName = wrappedTaskPath,
-                    Arguments = string.Join(" ",GetPropertiesArguments()),
+                    Arguments = string.Join(" ", GetPropertiesArguments()),
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
