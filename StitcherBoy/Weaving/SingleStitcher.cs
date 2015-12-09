@@ -64,9 +64,17 @@ namespace StitcherBoy.Weaving
                 if (ok)
                 {
                     if (module.IsILOnly)
-                        module.Write(tempAssemblyPath, SetWriterOptions(project, module, new ModuleWriterOptions(module)));
+                    {
+                        var moduleWriterOptions = new ModuleWriterOptions(module);
+                        moduleWriterOptions.WritePdb = true;
+                        module.Write(tempAssemblyPath, SetWriterOptions(project, module, moduleWriterOptions));
+                    }
                     else
-                        module.NativeWrite(tempAssemblyPath, SetWriterOptions(project, module, new NativeModuleWriterOptions(module)));
+                    {
+                        var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
+                        nativeModuleWriterOptions.WritePdb = true;
+                        module.NativeWrite(tempAssemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));
+                    }
                 }
             }
             // here the module is released
