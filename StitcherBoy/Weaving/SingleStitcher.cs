@@ -29,11 +29,13 @@ namespace StitcherBoy.Weaving
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="projectPath">The project path.</param>
         /// <param name="solutionPath">The solution path.</param>
-        /// <param name="buildID"></param>
-        /// <param name="buildTime"></param>
+        /// <param name="buildID">The build identifier.</param>
+        /// <param name="buildTime">The build time.</param>
+        /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Could not find assembly to stitch</exception>
         /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime)
+        public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             var project = new ProjectDefinition(projectPath);
             assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
@@ -56,6 +58,7 @@ namespace StitcherBoy.Weaving
                         Project = project,
                         ProjectPath = projectPath,
                         SolutionPath = solutionPath,
+                        TaskAssemblyPath = entryAssemblyPath,
                     };
                     ok = Process(context);
                 }

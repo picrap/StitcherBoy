@@ -62,5 +62,12 @@ namespace StitcherBoy.Weaving
         /// The build date.
         /// </value>
         public DateTime BuildTime { get; set; }
+        /// <summary>
+        /// Gets or sets the entry task assembly path.
+        /// </summary>
+        /// <value>
+        /// The entry assembly path.
+        /// </value>
+        public string TaskAssemblyPath { get; set; }
     }
 }
