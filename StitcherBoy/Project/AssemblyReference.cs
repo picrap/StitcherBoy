@@ -9,6 +9,7 @@ namespace StitcherBoy.Project
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Microsoft.Build.Evaluation;
 
     /// <summary>
     /// Reference to assembly
@@ -16,6 +17,14 @@ namespace StitcherBoy.Project
     [DebuggerDisplay("{Literal} / GAC={Gac}")]
     public class AssemblyReference : IReferences
     {
+        /// <summary>
+        /// Gets the project item.
+        /// </summary>
+        /// <value>
+        /// The project item or null for indirect references.
+        /// </value>
+        public ProjectItem ProjectItem { get; }
+
         /// <summary>
         /// Gets the name.
         /// </summary>
@@ -97,7 +106,7 @@ namespace StitcherBoy.Project
                 if (Assembly == null)
                     return null;
                 if (_references == null)
-                    _references = Assembly.GetReferencedAssemblies().Select(a => new AssemblyReference(a, false));
+                    _references = Assembly.GetReferencedAssemblies().Select(a => new AssemblyReference(a, false, null));
                 return _references;
             }
         }
@@ -150,10 +159,12 @@ namespace StitcherBoy.Project
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
-        public AssemblyReference(string path, bool isPrivate)
+        /// <param name="projectItem">The project item.</param>
+        public AssemblyReference(string path, bool isPrivate, ProjectItem projectItem)
         {
             Path = path;
             IsPrivate = isPrivate;
+            ProjectItem = projectItem;
         }
 
         /// <summary>
@@ -161,10 +172,12 @@ namespace StitcherBoy.Project
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
-        public AssemblyReference(AssemblyName name, bool isPrivate)
+        /// <param name="projectItem">The project item.</param>
+        public AssemblyReference(AssemblyName name, bool isPrivate, ProjectItem projectItem)
         {
             Name = name;
             IsPrivate = isPrivate;
+            ProjectItem = projectItem;
         }
 
         /// <summary>

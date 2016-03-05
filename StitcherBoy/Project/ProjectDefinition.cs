@@ -16,7 +16,14 @@ namespace StitcherBoy.Project
     /// </summary>
     public class ProjectDefinition : IReferences
     {
-        private readonly Project _project;
+        /// <summary>
+        /// Gets the build project.
+        /// </summary>
+        /// <value>
+        /// The build project.
+        /// </value>
+        public Project Project { get; }
+
         private readonly string _projectDirectory;
 
         private IEnumerable<AssemblyReference> _references;
@@ -58,7 +65,7 @@ namespace StitcherBoy.Project
         /// <value>
         /// The properties keys.
         /// </value>
-        public string[] PropertiesKeys => _project.Properties.Select(p => p.Name).ToArray();
+        public string[] PropertiesKeys => Project.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDefinition"/> class.
@@ -69,7 +76,7 @@ namespace StitcherBoy.Project
             _projectDirectory = Path.GetDirectoryName(path);
             using (var projectReader = File.OpenText(path))
             using (var xmlReader = new XmlTextReader(projectReader))
-                _project = new Project(xmlReader);
+                Project = new Project(xmlReader);
         }
 
         /// <summary>
@@ -78,28 +85,28 @@ namespace StitcherBoy.Project
         /// <returns></returns>
         private IEnumerable<AssemblyReference> LoadReferences()
         {
-            var references = _project.Items.Where(i => i.ItemType == "Reference").ToArray();
+            var references = Project.Items.Where(i => i.ItemType == "Reference").ToArray();
             foreach (var reference in references)
             {
                 var hintPath = reference.Metadata.SingleOrDefault(m => m.Name == "HintPath");
                 if (hintPath != null)
                 {
                     var fullPath = Path.Combine(_projectDirectory, hintPath.EvaluatedValue);
-                    yield return new AssemblyReference(fullPath, IsPrivate(reference) ?? false);
+                    yield return new AssemblyReference(fullPath, IsPrivate(reference) ?? false, reference);
                 }
                 else
                 {
                     var assemblyName = new AssemblyName(reference.EvaluatedInclude);
-                    yield return new AssemblyReference(assemblyName, IsPrivate(reference) ?? false);
+                    yield return new AssemblyReference(assemblyName, IsPrivate(reference) ?? false, reference);
                 }
             }
-            var projectReferences = _project.Items.Where(i => i.ItemType == "ProjectReference").ToArray();
+            var projectReferences = Project.Items.Where(i => i.ItemType == "ProjectReference").ToArray();
             foreach (var projectReference in projectReferences)
             {
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
                 var referencedProject = new ProjectDefinition(projectPath);
                 var targetPath = referencedProject.TargetPath;
-                yield return new AssemblyReference(targetPath, IsPrivate(projectReference) ?? true);
+                yield return new AssemblyReference(targetPath, IsPrivate(projectReference) ?? true, projectReference);
             }
         }
 
@@ -123,7 +130,7 @@ namespace StitcherBoy.Project
         /// <returns></returns>
         public string GetProperty(string key)
         {
-            var property = _project.Properties.SingleOrDefault(p => p.Name == key);
+            var property = Project.Properties.SingleOrDefault(p => p.Name == key);
             return property?.EvaluatedValue;
         }
 
