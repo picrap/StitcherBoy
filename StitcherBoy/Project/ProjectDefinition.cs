@@ -3,6 +3,7 @@
 // MIT License - http://opensource.org/licenses/MIT
 namespace StitcherBoy.Project
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -84,12 +85,12 @@ namespace StitcherBoy.Project
                 if (hintPath != null)
                 {
                     var fullPath = Path.Combine(_projectDirectory, hintPath.EvaluatedValue);
-                    yield return new AssemblyReference(fullPath);
+                    yield return new AssemblyReference(fullPath, IsPrivate(reference) ?? false);
                 }
                 else
                 {
                     var assemblyName = new AssemblyName(reference.EvaluatedInclude);
-                    yield return new AssemblyReference(assemblyName);
+                    yield return new AssemblyReference(assemblyName, IsPrivate(reference) ?? false);
                 }
             }
             var projectReferences = _project.Items.Where(i => i.ItemType == "ProjectReference").ToArray();
@@ -98,8 +99,21 @@ namespace StitcherBoy.Project
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
                 var referencedProject = new ProjectDefinition(projectPath);
                 var targetPath = referencedProject.TargetPath;
-                yield return new AssemblyReference(targetPath);
+                yield return new AssemblyReference(targetPath, IsPrivate(projectReference) ?? true);
             }
+        }
+
+        private static bool? IsPrivate(ProjectItem item)
+        {
+            var isPrivateProperty = item.Metadata.SingleOrDefault(m => string.Equals(m.Name, "Private", StringComparison.InvariantCultureIgnoreCase));
+            if (isPrivateProperty == null)
+                return null;
+
+            bool isPrivate;
+            if (!bool.TryParse(isPrivateProperty.EvaluatedValue, out isPrivate))
+                return null;
+
+            return isPrivate;
         }
 
         /// <summary>

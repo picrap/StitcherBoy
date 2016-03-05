@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{3FB36A63-F370-40FE-80E7-DA6889C77B4A}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "Tests\TestApplication\TestApplication.csproj", "{8FDA90E8-CA65-465F-B81C-E60054C2C528}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringsRetoucher", "Tests\StringsRetoucher\StringsRetoucher.csproj", "{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FDA90E8-CA65-465F-B81C-E60054C2C528} = {8FDA90E8-CA65-465F-B81C-E60054C2C528}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoy", "StitcherBoy\StitcherBoy.csproj", "{8515A314-3563-465A-8303-FE26E04CFB13}"
 EndProject
@@ -27,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8086BD0F
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary", "ReferencedLibrary\ReferencedLibrary.csproj", "{2FB7A447-5667-4269-8285-3EE1F5B3C63F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary2", "ReferencedLibrary2\ReferencedLibrary2.csproj", "{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +51,14 @@ Global
 		{8515A314-3563-465A-8303-FE26E04CFB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8515A314-3563-465A-8303-FE26E04CFB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8515A314-3563-465A-8303-FE26E04CFB13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB7A447-5667-4269-8285-3EE1F5B3C63F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB7A447-5667-4269-8285-3EE1F5B3C63F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB7A447-5667-4269-8285-3EE1F5B3C63F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB7A447-5667-4269-8285-3EE1F5B3C63F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,5 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8FDA90E8-CA65-465F-B81C-E60054C2C528} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{5AB1C5D0-3F22-4504-8C97-14831DB7ED89} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+		{2FB7A447-5667-4269-8285-3EE1F5B3C63F} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 	EndGlobalSection
 EndGlobal

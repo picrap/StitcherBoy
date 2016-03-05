@@ -32,10 +32,13 @@ namespace StitcherBoy.Weaving
         /// <param name="buildID"></param>
         /// <param name="buildTime"></param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
         public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime)
         {
             var project = new ProjectDefinition(projectPath);
             assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
+            if (assemblyPath == null)
+                throw new InvalidOperationException("Could not find assembly to stitch");
             var tempAssemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".2" + Path.GetExtension(assemblyPath));
             bool ok;
             bool success = true;

@@ -32,6 +32,14 @@ namespace StitcherBoy.Project
         /// </value>
         public string Path { get; private set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is private (copy local).
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is private; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsPrivate { get; }
+
         private Assembly _assembly;
 
         /// <summary>
@@ -89,7 +97,7 @@ namespace StitcherBoy.Project
                 if (Assembly == null)
                     return null;
                 if (_references == null)
-                    _references = Assembly.GetReferencedAssemblies().Select(a => new AssemblyReference(a));
+                    _references = Assembly.GetReferencedAssemblies().Select(a => new AssemblyReference(a, false));
                 return _references;
             }
         }
@@ -138,21 +146,25 @@ namespace StitcherBoy.Project
         private string Literal => Path ?? Name.ToString();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyReference"/> class.
+        /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
         /// </summary>
         /// <param name="path">The path.</param>
-        public AssemblyReference(string path)
+        /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
+        public AssemblyReference(string path, bool isPrivate)
         {
             Path = path;
+            IsPrivate = isPrivate;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyReference"/> class.
+        /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public AssemblyReference(AssemblyName name)
+        /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
+        public AssemblyReference(AssemblyName name, bool isPrivate)
         {
             Name = name;
+            IsPrivate = isPrivate;
         }
 
         /// <summary>
