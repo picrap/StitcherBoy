@@ -131,7 +131,7 @@ namespace StitcherBoy.Utility
             // see if the task is just a stub, which is the case if we have a wrapped task
             // (this allows to build and debug)
             if (wrappedTaskPath == null)
-                return Run();
+                return Run(false);
 
             // run the application as a command-line application
             var process = new Process
@@ -139,6 +139,7 @@ namespace StitcherBoy.Utility
                 StartInfo =
                 {
                     FileName = wrappedTaskPath,
+                    WorkingDirectory = Environment.CurrentDirectory,
                     Arguments = string.Join(" ", GetPropertiesArguments()),
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -160,7 +161,9 @@ namespace StitcherBoy.Utility
         /// <summary>
         /// Runs the task (either launched as task or application).
         /// </summary>
-        protected abstract bool Run();
+        /// <param name="fromExe"></param>
+        /// <returns></returns>
+        protected abstract bool Run(bool fromExe);
 
         private static Tuple<string, string> GetArgument(string arg)
         {
@@ -192,7 +195,7 @@ namespace StitcherBoy.Utility
                     propertyInfo?.SetValue(instance, argument.Item2, new object[0]);
                 }
             }
-            return instance.Run() ? 0 : 1;
+            return instance.Run(true) ? 0 : 1;
         }
     }
 }

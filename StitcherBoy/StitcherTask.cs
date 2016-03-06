@@ -45,28 +45,37 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     /// <summary>
     /// Runs the task (either launched as task or application).
     /// </summary>
+    /// <param name="fromExe"></param>
     /// <returns></returns>
-    protected override bool Run()
+    protected override bool Run(bool fromExe)
     {
-        // the weaver runs isolated, since it it is going to load other modules
-        var type = typeof(TSingleStitcher);
-        var assemblyPath = type.Assembly.Location;
-        var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
-        using (var taskAppDomain = new DisposableAppDomain("StitcherBoy", assemblyDirectory))
+        try
         {
-            try
+            // when run from a .debugTask exe, there is no need to wrap in a separate AppDomain
+            if (fromExe)
             {
-                var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
+                var singleStitcher = (SingleStitcher)Activator.CreateInstance(typeof(TSingleStitcher));
+                singleStitcher.Logging = Logging;
+                return singleStitcher.Process(AssemblyPath, ProjectPath, SolutionPath, BuildID, BuildTime, GetType().Assembly.Location);
+            }
+
+            // the weaver runs isolated, since it it is going to load other modules
+            var type = typeof(TSingleStitcher);
+            var assemblyPath = type.Assembly.Location;
+            var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
+            var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
+            using (var taskAppDomain = new DisposableAppDomain("StitcherBoy", assemblyDirectory))
+            {
                 var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
                 sticherProcessor.Logging = new RemoteLogging(Logging);
                 sticherProcessor.Load(type.FullName);
                 return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath, BuildID, BuildTime, GetType().Assembly.Location);
             }
-            catch (Exception e)
-            {
-                Logging.WriteError("Unhandled exception: {0}", e);
-            }
+        }
+        catch (Exception e)
+        {
+            Logging.WriteError("Unhandled exception: {0}", e);
         }
         return false;
     }

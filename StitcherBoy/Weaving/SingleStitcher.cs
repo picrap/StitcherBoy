@@ -64,6 +64,7 @@ namespace StitcherBoy.Weaving
                 }
                 catch (Exception e)
                 {
+                    Logging.WriteError("Uncaught exception: {0}", e.ToString());
                     ok = false;
                     success = false;
                 }
