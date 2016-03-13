@@ -25,8 +25,12 @@ namespace StitcherBoy.Project
         public Project Project { get; }
 
         private readonly string _projectDirectory;
+        private readonly string _outputDirectory;
+
+        private readonly IDictionary<string, string> _globalProperties;
 
         private IEnumerable<AssemblyReference> _references;
+
         /// <summary>
         /// Gets the references.
         /// </summary>
@@ -52,6 +56,14 @@ namespace StitcherBoy.Project
         public string TargetPath => Path.Combine(_projectDirectory, GetProperty("TargetPath"));
 
         /// <summary>
+        /// Gets the name of the target.
+        /// </summary>
+        /// <value>
+        /// The name of the target.
+        /// </value>
+        public string TargetName => Path.Combine(_projectDirectory, GetProperty("TargetName"));
+
+        /// <summary>
         /// Gets the intermediate path.
         /// </summary>
         /// <value>
@@ -68,15 +80,22 @@ namespace StitcherBoy.Project
         public string[] PropertiesKeys => Project.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectDefinition"/> class.
+        /// Initializes a new instance of the <see cref="ProjectDefinition" /> class.
         /// </summary>
         /// <param name="path">The path.</param>
-        public ProjectDefinition(string path)
+        /// <param name="outputDirectory">The output directory.</param>
+        /// <param name="globalProperties">The global properties.</param>
+        public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null)
         {
             _projectDirectory = Path.GetDirectoryName(path);
             using (var projectReader = File.OpenText(path))
             using (var xmlReader = new XmlTextReader(projectReader))
-                Project = new Project(xmlReader);
+                Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
+            if (globalProperties != null)
+                _globalProperties = new Dictionary<string, string>(globalProperties);
+            else
+                _globalProperties = new Dictionary<string, string> { { "Configuration", Project.GetPropertyValue("Configuration") } };
+            _outputDirectory = outputDirectory ?? Path.GetDirectoryName(TargetPath);
         }
 
         /// <summary>
@@ -103,11 +122,22 @@ namespace StitcherBoy.Project
             var projectReferences = Project.Items.Where(i => i.ItemType == "ProjectReference").ToArray();
             foreach (var projectReference in projectReferences)
             {
+                var isPrivate = IsPrivate(projectReference) ?? true;
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
-                var referencedProject = new ProjectDefinition(projectPath);
-                var targetPath = referencedProject.TargetPath;
-                yield return new AssemblyReference(targetPath, IsPrivate(projectReference) ?? true, projectReference);
+                var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties);
+                var targetPath = GetTargetPath(referencedProject, isPrivate);
+                yield return new AssemblyReference(targetPath, isPrivate, referencedProject);
             }
+        }
+
+        private string GetTargetPath(ProjectDefinition referencedProject, bool isPrivate)
+        {
+            if (!isPrivate)
+                return referencedProject.TargetPath;
+
+            var referenceFileName = Path.GetFileName(referencedProject.TargetPath);
+            var targetPath = Path.Combine(_outputDirectory, referenceFileName);
+            return targetPath;
         }
 
         private static bool? IsPrivate(ProjectItem item)

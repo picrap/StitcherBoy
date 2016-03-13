@@ -41,6 +41,14 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     /// The solution path.
     /// </value>
     public string SolutionPath { get; set; }
+  
+    /// <summary>
+    /// Gets or sets the configuration.
+    /// </summary>
+    /// <value>
+    /// The configuration.
+    /// </value>
+    public string Configuration{ get; set; }
 
     /// <summary>
     /// Runs the task (either launched as task or application).
@@ -56,7 +64,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
             {
                 var singleStitcher = (SingleStitcher)Activator.CreateInstance(typeof(TSingleStitcher));
                 singleStitcher.Logging = Logging;
-                return singleStitcher.Process(AssemblyPath, ProjectPath, SolutionPath, BuildID, BuildTime, GetType().Assembly.Location);
+                return singleStitcher.Process(AssemblyPath, ProjectPath, SolutionPath, Configuration, BuildID, BuildTime, GetType().Assembly.Location);
             }
 
             // the weaver runs isolated, since it it is going to load other modules
@@ -70,7 +78,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
                 sticherProcessor.Logging = new RemoteLogging(Logging);
                 sticherProcessor.Load(type.FullName);
-                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath, BuildID, BuildTime, GetType().Assembly.Location);
+                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath, Configuration, BuildID, BuildTime, GetType().Assembly.Location);
             }
         }
         catch (Exception e)

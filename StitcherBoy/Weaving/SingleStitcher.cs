@@ -4,6 +4,7 @@
 namespace StitcherBoy.Weaving
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Writer;
@@ -29,17 +30,19 @@ namespace StitcherBoy.Weaving
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="projectPath">The project path.</param>
         /// <param name="solutionPath">The solution path.</param>
+        /// <param name="configuration"></param>
         /// <param name="buildID">The build identifier.</param>
         /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
         /// <exception cref="System.InvalidOperationException">Could not find assembly to stitch</exception>
         /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
-            var project = new ProjectDefinition(projectPath);
-            assemblyPath = ExistingPath(assemblyPath) ?? ExistingPath(project.IntermediatePath) ?? ExistingPath(project.TargetPath);
-            if (assemblyPath == null)
+            var globalProperties = new Dictionary<string, string> { { "Configuration", configuration ?? "Release" } };
+            var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), globalProperties);
+            assemblyPath = assemblyPath ?? project.TargetPath;
+            if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");
             var tempAssemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".2" + Path.GetExtension(assemblyPath));
             bool ok;
@@ -93,20 +96,6 @@ namespace StitcherBoy.Weaving
                 File.Delete(tempAssemblyPath);
             }
             return success;
-        }
-
-        /// <summary>
-        /// Returns the path if the file exists.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns></returns>
-        private static string ExistingPath(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                return null;
-            if (!File.Exists(path))
-                return null;
-            return path;
         }
 
         private static TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)

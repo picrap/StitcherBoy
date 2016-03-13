@@ -26,6 +26,14 @@ namespace StitcherBoy.Project
         public ProjectItem ProjectItem { get; }
 
         /// <summary>
+        /// Gets the project definition.
+        /// </summary>
+        /// <value>
+        /// The project definition.
+        /// </value>
+        public ProjectDefinition ProjectDefinition { get; }
+
+        /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>
@@ -103,6 +111,8 @@ namespace StitcherBoy.Project
         {
             get
             {
+                if (ProjectDefinition != null)
+                    return ProjectDefinition.References;
                 if (Assembly == null)
                     return null;
                 if (_references == null)
@@ -165,6 +175,19 @@ namespace StitcherBoy.Project
             Path = path;
             IsPrivate = isPrivate;
             ProjectItem = projectItem;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
+        /// <param name="projectDefinition">The project definition.</param>
+        public AssemblyReference(string path, bool isPrivate, ProjectDefinition projectDefinition)
+        {
+            Path = path;
+            IsPrivate = isPrivate;
+            ProjectDefinition = projectDefinition;
         }
 
         /// <summary>
