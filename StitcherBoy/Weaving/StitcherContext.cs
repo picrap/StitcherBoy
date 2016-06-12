@@ -49,6 +49,13 @@ namespace StitcherBoy.Weaving
         /// </value>
         public string SolutionPath { get; set; }
         /// <summary>
+        /// Gets or sets the configuration.
+        /// </summary>
+        /// <value>
+        /// The configuration.
+        /// </value>
+        public string Configuration { get; set; }
+        /// <summary>
         /// Gets or sets the build identifier.
         /// </summary>
         /// <value>

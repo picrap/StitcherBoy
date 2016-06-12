@@ -62,6 +62,7 @@ namespace StitcherBoy.Weaving
                         ProjectPath = projectPath,
                         SolutionPath = solutionPath,
                         TaskAssemblyPath = entryAssemblyPath,
+                        Configuration = configuration,
                     };
                     ok = Process(context);
                 }
