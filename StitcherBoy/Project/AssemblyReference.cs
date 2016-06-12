@@ -9,6 +9,7 @@ namespace StitcherBoy.Project
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using dnlib.DotNet;
     using Microsoft.Build.Evaluation;
 
     /// <summary>
@@ -17,6 +18,8 @@ namespace StitcherBoy.Project
     [DebuggerDisplay("{Literal} / GAC={Gac}")]
     public class AssemblyReference : IReferences
     {
+        private readonly IAssemblyResolver _assemblyResolver;
+
         /// <summary>
         /// Gets the project item.
         /// </summary>
@@ -57,7 +60,7 @@ namespace StitcherBoy.Project
         /// </value>
         public bool IsPrivate { get; }
 
-        private Assembly _assembly;
+        private AssemblyDef _assembly;
 
         /// <summary>
         /// Gets the assembly.
@@ -65,7 +68,7 @@ namespace StitcherBoy.Project
         /// <value>
         /// The assembly.
         /// </value>
-        public Assembly Assembly
+        public AssemblyDef Assembly
         {
             get
             {
@@ -82,30 +85,6 @@ namespace StitcherBoy.Project
         /// The load exception.
         /// </value>
         public Exception AssemblyLoadException { get; private set; }
-
-        private AssemblyName _assemblyName;
-
-        /// <summary>
-        /// Gets the name of the assembly.
-        /// </summary>
-        /// <value>
-        /// The name of the assembly.
-        /// </value>
-        public AssemblyName AssemblyName
-        {
-            get
-            {
-                if (Assembly == null)
-                    return null;
-                if (_assemblyName == null)
-                {
-                    _assemblyName = Assembly.GetName();
-                    if (Path == null)
-                        Path = Assembly.Location;
-                }
-                return _assemblyName;
-            }
-        }
 
         private IEnumerable<AssemblyReference> _references;
 
@@ -124,9 +103,14 @@ namespace StitcherBoy.Project
                 if (Assembly == null)
                     return null;
                 if (_references == null)
-                    _references = Assembly.GetReferencedAssemblies().Select(a => new AssemblyReference(a, false, null));
+                    _references = Assembly.ManifestModule.GetAssemblyRefs().Select(CreateReference);
                 return _references;
             }
+        }
+
+        private AssemblyReference CreateReference(AssemblyRef assemblyRef)
+        {
+            return new AssemblyReference(_assemblyResolver, new AssemblyName(assemblyRef.RealFullName), false, null);
         }
 
         /// <summary>
@@ -141,7 +125,7 @@ namespace StitcherBoy.Project
             {
                 if (Assembly == null)
                     return null;
-                return Assembly.GetName().GetPublicKey().Length > 0;
+                return Assembly.PublicKey?.Data != null && Assembly.PublicKey.Data.Length > 0;
             }
         }
 
@@ -175,11 +159,13 @@ namespace StitcherBoy.Project
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
         /// </summary>
+        /// <param name="assemblyResolver">The assembly resolver.</param>
         /// <param name="path">The path.</param>
         /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
         /// <param name="projectItem">The project item.</param>
-        public AssemblyReference(string path, bool isPrivate, ProjectItem projectItem)
+        public AssemblyReference(IAssemblyResolver assemblyResolver, string path, bool isPrivate, ProjectItem projectItem)
         {
+            _assemblyResolver = assemblyResolver;
             Path = path;
             IsPrivate = isPrivate;
             ProjectItem = projectItem;
@@ -188,11 +174,13 @@ namespace StitcherBoy.Project
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
         /// </summary>
+        /// <param name="assemblyResolver">The assembly resolver.</param>
         /// <param name="path">The path.</param>
         /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
         /// <param name="projectDefinition">The project definition.</param>
-        public AssemblyReference(string path, bool isPrivate, ProjectDefinition projectDefinition)
+        public AssemblyReference(IAssemblyResolver assemblyResolver, string path, bool isPrivate, ProjectDefinition projectDefinition)
         {
+            _assemblyResolver = assemblyResolver;
             Path = path;
             IsPrivate = isPrivate;
             ProjectDefinition = projectDefinition;
@@ -201,11 +189,13 @@ namespace StitcherBoy.Project
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyReference" /> class.
         /// </summary>
+        /// <param name="assemblyResolver">The assembly resolver.</param>
         /// <param name="name">The name.</param>
         /// <param name="isPrivate">if set to <c>true</c> [is private].</param>
         /// <param name="projectItem">The project item.</param>
-        public AssemblyReference(AssemblyName name, bool isPrivate, ProjectItem projectItem)
+        public AssemblyReference(IAssemblyResolver assemblyResolver, AssemblyName name, bool isPrivate, ProjectItem projectItem)
         {
+            _assemblyResolver = assemblyResolver;
             Name = name;
             IsPrivate = isPrivate;
             ProjectItem = projectItem;
@@ -215,7 +205,7 @@ namespace StitcherBoy.Project
         /// Resolves the assembly (and loads it).
         /// </summary>
         /// <returns></returns>
-        private Assembly Resolve()
+        private AssemblyDef Resolve()
         {
             return ResolveName() ?? ResolvePath();
         }
@@ -224,27 +214,24 @@ namespace StitcherBoy.Project
         /// Resolves by path.
         /// </summary>
         /// <returns></returns>
-        private Assembly ResolvePath()
+        private AssemblyDef ResolvePath()
         {
             if (Path == null)
                 return null;
             var absolutePath = System.IO.Path.GetFullPath(Path);
             Path = absolutePath;
-            return SafeLoad(() => Assembly.ReflectionOnlyLoad(File.ReadAllBytes(absolutePath)));
+            return SafeLoad(() => AssemblyDef.Load(File.ReadAllBytes(absolutePath)));
         }
 
         /// <summary>
         /// Resolves by name.
         /// </summary>
         /// <returns></returns>
-        private Assembly ResolveName()
+        private AssemblyDef ResolveName()
         {
             if (Name == null)
                 return null;
-            return SafeLoad(() => Assembly.ReflectionOnlyLoad(Name.FullName))
-#pragma warning disable 618
- ?? SafeLoad(() => Assembly.LoadWithPartialName(Name.ToString()));
-#pragma warning restore 618
+            return SafeLoad(() => _assemblyResolver.Resolve(Name, null));
         }
 
         /// <summary>
@@ -252,7 +239,7 @@ namespace StitcherBoy.Project
         /// </summary>
         /// <param name="loader">The loader.</param>
         /// <returns></returns>
-        private Assembly SafeLoad(Func<Assembly> loader)
+        private AssemblyDef SafeLoad(Func<AssemblyDef> loader)
         {
             AssemblyLoadException = null;
             try

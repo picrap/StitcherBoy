@@ -9,6 +9,7 @@ namespace StitcherBoy.Project
     using System.Linq;
     using System.Reflection;
     using System.Xml;
+    using dnlib.DotNet;
     using Microsoft.Build.Evaluation;
 
     /// <summary>
@@ -16,6 +17,8 @@ namespace StitcherBoy.Project
     /// </summary>
     public class ProjectDefinition : IReferences
     {
+        private readonly IAssemblyResolver _assemblyResolver;
+
         /// <summary>
         /// Gets the build project.
         /// </summary>
@@ -85,8 +88,10 @@ namespace StitcherBoy.Project
         /// <param name="path">The path.</param>
         /// <param name="outputDirectory">The output directory.</param>
         /// <param name="globalProperties">The global properties.</param>
-        public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null)
+        /// <param name="assemblyResolver">The assembly resolver.</param>
+        public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null, IAssemblyResolver assemblyResolver = null)
         {
+            _assemblyResolver = assemblyResolver ?? new AssemblyResolver();
             _projectDirectory = Path.GetDirectoryName(path);
             using (var projectReader = File.OpenText(path))
             using (var xmlReader = new XmlTextReader(projectReader))
@@ -111,12 +116,12 @@ namespace StitcherBoy.Project
                 if (hintPath != null)
                 {
                     var fullPath = Path.Combine(_projectDirectory, hintPath.EvaluatedValue);
-                    yield return new AssemblyReference(fullPath, IsPrivate(reference) ?? false, reference);
+                    yield return new AssemblyReference(_assemblyResolver, fullPath, IsPrivate(reference) ?? false, reference);
                 }
                 else
                 {
                     var assemblyName = new AssemblyName(reference.EvaluatedInclude);
-                    yield return new AssemblyReference(assemblyName, IsPrivate(reference) ?? false, reference);
+                    yield return new AssemblyReference(_assemblyResolver, assemblyName, IsPrivate(reference) ?? false, reference);
                 }
             }
             var projectReferences = Project.Items.Where(i => i.ItemType == "ProjectReference").ToArray();
@@ -126,7 +131,7 @@ namespace StitcherBoy.Project
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
                 var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties);
                 var targetPath = GetTargetPath(referencedProject, isPrivate);
-                yield return new AssemblyReference(targetPath, isPrivate, referencedProject);
+                yield return new AssemblyReference(_assemblyResolver, targetPath, isPrivate, referencedProject);
             }
         }
 

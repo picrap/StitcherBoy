@@ -28,11 +28,11 @@ namespace StitcherBoy.Project
             while (fetchAssemblies.Count > 0)
             {
                 var fetchAssembly = fetchAssemblies.Dequeue();
-                if (loadedAssemblies.ContainsKey(fetchAssembly.AssemblyName.FullName))
+                if (loadedAssemblies.ContainsKey(fetchAssembly.Assembly.FullName))
                     continue;
 
                 Select(fetchAssembly.References, assemblyReferenceSelector).ForAll(r => fetchAssemblies.Enqueue(r));
-                loadedAssemblies[fetchAssembly.AssemblyName.FullName] = fetchAssembly;
+                loadedAssemblies[fetchAssembly.Assembly.FullName] = fetchAssembly;
             }
             return loadedAssemblies.Values;
         }
