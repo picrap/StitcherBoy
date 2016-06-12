@@ -75,6 +75,14 @@ namespace StitcherBoy.Project
             }
         }
 
+        /// <summary>
+        /// Gets the load exception.
+        /// </summary>
+        /// <value>
+        /// The load exception.
+        /// </value>
+        public Exception AssemblyLoadException { get; private set; }
+
         private AssemblyName _assemblyName;
 
         /// <summary>
@@ -244,18 +252,25 @@ namespace StitcherBoy.Project
         /// </summary>
         /// <param name="loader">The loader.</param>
         /// <returns></returns>
-        private static Assembly SafeLoad(Func<Assembly> loader)
+        private Assembly SafeLoad(Func<Assembly> loader)
         {
+            AssemblyLoadException = null;
             try
             {
                 return loader();
             }
-            catch (FileLoadException)
-            { }
-            catch (FileNotFoundException)
-            { }
-            catch (BadImageFormatException)
-            { }
+            catch (FileLoadException e)
+            {
+                AssemblyLoadException = e;
+            }
+            catch (FileNotFoundException e)
+            {
+                AssemblyLoadException = e;
+            }
+            catch (BadImageFormatException e)
+            {
+                AssemblyLoadException = e;
+            }
             return null;
         }
     }
