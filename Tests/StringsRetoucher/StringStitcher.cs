@@ -21,7 +21,7 @@
             F(r);
             var a = AppDomain.CurrentDomain;
             var n = a.FriendlyName;
-            return false;
+            return true;
         }
     }
 }

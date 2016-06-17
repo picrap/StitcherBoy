@@ -93,10 +93,34 @@ namespace StitcherBoy.Weaving
             {
                 // this is just in case there was a hard link on the target file
                 // (not sure it's not destroyed by build anyway)
-                File.Copy(tempAssemblyPath, assemblyPath, true);
-                File.Delete(tempAssemblyPath);
+                Replace(tempAssemblyPath, assemblyPath);
+                // also, the pdb has to be overwritten
+                var pdbExtension = ".pdb";
+                var tempPdbPath = ChangeExtension(tempAssemblyPath, pdbExtension);
+                var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
+                Replace(tempPdbPath, pdbPath);
             }
             return success;
+        }
+
+        private static void Replace(string sourcePath, string targetPath)
+        {
+            File.Copy(sourcePath, targetPath, true);
+            File.Delete(sourcePath);
+        }
+
+        /// <summary>
+        /// Changes the extension, given a full path, returns a related path with different extension
+        /// Right, .NET path manipulation functions are POOR
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="newExtension">The new extension.</param>
+        /// <returns></returns>
+        private string ChangeExtension(string path, string newExtension)
+        {
+            var directory = Path.GetDirectoryName(path);
+            var fileName = Path.GetFileNameWithoutExtension(path);
+            return Path.Combine(directory, fileName + newExtension);
         }
 
         private static TOptions SetWriterOptions<TOptions>(ProjectDefinition project, ModuleDefMD moduleDef, TOptions options)
