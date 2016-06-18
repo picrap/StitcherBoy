@@ -7,6 +7,7 @@ namespace StitcherBoy.Weaving
     using System.Collections.Generic;
     using System.IO;
     using dnlib.DotNet;
+    using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
     using Logging;
     using Project;
@@ -44,12 +45,14 @@ namespace StitcherBoy.Weaving
             assemblyPath = assemblyPath ?? project.TargetPath;
             if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");
-            var tempAssemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".2" + Path.GetExtension(assemblyPath));
+            var pdbExtension = ".pdb";
+            var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
             bool ok;
             bool success = true;
-            using (var module = ModuleDefMD.Load(assemblyPath))
+            using (var module = ModuleDefMD.Load(File.ReadAllBytes(assemblyPath)))
             {
-                module.LoadPdb();
+                if (File.Exists(pdbPath))
+                    module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
                 try
                 {
                     var context = new StitcherContext
@@ -78,35 +81,19 @@ namespace StitcherBoy.Weaving
                     {
                         var moduleWriterOptions = new ModuleWriterOptions(module);
                         moduleWriterOptions.WritePdb = true;
-                        module.Write(tempAssemblyPath, SetWriterOptions(project, module, moduleWriterOptions));
+                        moduleWriterOptions.PdbFileName = pdbPath;
+                        module.Write(assemblyPath, SetWriterOptions(project, module, moduleWriterOptions));
                     }
                     else
                     {
                         var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
                         nativeModuleWriterOptions.WritePdb = true;
-                        module.NativeWrite(tempAssemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));
+                        nativeModuleWriterOptions.PdbFileName = pdbPath;
+                        module.NativeWrite(assemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));
                     }
                 }
             }
-            // here the module is released
-            if (ok)
-            {
-                // this is just in case there was a hard link on the target file
-                // (not sure it's not destroyed by build anyway)
-                Replace(tempAssemblyPath, assemblyPath);
-                // also, the pdb has to be overwritten
-                var pdbExtension = ".pdb";
-                var tempPdbPath = ChangeExtension(tempAssemblyPath, pdbExtension);
-                var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
-                Replace(tempPdbPath, pdbPath);
-            }
             return success;
-        }
-
-        private static void Replace(string sourcePath, string targetPath)
-        {
-            File.Copy(sourcePath, targetPath, true);
-            File.Delete(sourcePath);
         }
 
         /// <summary>

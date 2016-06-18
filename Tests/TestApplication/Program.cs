@@ -13,6 +13,8 @@ namespace TestApplication
     {
         static void Main(string[] args)
         {
+            var z = "Nothing...";
+            Console.WriteLine(z);
             var r = new ReferencedClass();
             r.F();
             var r2 = new ReferencedClass2();

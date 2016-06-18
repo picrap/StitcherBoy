@@ -45,6 +45,10 @@
     <Compile Include="StringStitcher.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dnlib\src\dnlib.csproj">
+      <Project>{FDFC1237-143F-4919-8318-4926901F4639}</Project>
+      <Name>dnlib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj">
       <Project>{8515a314-3563-465a-8303-fe26e04cfb13}</Project>
       <Name>StitcherBoy</Name>

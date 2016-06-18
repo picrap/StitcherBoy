@@ -52,7 +52,7 @@
     <ProjectReference Include="..\..\ReferencedLibrary2\ReferencedLibrary2.csproj">
       <Project>{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}</Project>
       <Name>ReferencedLibrary2</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\ReferencedLibrary\ReferencedLibrary.csproj">
       <Project>{2FB7A447-5667-4269-8285-3EE1F5B3C63F}</Project>
