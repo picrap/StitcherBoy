@@ -49,7 +49,9 @@ namespace StitcherBoy.Weaving
             var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
             bool ok;
             bool success = true;
-            using (var module = ModuleDefMD.Load(File.ReadAllBytes(assemblyPath)))
+            var tempAssemblyPath = assemblyPath + ".2";
+            File.Copy(assemblyPath, tempAssemblyPath);
+            using (var module = ModuleDefMD.Load(tempAssemblyPath))
             {
                 if (File.Exists(pdbPath))
                     module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
@@ -93,6 +95,7 @@ namespace StitcherBoy.Weaving
                     }
                 }
             }
+            File.Delete(tempAssemblyPath);
             return success;
         }
 
