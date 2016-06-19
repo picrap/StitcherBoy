@@ -47,55 +47,61 @@ namespace StitcherBoy.Weaving
                 throw new InvalidOperationException("Could not find assembly to stitch");
             var pdbExtension = ".pdb";
             var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
-            bool ok;
             bool success = true;
             var tempAssemblyPath = assemblyPath + ".2";
-            File.Copy(assemblyPath, tempAssemblyPath);
-            using (var module = ModuleDefMD.Load(tempAssemblyPath))
+            File.Copy(assemblyPath, tempAssemblyPath, true);
+            try
             {
-                if (File.Exists(pdbPath))
-                    module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
-                try
+                using (var module = ModuleDefMD.Load(tempAssemblyPath))
                 {
-                    var context = new StitcherContext
+                    if (File.Exists(pdbPath))
+                        module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
+                    bool ok;
+                    try
                     {
-                        Module = module,
-                        AssemblyPath = assemblyPath,
-                        BuildTime = buildTime,
-                        BuildID = buildID,
-                        Project = project,
-                        ProjectPath = projectPath,
-                        SolutionPath = solutionPath,
-                        TaskAssemblyPath = entryAssemblyPath,
-                        Configuration = configuration,
-                    };
-                    ok = Process(context);
-                }
-                catch (Exception e)
-                {
-                    Logging.WriteError("Uncaught exception: {0}", e.ToString());
-                    ok = false;
-                    success = false;
-                }
-                if (ok)
-                {
-                    if (module.IsILOnly)
-                    {
-                        var moduleWriterOptions = new ModuleWriterOptions(module);
-                        moduleWriterOptions.WritePdb = true;
-                        moduleWriterOptions.PdbFileName = pdbPath;
-                        module.Write(assemblyPath, SetWriterOptions(project, module, moduleWriterOptions));
+                        var context = new StitcherContext
+                        {
+                            Module = module,
+                            AssemblyPath = assemblyPath,
+                            BuildTime = buildTime,
+                            BuildID = buildID,
+                            Project = project,
+                            ProjectPath = projectPath,
+                            SolutionPath = solutionPath,
+                            TaskAssemblyPath = entryAssemblyPath,
+                            Configuration = configuration,
+                        };
+                        ok = Process(context);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
-                        nativeModuleWriterOptions.WritePdb = true;
-                        nativeModuleWriterOptions.PdbFileName = pdbPath;
-                        module.NativeWrite(assemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));
+                        Logging.WriteError("Uncaught exception: {0}", e.ToString());
+                        ok = false;
+                        success = false;
+                    }
+                    if (ok)
+                    {
+                        if (module.IsILOnly)
+                        {
+                            var moduleWriterOptions = new ModuleWriterOptions(module);
+                            moduleWriterOptions.WritePdb = true;
+                            moduleWriterOptions.PdbFileName = pdbPath;
+                            module.Write(assemblyPath, SetWriterOptions(project, module, moduleWriterOptions));
+                        }
+                        else
+                        {
+                            var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
+                            nativeModuleWriterOptions.WritePdb = true;
+                            nativeModuleWriterOptions.PdbFileName = pdbPath;
+                            module.NativeWrite(assemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));
+                        }
                     }
                 }
             }
-            File.Delete(tempAssemblyPath);
+            finally
+            {
+                File.Delete(tempAssemblyPath);
+            }
             return success;
         }
 
