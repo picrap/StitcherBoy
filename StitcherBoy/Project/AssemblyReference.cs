@@ -38,6 +38,7 @@ namespace StitcherBoy.Project
 
         /// <summary>
         /// Gets the name.
+        /// May be null
         /// </summary>
         /// <value>
         /// The name.
@@ -46,6 +47,7 @@ namespace StitcherBoy.Project
 
         /// <summary>
         /// Gets the path.
+        /// May be null
         /// </summary>
         /// <value>
         /// The path.

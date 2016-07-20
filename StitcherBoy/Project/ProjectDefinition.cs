@@ -116,7 +116,8 @@ namespace StitcherBoy.Project
                 if (hintPath != null)
                 {
                     var fullPath = Path.Combine(_projectDirectory, hintPath.EvaluatedValue);
-                    yield return new AssemblyReference(_assemblyResolver, fullPath, IsPrivate(reference) ?? false, reference);
+                    // when <HintPath> is provided, the assembly is private by default
+                    yield return new AssemblyReference(_assemblyResolver, fullPath, IsPrivate(reference) ?? true, reference);
                 }
                 else
                 {
