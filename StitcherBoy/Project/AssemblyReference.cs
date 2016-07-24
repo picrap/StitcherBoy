@@ -52,7 +52,7 @@ namespace StitcherBoy.Project
         /// <value>
         /// The path.
         /// </value>
-        public string Path { get; private set; }
+        public string Path { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is private (copy local).
@@ -142,7 +142,7 @@ namespace StitcherBoy.Project
         {
             get
             {
-                if (Path != null)
+                if (Name == null)
                     return false;
                 if (Name.Version != null)
                     return false;
@@ -168,7 +168,7 @@ namespace StitcherBoy.Project
         public AssemblyReference(IAssemblyResolver assemblyResolver, string path, bool isPrivate, ProjectItem projectItem)
         {
             _assemblyResolver = assemblyResolver;
-            Path = path;
+            Path = System.IO.Path.GetFullPath(path);
             IsPrivate = isPrivate;
             ProjectItem = projectItem;
         }
@@ -183,7 +183,7 @@ namespace StitcherBoy.Project
         public AssemblyReference(IAssemblyResolver assemblyResolver, string path, bool isPrivate, ProjectDefinition projectDefinition)
         {
             _assemblyResolver = assemblyResolver;
-            Path = path;
+            Path = System.IO.Path.GetFullPath(path);
             IsPrivate = isPrivate;
             ProjectDefinition = projectDefinition;
         }
@@ -199,6 +199,9 @@ namespace StitcherBoy.Project
         {
             _assemblyResolver = assemblyResolver;
             Name = name;
+            var assembly = assemblyResolver.Resolve(name, null);
+            if (assembly != null)
+                Path = assembly.ManifestModule.Location;
             IsPrivate = isPrivate;
             ProjectItem = projectItem;
         }
@@ -220,9 +223,7 @@ namespace StitcherBoy.Project
         {
             if (Path == null)
                 return null;
-            var absolutePath = System.IO.Path.GetFullPath(Path);
-            Path = absolutePath;
-            return SafeLoad(() => AssemblyDef.Load(File.ReadAllBytes(absolutePath)));
+            return SafeLoad(() => AssemblyDef.Load(File.ReadAllBytes(Path)));
         }
 
         /// <summary>
