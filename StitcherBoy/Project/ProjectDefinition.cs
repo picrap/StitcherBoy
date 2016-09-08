@@ -97,7 +97,7 @@ namespace StitcherBoy.Project
             {
                 using (var projectReader = File.OpenText(path))
                 using (var xmlReader = new XmlTextReader(projectReader))
-                    Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null)
+                    Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
             }
             catch { }
             if (globalProperties != null)
