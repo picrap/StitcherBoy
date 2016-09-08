@@ -80,7 +80,7 @@ namespace StitcherBoy.Project
         /// <value>
         /// The properties keys.
         /// </value>
-        public string[] PropertiesKeys => Project.Properties.Select(p => p.Name).ToArray();
+        public string[] PropertiesKeys => Project?.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDefinition" /> class.
@@ -93,13 +93,17 @@ namespace StitcherBoy.Project
         {
             _assemblyResolver = assemblyResolver ?? new AssemblyResolver();
             _projectDirectory = Path.GetDirectoryName(path);
-            using (var projectReader = File.OpenText(path))
-            using (var xmlReader = new XmlTextReader(projectReader))
-                Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
+            try
+            {
+                using (var projectReader = File.OpenText(path))
+                using (var xmlReader = new XmlTextReader(projectReader))
+                    Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null)
+            }
+            catch { }
             if (globalProperties != null)
                 _globalProperties = new Dictionary<string, string>(globalProperties);
             else
-                _globalProperties = new Dictionary<string, string> { { "Configuration", Project.GetPropertyValue("Configuration") } };
+                _globalProperties = new Dictionary<string, string> { { "Configuration", Project?.GetPropertyValue("Configuration") } };
             _outputDirectory = outputDirectory ?? Path.GetDirectoryName(TargetPath);
         }
 
@@ -109,6 +113,9 @@ namespace StitcherBoy.Project
         /// <returns></returns>
         private IEnumerable<AssemblyReference> LoadReferences()
         {
+            if (Project == null)
+                yield break;
+
             var references = Project.Items.Where(i => i.ItemType == "Reference").ToArray();
             foreach (var reference in references)
             {
@@ -166,7 +173,7 @@ namespace StitcherBoy.Project
         /// <returns></returns>
         public string GetProperty(string key)
         {
-            var property = Project.Properties.SingleOrDefault(p => p.Name == key);
+            var property = Project?.Properties.SingleOrDefault(p => p.Name == key);
             return property?.EvaluatedValue;
         }
 
