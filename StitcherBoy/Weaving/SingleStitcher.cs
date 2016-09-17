@@ -40,7 +40,7 @@ namespace StitcherBoy.Weaving
         /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
         public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
-            var globalProperties = new Dictionary<string, string> { { "Configuration", configuration ?? "Release" } };
+            var globalProperties = new Dictionary<string, string> { { "Configuration", (configuration ?? "Release").Trim() } };
             var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), globalProperties);
             assemblyPath = assemblyPath ?? project.TargetPath;
             if (assemblyPath == null || !File.Exists(assemblyPath))
