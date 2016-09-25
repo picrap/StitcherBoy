@@ -104,9 +104,9 @@ namespace StitcherBoy.Project
                 using (var xmlReader = new XmlTextReader(projectReader))
                     Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
             }
-            catch
+            catch (Exception e)
             {
-                LoadError?.Invoke(this,new ProjectDefinitionLoadErrorEventArgs());
+                LoadError?.Invoke(this, new ProjectDefinitionLoadErrorEventArgs(e, this));
             }
             if (globalProperties != null)
                 _globalProperties = new Dictionary<string, string>(globalProperties);
