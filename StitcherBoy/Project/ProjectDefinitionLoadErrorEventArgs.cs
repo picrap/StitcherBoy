@@ -13,8 +13,20 @@ namespace StitcherBoy.Project
     /// <seealso cref="System.EventArgs" />
     public class ProjectDefinitionLoadErrorEventArgs : EventArgs
     {
-        private Exception Exception { get; }
-        private ProjectDefinition ProjectDefinition { get; }
+        /// <summary>
+        /// Gets the exception.
+        /// </summary>
+        /// <value>
+        /// The exception.
+        /// </value>
+        public Exception Exception { get; }
+        /// <summary>
+        /// Gets the project definition.
+        /// </summary>
+        /// <value>
+        /// The project definition.
+        /// </value>
+        public ProjectDefinition ProjectDefinition { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDefinitionLoadErrorEventArgs"/> class.
