@@ -25,6 +25,11 @@ namespace StitcherBoy.Weaving
         /// </value>
         public ILogging Logging { get; set; }
 
+        public SingleStitcher()
+        {
+            ProjectDefinition.LoadError += OnProjectDefinitionLoadError;
+        }
+
         /// <summary>
         /// Processes the specified assembly.
         /// </summary>
@@ -106,13 +111,23 @@ namespace StitcherBoy.Weaving
         }
 
         /// <summary>
+        /// Called when [project definition load error].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="ProjectDefinitionLoadErrorEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnProjectDefinitionLoadError(object sender, ProjectDefinitionLoadErrorEventArgs e)
+        {
+        }
+
+
+        /// <summary>
         /// Changes the extension, given a full path, returns a related path with different extension
         /// Right, .NET path manipulation functions are POOR
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="newExtension">The new extension.</param>
         /// <returns></returns>
-        private string ChangeExtension(string path, string newExtension)
+        private static string ChangeExtension(string path, string newExtension)
         {
             var directory = Path.GetDirectoryName(path);
             var fileName = Path.GetFileNameWithoutExtension(path);

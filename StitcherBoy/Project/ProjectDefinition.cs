@@ -83,6 +83,11 @@ namespace StitcherBoy.Project
         public string[] PropertiesKeys => Project?.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
+        /// Occurs when [load error].
+        /// </summary>
+        public static event EventHandler<ProjectDefinitionLoadErrorEventArgs> LoadError;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProjectDefinition" /> class.
         /// </summary>
         /// <param name="path">The path.</param>
@@ -99,7 +104,10 @@ namespace StitcherBoy.Project
                 using (var xmlReader = new XmlTextReader(projectReader))
                     Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
             }
-            catch { }
+            catch
+            {
+                LoadError?.Invoke(this,new ProjectDefinitionLoadErrorEventArgs());
+            }
             if (globalProperties != null)
                 _globalProperties = new Dictionary<string, string>(globalProperties);
             else
