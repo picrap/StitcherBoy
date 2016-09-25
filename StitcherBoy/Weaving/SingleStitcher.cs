@@ -25,6 +25,9 @@ namespace StitcherBoy.Weaving
         /// </value>
         public ILogging Logging { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SingleStitcher"/> class.
+        /// </summary>
         public SingleStitcher()
         {
             ProjectDefinition.LoadError += OnProjectDefinitionLoadError;
