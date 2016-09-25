@@ -83,6 +83,14 @@ namespace StitcherBoy.Project
         public string[] PropertiesKeys => Project?.Properties.Select(p => p.Name).ToArray();
 
         /// <summary>
+        /// Gets or sets the project path.
+        /// </summary>
+        /// <value>
+        /// The project path.
+        /// </value>
+        public string ProjectPath { get; }
+
+        /// <summary>
         /// Occurs when [load error].
         /// </summary>
         public static event EventHandler<ProjectDefinitionLoadErrorEventArgs> LoadError;
@@ -96,6 +104,7 @@ namespace StitcherBoy.Project
         /// <param name="assemblyResolver">The assembly resolver.</param>
         public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null, IAssemblyResolver assemblyResolver = null)
         {
+            ProjectPath = path;
             _assemblyResolver = assemblyResolver ?? new AssemblyResolver();
             _projectDirectory = Path.GetDirectoryName(path);
             try
