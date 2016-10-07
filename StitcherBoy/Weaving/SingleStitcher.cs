@@ -49,7 +49,7 @@ namespace StitcherBoy.Weaving
         public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             var globalProperties = new Dictionary<string, string> { { "Configuration", (configuration ?? "Release").Trim() } };
-            var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), globalProperties);
+            var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), globalProperties, CreateAssemblyResolver());
             assemblyPath = assemblyPath ?? project.TargetPath;
             if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");
@@ -166,5 +166,11 @@ namespace StitcherBoy.Weaving
         /// <param name="context">The context.</param>
         /// <returns></returns>
         protected abstract bool Process(StitcherContext context);
+
+        /// <summary>
+        /// Creates the assembly resolver.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IAssemblyResolver CreateAssemblyResolver() => new AssemblyResolver();
     }
 }

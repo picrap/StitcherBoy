@@ -154,7 +154,7 @@ namespace StitcherBoy.Project
             {
                 var isPrivate = IsPrivate(projectReference) ?? true;
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
-                var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties);
+                var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties, _assemblyResolver);
                 if (referencedProject.Project == null)
                     continue;
                 var targetPath = GetTargetPath(referencedProject, isPrivate);
