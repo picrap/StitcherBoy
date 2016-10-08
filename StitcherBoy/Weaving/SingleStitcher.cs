@@ -10,6 +10,7 @@ namespace StitcherBoy.Weaving
     using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
     using Logging;
+    using Microsoft.Build.Evaluation;
     using Project;
 
     /// <summary>
@@ -49,7 +50,7 @@ namespace StitcherBoy.Weaving
         public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             var globalProperties = new Dictionary<string, string> { { "Configuration", (configuration ?? "Release").Trim() } };
-            var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), globalProperties, CreateAssemblyResolver());
+            var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), null, CreateAssemblyResolver(), new ProjectCollection(globalProperties));
             assemblyPath = assemblyPath ?? project.TargetPath;
             if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");

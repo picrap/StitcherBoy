@@ -17,8 +17,6 @@ namespace StitcherBoy.Project
     /// </summary>
     public class ProjectDefinition : IReferences
     {
-        private readonly IAssemblyResolver _assemblyResolver;
-
         /// <summary>
         /// Gets the build project.
         /// </summary>
@@ -31,6 +29,8 @@ namespace StitcherBoy.Project
         private readonly string _outputDirectory;
 
         private readonly IDictionary<string, string> _globalProperties;
+        private readonly IAssemblyResolver _assemblyResolver;
+        private readonly ProjectCollection _projectCollection;
 
         private IEnumerable<AssemblyReference> _references;
 
@@ -102,25 +102,22 @@ namespace StitcherBoy.Project
         /// <param name="outputDirectory">The output directory.</param>
         /// <param name="globalProperties">The global properties.</param>
         /// <param name="assemblyResolver">The assembly resolver.</param>
-        public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null, IAssemblyResolver assemblyResolver = null)
+        /// <param name="projectCollection">The project collection.</param>
+        public ProjectDefinition(string path, string outputDirectory = null, IDictionary<string, string> globalProperties = null, IAssemblyResolver assemblyResolver = null, ProjectCollection projectCollection = null)
         {
             ProjectPath = path;
             _assemblyResolver = assemblyResolver ?? new AssemblyResolver();
+            _projectCollection = projectCollection;
             _projectDirectory = Path.GetDirectoryName(path);
+            _globalProperties = globalProperties;
             try
             {
-                using (var projectReader = File.OpenText(path))
-                using (var xmlReader = new XmlTextReader(projectReader))
-                    Project = new Project(xmlReader, globalProperties ?? new Dictionary<string, string>(), null);
+                Project = new Project(path, globalProperties, null, projectCollection);
             }
             catch (Exception e)
             {
                 LoadError?.Invoke(this, new ProjectDefinitionLoadErrorEventArgs(e, this));
             }
-            if (globalProperties != null)
-                _globalProperties = new Dictionary<string, string>(globalProperties);
-            else
-                _globalProperties = new Dictionary<string, string> { { "Configuration", Project?.GetPropertyValue("Configuration") } };
             _outputDirectory = outputDirectory ?? Path.GetDirectoryName(TargetPath);
         }
 
@@ -154,7 +151,7 @@ namespace StitcherBoy.Project
             {
                 var isPrivate = IsPrivate(projectReference) ?? true;
                 var projectPath = Path.Combine(_projectDirectory, projectReference.EvaluatedInclude);
-                var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties, _assemblyResolver);
+                var referencedProject = new ProjectDefinition(projectPath, _outputDirectory, _globalProperties, _assemblyResolver, _projectCollection);
                 if (referencedProject.Project == null)
                     continue;
                 var targetPath = GetTargetPath(referencedProject, isPrivate);
