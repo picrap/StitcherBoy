@@ -56,6 +56,13 @@ namespace StitcherBoy.Weaving
         /// </value>
         public string Configuration { get; set; }
         /// <summary>
+        /// Gets or sets the platform.
+        /// </summary>
+        /// <value>
+        /// The platform.
+        /// </value>
+        public string Platform { get; set; }
+        /// <summary>
         /// Gets or sets the build identifier.
         /// </summary>
         /// <value>

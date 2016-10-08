@@ -107,7 +107,7 @@ namespace StitcherBoy.Project
         {
             ProjectPath = path;
             _assemblyResolver = assemblyResolver ?? new AssemblyResolver();
-            _projectCollection = projectCollection;
+            _projectCollection = projectCollection ?? new ProjectCollection();
             _projectDirectory = Path.GetDirectoryName(path);
             _globalProperties = globalProperties;
             try

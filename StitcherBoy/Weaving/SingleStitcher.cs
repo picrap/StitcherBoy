@@ -40,16 +40,21 @@ namespace StitcherBoy.Weaving
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="projectPath">The project path.</param>
         /// <param name="solutionPath">The solution path.</param>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="platform">The platform.</param>
         /// <param name="buildID">The build identifier.</param>
         /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Could not find assembly to stitch</exception>
         /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        /// <exception cref="System.InvalidOperationException">Could not find assembly to stitch</exception>
+        public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, string platform, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
-            var globalProperties = new Dictionary<string, string> { { "Configuration", (configuration ?? "Release").Trim() } };
+            var globalProperties = new Dictionary<string, string>
+            {
+                { "Configuration", (configuration ?? "Release").Trim() },
+                { "Platform", (platform ?? "AnyCPU").Trim() }
+            };
             var project = new ProjectDefinition(projectPath, Path.GetDirectoryName(assemblyPath), null, CreateAssemblyResolver(), new ProjectCollection(globalProperties));
             assemblyPath = assemblyPath ?? project.TargetPath;
             if (assemblyPath == null || !File.Exists(assemblyPath))
@@ -79,6 +84,7 @@ namespace StitcherBoy.Weaving
                             SolutionPath = solutionPath,
                             TaskAssemblyPath = entryAssemblyPath,
                             Configuration = configuration,
+                            Platform = platform,
                         };
                         ok = Process(context);
                     }
