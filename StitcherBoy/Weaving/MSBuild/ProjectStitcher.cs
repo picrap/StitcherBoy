@@ -41,11 +41,12 @@ namespace StitcherBoy.Weaving.MSBuild
         /// <param name="parameters">The parameters.</param>
         /// <param name="buildID">The build identifier.</param>
         /// <param name="buildTime">The build time.</param>
+        /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime)
+        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             return Process(parameters["AssemblyPath"], parameters["ProjectPath"], parameters["SolutionPath"], parameters["Configuration"], parameters["Platform"],
-                buildID, buildTime, parameters["EntryAssemblyPath"]);
+                buildID, buildTime, entryAssemblyPath);
         }
 
         /// <summary>

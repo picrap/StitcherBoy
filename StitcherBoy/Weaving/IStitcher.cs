@@ -8,13 +8,29 @@ namespace StitcherBoy.Weaving
 {
     using System;
     using System.Collections.Specialized;
-    using System.Security.Cryptography.X509Certificates;
     using Logging;
 
-    internal interface IStitcher
+    /// <summary>
+    /// Stitcher interface
+    /// </summary>
+    public interface IStitcher
     {
+        /// <summary>
+        /// Gets or sets the logging.
+        /// </summary>
+        /// <value>
+        /// The logging.
+        /// </value>
         ILogging Logging { get; set; }
 
-        bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime);
+        /// <summary>
+        /// Processes the assembly based on given parameters.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="buildID">The build identifier.</param>
+        /// <param name="buildTime">The build time.</param>
+        /// <param name="entryAssemblyPath">The entry assembly path.</param>
+        /// <returns></returns>
+        bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath);
     }
 }

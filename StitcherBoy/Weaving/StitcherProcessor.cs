@@ -1,6 +1,7 @@
 // Stitcher Boy - a small library to help building post-build taks
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
+
 namespace StitcherBoy.Weaving
 {
     using System;
@@ -35,29 +36,16 @@ namespace StitcherBoy.Weaving
         /// <summary>
         /// Processes the specified assembly.
         /// </summary>
-        /// <param name="assemblyPath">The assembly path.</param>
-        /// <param name="projectPath">The project path.</param>
-        /// <param name="solutionPath">The solution path.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="platform">The platform.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <param name="buildID">The build identifier.</param>
         /// <param name="buildTime">The build time.</param>
-        /// <param name="entryAssemblyPath">The entry assembly path.</param>
+        /// <param name="entryAsemblyPath">The entry asembly path.</param>
         /// <returns></returns>
-        public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, string platform, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAsemblyPath)
         {
             var instance = (IStitcher)Activator.CreateInstance(_type);
             instance.Logging = Logging;
-            var parameters = new StringDictionary
-            {
-                {"AssemblyPath", assemblyPath},
-                {"ProjectPath", projectPath},
-                {"SolutionPath", solutionPath},
-                {"Configuration", configuration},
-                {"Platform", platform},
-                {"EntryAssemblyPath", entryAssemblyPath},
-            };
-            return instance.Process(parameters, buildID, buildTime);
+            return instance.Process(parameters, buildID, buildTime, entryAsemblyPath);
         }
     }
 }

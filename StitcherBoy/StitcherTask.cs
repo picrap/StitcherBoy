@@ -3,12 +3,14 @@
 // MIT License - http://opensource.org/licenses/MIT
 
 using System;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Build.Framework;
 using StitcherBoy.Logging;
 using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
-using StitcherBoy.Weaving.MSBuild;
 
 // ReSharper disable once CheckNamespace
 /// <summary>
@@ -16,7 +18,7 @@ using StitcherBoy.Weaving.MSBuild;
 /// </summary>
 /// <typeparam name="TSingleStitcher">The type of the single stitcher.</typeparam>
 public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTask<TSingleStitcher>>
-    where TSingleStitcher : SingleStitcher
+    where TSingleStitcher : IStitcher
 {
     /// <summary>
     /// Gets or sets the project path (this is injected in the task).
@@ -24,7 +26,6 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     /// <value>
     /// The project path.
     /// </value>
-    [Required]
     public string ProjectPath { get; set; }
 
     /// <summary>
@@ -68,12 +69,16 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     {
         try
         {
+            var parameters = new StringDictionary();
+            foreach (var propertyInfo in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy).Where(p => p.PropertyType == typeof(string)))
+                parameters[propertyInfo.Name] = (string)propertyInfo.GetValue(this);
+
             // when run from a .debugTask exe, there is no need to wrap in a separate AppDomain
             if (fromExe)
             {
-                var singleStitcher = (SingleStitcher)Activator.CreateInstance(typeof(TSingleStitcher));
+                var singleStitcher = (IStitcher)Activator.CreateInstance(typeof(TSingleStitcher));
                 singleStitcher.Logging = Logging;
-                return singleStitcher.Process(AssemblyPath, ProjectPath, SolutionPath, Configuration, Platform, BuildID, BuildTime, GetType().Assembly.Location);
+                return singleStitcher.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
             }
 
             // the weaver runs isolated, since it it is going to load other modules
@@ -87,7 +92,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
                 sticherProcessor.Logging = new RemoteLogging(Logging);
                 sticherProcessor.Load(type.FullName);
-                return sticherProcessor.Process(AssemblyPath, ProjectPath, SolutionPath, Configuration, Platform, BuildID, BuildTime, GetType().Assembly.Location);
+                return sticherProcessor.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
             }
         }
         catch (Exception e)
