@@ -37,6 +37,22 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     public string AssemblyPath { set; get; }
 
     /// <summary>
+    /// Gets or sets the assembly snk path.
+    /// </summary>
+    /// <value>
+    /// The assembly snk file path.
+    /// </value>
+    public string AssemblyOriginatorKeyFile { set; get; }
+
+    /// <summary>
+    /// Indicates if the assembly has to be signedd.
+    /// </summary>
+    /// <value>
+    /// The sign assembly.
+    /// </value>
+    public string SignAssembly { set; get; }
+
+    /// <summary>
     /// Gets or sets the solution path (also injected by task).
     /// </summary>
     /// <value>
