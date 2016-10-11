@@ -2,7 +2,7 @@
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
 
-namespace StitcherBoy.Weaving
+namespace StitcherBoy.Weaving.MSBuild
 {
     using System;
     using dnlib.DotNet;
@@ -11,7 +11,7 @@ namespace StitcherBoy.Weaving
     /// <summary>
     /// Arguments to stitcher
     /// </summary>
-    public class StitcherContext
+    public class ProjectStitcherContext
     {
         /// <summary>
         /// Gets or sets the module.

@@ -1,12 +1,11 @@
-﻿#region Arx One
-// Stitcher Boy - a small library to help building post-build taks
+﻿// Stitcher Boy - a small library to help building post-build taks
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
-#endregion
 
-namespace StitcherBoy.Project
+namespace StitcherBoy.Weaving.MSBuild.Project
 {
     using System;
+
     /// <summary>
     /// Event args for project load error
     /// </summary>

@@ -2,7 +2,7 @@
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
 
-namespace StitcherBoy.Utility
+namespace StitcherBoy.Weaving.MSBuild.Extensions
 {
     using System;
     using Microsoft.Build.Framework;

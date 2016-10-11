@@ -1,7 +1,7 @@
 ﻿// Stitcher Boy - a small library to help building post-build taks
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
-namespace StitcherBoy.Weaving
+namespace StitcherBoy.Weaving.MSBuild
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace StitcherBoy.Weaving
     /// <summary>
     /// Single stitcher base class
     /// </summary>
-    public abstract class SingleStitcher : IStitcher
+    public abstract class ProjectStitcher : IStitcher
     {
         /// <summary>
         /// Gets or sets the logging.
@@ -30,7 +30,7 @@ namespace StitcherBoy.Weaving
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleStitcher"/> class.
         /// </summary>
-        public SingleStitcher()
+        public ProjectStitcher()
         {
             ProjectDefinition.LoadError += OnProjectDefinitionLoadError;
         }
@@ -87,7 +87,7 @@ namespace StitcherBoy.Weaving
                     bool ok;
                     try
                     {
-                        var context = new StitcherContext
+                        var context = new ProjectStitcherContext
                         {
                             Module = module,
                             AssemblyPath = assemblyPath,
@@ -186,7 +186,7 @@ namespace StitcherBoy.Weaving
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected abstract bool Process(StitcherContext context);
+        protected abstract bool Process(ProjectStitcherContext context);
 
         /// <summary>
         /// Creates the assembly resolver.

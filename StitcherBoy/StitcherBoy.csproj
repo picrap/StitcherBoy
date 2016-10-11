@@ -62,26 +62,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\RemoteLogging.cs" />
-    <Compile Include="Project\ProjectDefinitionLoadErrorEventArgs.cs" />
-    <Compile Include="Utility\BuildEngineExtensions.cs" />
+    <Compile Include="Weaving\Compatibility.cs" />
+    <Compile Include="Weaving\MSBuild\Project\ProjectDefinitionLoadErrorEventArgs.cs" />
+    <Compile Include="Weaving\MSBuild\Extensions\BuildEngineExtensions.cs" />
     <Compile Include="Weaving\IStitcher.cs" />
-    <Compile Include="Weaving\StitcherContext.cs" />
+    <Compile Include="Weaving\MSBuild\ProjectStitcherContext.cs" />
     <Compile Include="Weaving\StitcherProcessor.cs" />
     <Compile Include="StitcherTask.cs" />
     <Compile Include="Logging\ConsoleLogging.cs" />
     <Compile Include="Logging\ILogging.cs" />
     <Compile Include="Logging\TaskLogging.cs" />
-    <Compile Include="Project\AssemblyReference.cs" />
-    <Compile Include="Project\IReferences.cs" />
-    <Compile Include="Project\ProjectDefinition.cs" />
-    <Compile Include="Project\ProjectDefinitionExtensions.cs" />
+    <Compile Include="Weaving\MSBuild\Project\AssemblyReference.cs" />
+    <Compile Include="Weaving\MSBuild\Project\IReferences.cs" />
+    <Compile Include="Weaving\MSBuild\Project\ProjectDefinition.cs" />
+    <Compile Include="Weaving\MSBuild\Project\ProjectDefinitionExtensions.cs" />
     <Compile Include="Properties\ProductInfo.cs" />
     <Compile Include="Utility\ApplicationTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\AppDomainExtensions.cs" />
     <Compile Include="Utility\DisposableAppDomain.cs" />
     <Compile Include="Utility\EnumerableExtensions.cs" />
-    <Compile Include="Weaving\SingleStitcher.cs" />
+    <Compile Include="Weaving\MSBuild\ProjectStitcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\StitcherBoy.snk" />

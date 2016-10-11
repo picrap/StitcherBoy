@@ -1,14 +1,13 @@
 ﻿// Stitcher Boy - a small library to help building post-build taks
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
-namespace StitcherBoy.Project
+namespace StitcherBoy.Weaving.MSBuild.Project
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Xml;
     using dnlib.DotNet;
     using Microsoft.Build.Evaluation;
 

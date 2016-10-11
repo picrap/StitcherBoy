@@ -4,8 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using dnlib.DotNet;
-    using StitcherBoy.Project;
     using StitcherBoy.Weaving;
+    using StitcherBoy.Weaving.MSBuild;
+    using StitcherBoy.Weaving.MSBuild.Project;
 
     public class StringStitcher : SingleStitcher
     {

@@ -8,6 +8,7 @@ using Microsoft.Build.Framework;
 using StitcherBoy.Logging;
 using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
+using StitcherBoy.Weaving.MSBuild;
 
 // ReSharper disable once CheckNamespace
 /// <summary>

@@ -12,6 +12,7 @@ namespace StitcherBoy.Utility
     using System.Reflection;
     using Logging;
     using Microsoft.Build.Utilities;
+    using Weaving.MSBuild.Extensions;
 
     /// <summary>
     /// Allows to run the task as task or application (to debug)
