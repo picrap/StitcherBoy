@@ -5,6 +5,7 @@ namespace StitcherBoy.Weaving
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Pdb;
@@ -16,7 +17,7 @@ namespace StitcherBoy.Weaving
     /// <summary>
     /// Single stitcher base class
     /// </summary>
-    public abstract class SingleStitcher
+    public abstract class SingleStitcher : IStitcher
     {
         /// <summary>
         /// Gets or sets the logging.
@@ -32,6 +33,19 @@ namespace StitcherBoy.Weaving
         public SingleStitcher()
         {
             ProjectDefinition.LoadError += OnProjectDefinitionLoadError;
+        }
+
+        /// <summary>
+        /// Processes the specified assembly.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="buildID">The build identifier.</param>
+        /// <param name="buildTime">The build time.</param>
+        /// <returns></returns>
+        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime)
+        {
+            return Process(parameters["AssemblyPath"], parameters["ProjectPath"], parameters["SolutionPath"], parameters["Configuration"], parameters["Platform"],
+                buildID, buildTime, parameters["EntryAssemblyPath"]);
         }
 
         /// <summary>

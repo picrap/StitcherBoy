@@ -4,6 +4,7 @@
 namespace StitcherBoy.Weaving
 {
     using System;
+    using System.Collections.Specialized;
     using System.Linq;
     using Logging;
 
@@ -45,9 +46,18 @@ namespace StitcherBoy.Weaving
         /// <returns></returns>
         public bool Process(string assemblyPath, string projectPath, string solutionPath, string configuration, string platform, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
-            var instance = (SingleStitcher)Activator.CreateInstance(_type);
+            var instance = (IStitcher)Activator.CreateInstance(_type);
             instance.Logging = Logging;
-            return instance.Process(assemblyPath, projectPath, solutionPath, configuration, platform, buildID, buildTime, entryAssemblyPath);
+            var parameters = new StringDictionary
+            {
+                {"AssemblyPath", assemblyPath},
+                {"ProjectPath", projectPath},
+                {"SolutionPath", solutionPath},
+                {"Configuration", configuration},
+                {"Platform", platform},
+                {"EntryAssemblyPath", entryAssemblyPath},
+            };
+            return instance.Process(parameters, buildID, buildTime);
         }
     }
 }

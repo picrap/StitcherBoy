@@ -64,6 +64,7 @@
     <Compile Include="Logging\RemoteLogging.cs" />
     <Compile Include="Project\ProjectDefinitionLoadErrorEventArgs.cs" />
     <Compile Include="Utility\BuildEngineExtensions.cs" />
+    <Compile Include="Weaving\IStitcher.cs" />
     <Compile Include="Weaving\StitcherContext.cs" />
     <Compile Include="Weaving\StitcherProcessor.cs" />
     <Compile Include="StitcherTask.cs" />
