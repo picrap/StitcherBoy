@@ -62,8 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\RemoteLogging.cs" />
+    <Compile Include="Weaving\Build\AssemblyDependency.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcher.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcherContext.cs" />
+    <Compile Include="Weaving\Build\AssemblyStitcherResolver.cs" />
     <Compile Include="Weaving\Compatibility.cs" />
     <Compile Include="Weaving\MSBuild\Project\ProjectDefinitionLoadErrorEventArgs.cs" />
     <Compile Include="Weaving\MSBuild\Extensions\BuildEngineExtensions.cs" />

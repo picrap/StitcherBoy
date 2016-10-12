@@ -37,6 +37,22 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     public string AssemblyPath { set; get; }
 
     /// <summary>
+    /// Gets or sets the reference path.
+    /// </summary>
+    /// <value>
+    /// The reference path.
+    /// </value>
+    public string ReferencePath { set; get; }
+
+    /// <summary>
+    /// Gets or sets the reference copy local paths.
+    /// </summary>
+    /// <value>
+    /// The reference copy local paths.
+    /// </value>
+    public string ReferenceCopyLocalPaths { set; get; }
+
+    /// <summary>
     /// Gets or sets the assembly snk path.
     /// </summary>
     /// <value>

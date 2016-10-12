@@ -23,6 +23,14 @@ namespace StitcherBoy.Weaving.Build
         public ModuleDefMD Module { get; set; }
 
         /// <summary>
+        /// Gets or sets the dependencies.
+        /// </summary>
+        /// <value>
+        /// The dependencies.
+        /// </value>
+        public AssemblyDependency[] Dependencies { get; set; }
+
+        /// <summary>
         /// Gets or sets the assembly path.
         /// </summary>
         /// <value>

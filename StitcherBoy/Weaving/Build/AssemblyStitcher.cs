@@ -10,12 +10,11 @@ namespace StitcherBoy.Weaving.Build
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.IO;
+    using System.Linq;
     using dnlib.DotNet;
     using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
     using Logging;
-    using Microsoft.Build.Evaluation;
-    using MSBuild.Project;
 
     /// <summary>
     /// Assembly stitcher
@@ -23,6 +22,12 @@ namespace StitcherBoy.Weaving.Build
     /// <seealso cref="StitcherBoy.Weaving.IStitcher" />
     public abstract class AssemblyStitcher : IStitcher
     {
+        /// <summary>
+        /// Gets or sets the logging.
+        /// </summary>
+        /// <value>
+        /// The logging.
+        /// </value>
         public ILogging Logging { get; set; }
 
         /// <summary>
@@ -37,6 +42,8 @@ namespace StitcherBoy.Weaving.Build
         {
             var assemblyPath = parameters["AssemblyPath"];
             var literalSignAssembly = parameters["SignAssembly"];
+            var referencePath = parameters["ReferencePath"];
+            var referenceCopyLocalPaths = parameters["ReferenceCopyLocalPaths"];
             bool signAssembly;
             bool.TryParse(literalSignAssembly, out signAssembly);
             var assemblyOriginatorKeyFile = signAssembly ? parameters["AssemblyOriginatorKeyFile"] : null;
@@ -59,6 +66,7 @@ namespace StitcherBoy.Weaving.Build
                         var context = new AssemblyStitcherContext
                         {
                             Module = module,
+                            Dependencies = EnumerateDependencies(referencePath, referenceCopyLocalPaths).ToArray(),
                             AssemblyPath = assemblyPath,
                             BuildID = buildID,
                             BuildTime = buildTime,
@@ -96,6 +104,23 @@ namespace StitcherBoy.Weaving.Build
                 File.Delete(tempAssemblyPath);
             }
             return success;
+        }
+
+        private static IEnumerable<AssemblyDependency> EnumerateDependencies(string referencePath, string referenceCopyLocalPaths)
+        {
+            var referenceCopyLocalPathsList = GetList(referenceCopyLocalPaths).ToList();
+            var referencePathList = GetList(referencePath).Where(s => !referenceCopyLocalPathsList.Any(r => string.Equals(r, s, StringComparison.InvariantCultureIgnoreCase))).ToList();
+            return referenceCopyLocalPathsList.Select(p => new AssemblyDependency(p, true)).Concat(referencePathList.Select(p => new AssemblyDependency(p, false)));
+        }
+
+        private static IEnumerable<string> GetList(string paths)
+        {
+            foreach (var path in paths.Split(';'))
+            {
+                var extension = Path.GetExtension(path);
+                if (string.Equals(extension, ".exe", StringComparison.InvariantCultureIgnoreCase) || string.Equals(extension, ".dll", StringComparison.InvariantCultureIgnoreCase))
+                    yield return path;
+            }
         }
 
         /// <summary>

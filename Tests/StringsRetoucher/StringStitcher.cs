@@ -5,10 +5,11 @@
     using System.Linq;
     using dnlib.DotNet;
     using StitcherBoy.Weaving;
+    using StitcherBoy.Weaving.Build;
     using StitcherBoy.Weaving.MSBuild;
     using StitcherBoy.Weaving.MSBuild.Project;
 
-    public class StringStitcher : SingleStitcher
+    public class StringStitcher : AssemblyStitcher
     {
         public string Configuration { get; set; }
 
@@ -17,7 +18,7 @@
             Console.WriteLine(r);
         }
 
-        protected override bool Process(StitcherContext context)
+        protected  bool Process(StitcherContext context)
         {
             //foreach (var type in context.Module.Types)
             //{
@@ -41,6 +42,11 @@
             F(r);
             var a = AppDomain.CurrentDomain;
             var n = a.FriendlyName;
+            return false;
+        }
+
+        protected override bool Process(AssemblyStitcherContext context)
+        {
             return false;
         }
     }
