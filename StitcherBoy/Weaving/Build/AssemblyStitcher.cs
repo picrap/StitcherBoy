@@ -72,6 +72,7 @@ namespace StitcherBoy.Weaving.Build
                             BuildTime = buildTime,
                             TaskAssemblyPath = entryAssemblyPath,
                         };
+                        context.AssemblyResolver = new AssemblyStitcherResolver(context.Dependencies.Select(d => d.Path));
                         ok = Process(context);
                     }
                     catch (Exception e)
@@ -153,11 +154,5 @@ namespace StitcherBoy.Weaving.Build
         /// <param name="context">The context.</param>
         /// <returns></returns>
         protected abstract bool Process(AssemblyStitcherContext context);
-
-        /// <summary>
-        /// Creates the assembly resolver.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IAssemblyResolver CreateAssemblyResolver() => new AssemblyResolver();
     }
 }

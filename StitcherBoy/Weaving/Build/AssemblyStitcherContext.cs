@@ -15,6 +15,14 @@ namespace StitcherBoy.Weaving.Build
     public class AssemblyStitcherContext
     {
         /// <summary>
+        /// Gets or sets the assembly resolver.
+        /// </summary>
+        /// <value>
+        /// The assembly resolver.
+        /// </value>
+        public IAssemblyResolver AssemblyResolver { get; set; }
+
+        /// <summary>
         /// Gets or sets the module.
         /// </summary>
         /// <value>
