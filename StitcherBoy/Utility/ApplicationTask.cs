@@ -29,6 +29,34 @@ namespace StitcherBoy.Utility
         /// </value>
         protected ILogging Logging { get; private set; }
 
+        private bool? _hasBuildEngine;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has build engine.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has build engine; otherwise, <c>false</c>.
+        /// </value>
+        protected bool HasBuildEngine
+        {
+            get
+            {
+                if (!_hasBuildEngine.HasValue)
+                {
+                    try
+                    {
+                        var o = BuildEngine4.GetType();
+                        _hasBuildEngine = true;
+                    }
+                    catch
+                    {
+                        _hasBuildEngine = false;
+                    }
+                }
+                return _hasBuildEngine.Value;
+            }
+        }
+
         private Guid? _buildID;
 
         /// <summary>
@@ -42,7 +70,7 @@ namespace StitcherBoy.Utility
             get
             {
                 if (!_buildID.HasValue)
-                    _buildID = BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildID", Guid.NewGuid);
+                    _buildID = HasBuildEngine ? BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildID", Guid.NewGuid) : Guid.Empty;
                 return _buildID.Value;
             }
             set { _buildID = value; }
@@ -74,7 +102,7 @@ namespace StitcherBoy.Utility
             get
             {
                 if (!_buildDate.HasValue)
-                    _buildDate = BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildTime", () => DateTime.UtcNow);
+                    _buildDate = HasBuildEngine ? BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildTime", () => DateTime.UtcNow) : DateTime.UtcNow;
                 return _buildDate.Value;
             }
             set { _buildDate = value; }
