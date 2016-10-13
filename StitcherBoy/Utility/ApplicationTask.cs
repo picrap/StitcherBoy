@@ -11,6 +11,7 @@ namespace StitcherBoy.Utility
     using System.Linq;
     using System.Reflection;
     using Logging;
+    using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
     using Weaving.MSBuild.Extensions;
 
@@ -29,6 +30,12 @@ namespace StitcherBoy.Utility
         /// </value>
         protected ILogging Logging { get; private set; }
 
+        /// <summary>
+        /// Gets the instance of the <see cref="T:Microsoft.Build.Framework.IBuildEngine4" /> object used by the task.
+        /// This override because the property <see cref="BuildEngine4"/> is not implemented on xbuild
+        /// </summary>
+        protected new IBuildEngine4 BuildEngine4 => BuildEngine as IBuildEngine4;
+
         private bool? _hasBuildEngine;
 
         /// <summary>
@@ -45,8 +52,7 @@ namespace StitcherBoy.Utility
                 {
                     try
                     {
-                        var o = BuildEngine4.GetType();
-                        _hasBuildEngine = true;
+                        _hasBuildEngine = BuildEngine4 != null;
                     }
                     catch
                     {
