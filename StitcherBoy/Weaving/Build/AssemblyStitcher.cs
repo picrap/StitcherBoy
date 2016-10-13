@@ -44,8 +44,9 @@ namespace StitcherBoy.Weaving.Build
             var literalSignAssembly = parameters["SignAssembly"];
             var referencePath = parameters["ReferencePath"];
             var referenceCopyLocalPaths = parameters["ReferenceCopyLocalPaths"];
-            bool signAssembly;
-            bool.TryParse(literalSignAssembly, out signAssembly);
+            bool signAssembly = false;
+            if (literalSignAssembly != null)
+                bool.TryParse(literalSignAssembly, out signAssembly);
             var assemblyOriginatorKeyFile = signAssembly ? parameters["AssemblyOriginatorKeyFile"] : null;
             if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");
@@ -116,11 +117,15 @@ namespace StitcherBoy.Weaving.Build
 
         private static IEnumerable<string> GetList(string paths)
         {
-            foreach (var path in paths.Split(';'))
+            if (paths != null)
             {
-                var extension = Path.GetExtension(path);
-                if (string.Equals(extension, ".exe", StringComparison.InvariantCultureIgnoreCase) || string.Equals(extension, ".dll", StringComparison.InvariantCultureIgnoreCase))
-                    yield return path;
+                foreach (var path in paths.Split(';'))
+                {
+                    var extension = Path.GetExtension(path);
+                    if (string.Equals(extension, ".exe", StringComparison.InvariantCultureIgnoreCase) ||
+                        string.Equals(extension, ".dll", StringComparison.InvariantCultureIgnoreCase))
+                        yield return path;
+                }
             }
         }
 
