@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\RemoteLogging.cs" />
+    <Compile Include="Reflection\TypeRelocator.cs" />
     <Compile Include="Weaving\Build\AssemblyDependency.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcher.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcherContext.cs" />
