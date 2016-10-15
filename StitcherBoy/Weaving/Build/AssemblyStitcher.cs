@@ -12,9 +12,9 @@ namespace StitcherBoy.Weaving.Build
     using System.IO;
     using System.Linq;
     using dnlib.DotNet;
-    using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
     using Logging;
+    using Reflection;
 
     /// <summary>
     /// Assembly stitcher
@@ -38,6 +38,7 @@ namespace StitcherBoy.Weaving.Build
         /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
         public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             var assemblyPath = parameters["AssemblyPath"];
@@ -50,62 +51,46 @@ namespace StitcherBoy.Weaving.Build
             var assemblyOriginatorKeyFile = signAssembly ? parameters["AssemblyOriginatorKeyFile"] : null;
             if (assemblyPath == null || !File.Exists(assemblyPath))
                 throw new InvalidOperationException("Could not find assembly to stitch");
-            var pdbExtension = ".pdb";
-            var pdbPath = ChangeExtension(assemblyPath, pdbExtension);
+
             bool success = true;
-            var tempAssemblyPath = assemblyPath + ".2";
-            File.Copy(assemblyPath, tempAssemblyPath, true);
-            try
+            using (var moduleHandler = LoadModule(assemblyPath))
             {
-                using (var module = ModuleDefMD.Load(tempAssemblyPath))
+                bool ok;
+                try
                 {
-                    if (File.Exists(pdbPath))
-                        module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
-                    bool ok;
-                    try
+                    var context = new AssemblyStitcherContext
                     {
-                        var context = new AssemblyStitcherContext
-                        {
-                            Module = module,
-                            Dependencies = EnumerateDependencies(referencePath, referenceCopyLocalPaths).ToArray(),
-                            AssemblyPath = assemblyPath,
-                            BuildID = buildID,
-                            BuildTime = buildTime,
-                            TaskAssemblyPath = entryAssemblyPath,
-                        };
-                        context.AssemblyResolver = new AssemblyStitcherResolver(context.Dependencies.Select(d => d.Path));
-                        ok = Process(context);
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.WriteError("Uncaught exception: {0}", e.ToString());
-                        ok = false;
-                        success = false;
-                    }
-                    if (ok)
-                    {
-                        if (module.IsILOnly)
-                        {
-                            var moduleWriterOptions = new ModuleWriterOptions(module);
-                            moduleWriterOptions.WritePdb = true;
-                            moduleWriterOptions.PdbFileName = pdbPath;
-                            module.Write(assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, moduleWriterOptions));
-                        }
-                        else
-                        {
-                            var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
-                            nativeModuleWriterOptions.WritePdb = true;
-                            nativeModuleWriterOptions.PdbFileName = pdbPath;
-                            module.NativeWrite(assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, nativeModuleWriterOptions));
-                        }
-                    }
+                        Module = moduleHandler?.Module,
+                        Dependencies = EnumerateDependencies(referencePath, referenceCopyLocalPaths).ToArray(),
+                        AssemblyPath = assemblyPath,
+                        BuildID = buildID,
+                        BuildTime = buildTime,
+                        TaskAssemblyPath = entryAssemblyPath,
+                    };
+                    context.AssemblyResolver = new AssemblyStitcherResolver(context.Dependencies.Select(d => d.Path));
+                    ok = Process(context);
                 }
-            }
-            finally
-            {
-                File.Delete(tempAssemblyPath);
+                catch (Exception e)
+                {
+                    Logging.WriteError("Uncaught exception: {0}", e.ToString());
+                    ok = false;
+                    success = false;
+                }
+                if (ok)
+                    moduleHandler?.Write(assemblyOriginatorKeyFile);
             }
             return success;
+        }
+
+        /// <summary>
+        /// Loads the module.
+        /// This can be overriden to return null and avoid loading target module
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <returns></returns>
+        protected virtual ModuleManager LoadModule(string assemblyPath)
+        {
+            return new ModuleManager(assemblyPath, true, true);
         }
 
         private static IEnumerable<AssemblyDependency> EnumerateDependencies(string referencePath, string referenceCopyLocalPaths)
@@ -127,20 +112,6 @@ namespace StitcherBoy.Weaving.Build
                         yield return path;
                 }
             }
-        }
-
-        /// <summary>
-        /// Changes the extension, given a full path, returns a related path with different extension
-        /// Right, .NET path manipulation functions are POOR
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="newExtension">The new extension.</param>
-        /// <returns></returns>
-        private static string ChangeExtension(string path, string newExtension)
-        {
-            var directory = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileNameWithoutExtension(path);
-            return Path.Combine(directory, fileName + newExtension);
         }
 
         private static TOptions SetWriterOptions<TOptions>(string snkPath, TOptions options)
