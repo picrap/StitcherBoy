@@ -61,6 +61,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlobberHelper.cs" />
     <Compile Include="Logging\RemoteLogging.cs" />
     <Compile Include="Reflection\ModuleManager.cs" />
     <Compile Include="Reflection\TypeRelocator.cs" />
