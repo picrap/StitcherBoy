@@ -10,6 +10,7 @@ namespace StitcherBoy.Utility
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using Logging;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
@@ -221,7 +222,7 @@ namespace StitcherBoy.Utility
         protected static int Run(ApplicationTask<TActualProgram> instance, string[] args)
         {
             instance.Logging = new ConsoleLogging();
-            foreach (var arg in args)
+            foreach (var arg in LoadArgs(args))
             {
                 var argument = GetArgument(arg);
                 if (argument != null)
@@ -231,6 +232,60 @@ namespace StitcherBoy.Utility
                 }
             }
             return instance.Run(true) ? 0 : 1;
+        }
+
+        /// <summary>
+        /// Loads the arguments.
+        /// If there is only one argument and its name starts with "@", it contains arguments itself
+        /// If a + is after the @, then the first line contains a directory (and yes, this is convenient for debugging)
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns></returns>
+        private static IList<string> LoadArgs(string[] args)
+        {
+            if (args.Length != 1)
+                return args;
+
+            var arg = args[0];
+            if (!PopPrefix(ref arg, "@"))
+                return args;
+
+            var setDirectory = PopPrefix(ref arg, "+");
+
+            using (var fileStream = File.OpenText(args[0].Substring(1)))
+            {
+                if (setDirectory)
+                {
+                    var cwd = fileStream.ReadLine();
+                    Directory.SetCurrentDirectory(cwd);
+                }
+                var lines = new List<string>();
+                for (;;)
+                {
+                    var line = fileStream.ReadLine();
+                    if (line == null)
+                        break;
+                    if (line == "")
+                        continue;
+                    lines.AddRange(line.SplitArguments());
+                }
+                return lines;
+            }
+        }
+
+        /// <summary>
+        /// If the given string has the requested prefix, returns true and removed the prefix from the string
+        /// </summary>
+        /// <param name="a">a.</param>
+        /// <param name="prefix">The prefix.</param>
+        /// <returns></returns>
+        private static bool PopPrefix(ref string a, string prefix)
+        {
+            if (!a.StartsWith(prefix))
+                return false;
+
+            a = a.Substring(prefix.Length);
+            return true;
         }
     }
 }

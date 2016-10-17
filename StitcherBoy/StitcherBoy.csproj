@@ -66,6 +66,7 @@
     <Compile Include="Reflection\ModuleManager.cs" />
     <Compile Include="Reflection\TypeRelocator.cs" />
     <Compile Include="Utility\PathEx.cs" />
+    <Compile Include="Utility\StringExtensions.cs" />
     <Compile Include="Weaving\Build\AssemblyDependency.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcher.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcherContext.cs" />
