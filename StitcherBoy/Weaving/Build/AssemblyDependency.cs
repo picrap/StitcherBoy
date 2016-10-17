@@ -6,6 +6,7 @@
 
 namespace StitcherBoy.Weaving.Build
 {
+    using System;
     using System.Diagnostics;
     using dnlib.DotNet;
 
@@ -39,6 +40,7 @@ namespace StitcherBoy.Weaving.Build
         /// <value>
         /// The module.
         /// </value>
+        [Obsolete("Use only if you are aware of all possible failures. Otherwise use ModuleManager.")]
         public ModuleDef Module
         {
             get

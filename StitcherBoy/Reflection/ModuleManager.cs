@@ -39,18 +39,30 @@ namespace StitcherBoy.Reflection
         /// <param name="assemblyPath">The path.</param>
         /// <param name="usePdb">if set to <c>true</c> [load PDB].</param>
         /// <param name="useTemp">if set to <c>true</c> [use temporary].</param>
-        public ModuleManager(string assemblyPath, bool usePdb, bool useTemp = true)
+        public ModuleManager(string assemblyPath, bool usePdb, bool? useTemp = true)
         {
             _assemblyPath = assemblyPath;
             _usePdb = usePdb;
-            if (useTemp)
+            // if null or false, try to load it directly
+            if (!(useTemp ?? false))
+            {
+                try
+                {
+                    Module = ModuleDefMD.Load(assemblyPath);
+                }
+                catch (IOException)
+                {
+                    // this occurs when module is opened somewhere else
+                }
+
+            }
+            // if null or true and module was not loaded, use a mirror
+            if ((useTemp ?? true) && Module == null)
             {
                 _tempAssemblyPath = assemblyPath + ".2";
                 File.Copy(assemblyPath, _tempAssemblyPath, true);
                 Module = ModuleDefMD.Load(_tempAssemblyPath);
             }
-            else
-                Module = ModuleDefMD.Load(assemblyPath);
 
             if (usePdb)
             {
