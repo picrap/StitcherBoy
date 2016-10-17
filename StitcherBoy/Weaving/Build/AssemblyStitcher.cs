@@ -43,7 +43,6 @@ namespace StitcherBoy.Weaving.Build
         /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
         public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
             var configuration = parameters["Configuration"];
