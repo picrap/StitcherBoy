@@ -252,7 +252,7 @@ namespace StitcherBoy.Utility
 
             var setDirectory = PopPrefix(ref arg, "+");
 
-            using (var fileStream = File.OpenText(args[0].Substring(1)))
+            using (var fileStream = File.OpenText(arg))
             {
                 if (setDirectory)
                 {
