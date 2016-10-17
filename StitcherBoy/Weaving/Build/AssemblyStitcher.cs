@@ -23,6 +23,11 @@ namespace StitcherBoy.Weaving.Build
     public abstract class AssemblyStitcher : IStitcher
     {
         /// <summary>
+        /// Occurs when module written.
+        /// </summary>
+        public event EventHandler ModuleWritten;
+
+        /// <summary>
         /// Gets or sets the logging.
         /// </summary>
         /// <value>
@@ -81,6 +86,11 @@ namespace StitcherBoy.Weaving.Build
                 if (ok)
                     moduleHandler?.Write(assemblyOriginatorKeyFile);
             }
+
+            var onModuleWritten = ModuleWritten;
+            if (onModuleWritten != null)
+                onModuleWritten(this, EventArgs.Empty);
+
             return success;
         }
 
