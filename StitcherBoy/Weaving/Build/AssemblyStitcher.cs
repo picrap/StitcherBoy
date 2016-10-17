@@ -92,6 +92,9 @@ namespace StitcherBoy.Weaving.Build
         /// <returns></returns>
         protected virtual ModuleManager LoadModule(string assemblyPath)
         {
+            // when assembly is not provided... Do not load it :)
+            if (string.IsNullOrEmpty(assemblyPath))
+                return null;
             return new ModuleManager(assemblyPath, true, true);
         }
 
