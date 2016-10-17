@@ -67,5 +67,13 @@ namespace StitcherBoy.Weaving.Build
         /// The entry assembly path.
         /// </value>
         public string TaskAssemblyPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configuration.
+        /// </summary>
+        /// <value>
+        /// The configuration.
+        /// </value>
+        public string Configuration { get; set; }
     }
 }

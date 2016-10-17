@@ -41,6 +41,7 @@ namespace StitcherBoy.Weaving.Build
         /// <exception cref="InvalidOperationException">Could not find assembly to stitch</exception>
         public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
         {
+            var configuration = parameters["Configuration"];
             var assemblyPath = parameters["AssemblyPath"];
             var literalSignAssembly = parameters["SignAssembly"];
             var referencePath = parameters["ReferencePath"];
@@ -66,6 +67,7 @@ namespace StitcherBoy.Weaving.Build
                         BuildID = buildID,
                         BuildTime = buildTime,
                         TaskAssemblyPath = entryAssemblyPath,
+                        Configuration = configuration,
                     };
                     context.AssemblyResolver = new AssemblyStitcherResolver(context.Dependencies.Select(d => d.Path));
                     ok = Process(context);
