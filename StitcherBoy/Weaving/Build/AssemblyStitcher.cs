@@ -55,8 +55,6 @@ namespace StitcherBoy.Weaving.Build
             if (literalSignAssembly != null)
                 bool.TryParse(literalSignAssembly, out signAssembly);
             var assemblyOriginatorKeyFile = signAssembly ? parameters["AssemblyOriginatorKeyFile"] : null;
-            if (assemblyPath == null || !File.Exists(assemblyPath))
-                throw new InvalidOperationException("Could not find assembly to stitch");
 
             bool success = true;
             using (var moduleHandler = LoadModule(assemblyPath))
