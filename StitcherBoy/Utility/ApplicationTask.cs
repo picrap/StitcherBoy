@@ -203,13 +203,12 @@ namespace StitcherBoy.Utility
 
         private static Tuple<string, string> GetArgument(string arg)
         {
-            if (arg.StartsWith("\"") && arg.EndsWith("\""))
-                arg = arg.Substring(1, arg.Length - 2);
+            arg = arg.TrimQuotes();
             var equalsIndex = arg.IndexOf('=');
             if (equalsIndex < 0)
                 return null;
             var propertyName = arg.Substring(0, equalsIndex);
-            var propertyValue = arg.Substring(equalsIndex + 1);
+            var propertyValue = arg.Substring(equalsIndex + 1).TrimQuotes();
             return Tuple.Create(propertyName, propertyValue);
         }
 

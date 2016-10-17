@@ -42,5 +42,17 @@ namespace StitcherBoy.Utility
                     inQuote = !inQuote;
             }
         }
+
+        /// <summary>
+        /// Trims the quotes, if any.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        public static string TrimQuotes(this string s)
+        {
+            if (s.StartsWith("\"") && s.EndsWith("\""))
+                return s.Substring(1, s.Length - 2);
+            return s;
+        }
     }
 }
