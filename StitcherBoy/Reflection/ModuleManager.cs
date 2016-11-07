@@ -66,7 +66,7 @@ namespace StitcherBoy.Reflection
 
             if (usePdb)
             {
-                _pdbPath = PathEx.ChangeExtension(assemblyPath, ".pdb");
+                _pdbPath = Path.GetFullPath(PathEx.ChangeExtension(assemblyPath, ".pdb"));
                 if (File.Exists(_pdbPath))
                     Module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(_pdbPath));
             }
