@@ -22,7 +22,7 @@ namespace StitcherBoy.Reflection
         private readonly string _assemblyPath;
         private readonly bool _usePdb;
         private readonly string _pdbPath;
-        private readonly string _tempAssemblyPath;
+        private string _tempAssemblyPath;
 
         /// <summary>
         /// Gets the module.
@@ -42,35 +42,55 @@ namespace StitcherBoy.Reflection
         {
             _assemblyPath = assemblyPath;
             _usePdb = usePdb;
-            // if null or false, try to load it directly
-            if (!(useTemp ?? false))
-            {
-                try
-                {
-                    Module = ModuleDefMD.Load(assemblyPath);
-                }
-                catch (IOException)
-                {
-                    // this occurs when module is opened somewhere else
-                }
-            }
-            // if null or true and module was not loaded, use a mirror
-            if ((useTemp ?? true) && Module == null)
-            {
-                _tempAssemblyPath = assemblyPath + ".2";
-                File.Copy(assemblyPath, _tempAssemblyPath, true);
-                Module = ModuleDefMD.Load(_tempAssemblyPath);
-            }
+
+            Module = LoadDirect(assemblyPath, useTemp) ?? LoadWithTemp(assemblyPath, useTemp);
 
             if (usePdb)
             {
                 var pdbPath = Path.ChangeExtension(assemblyPath, ".pdb");
-                if (File.Exists(_pdbPath))
+                if (File.Exists(pdbPath))
                 {
                     _pdbPath = Path.GetFullPath(pdbPath);
                     Module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(_pdbPath));
                 }
             }
+        }
+
+        /// <summary>
+        /// Loads the module directly from source.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="useTemp">The use temporary.</param>
+        /// <returns></returns>
+        private ModuleDefMD LoadDirect(string assemblyPath, bool? useTemp)
+        {
+            try
+            {
+                if (!(useTemp ?? false))
+                    return ModuleDefMD.Load(assemblyPath);
+            }
+            catch (IOException)
+            {
+                // this occurs when module is opened somewhere else
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Loads the module using a temporary file.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="useTemp">The use temporary.</param>
+        /// <returns></returns>
+        private ModuleDefMD LoadWithTemp(string assemblyPath, bool? useTemp)
+        {
+            if (useTemp ?? true)
+            {
+                _tempAssemblyPath = assemblyPath + ".2";
+                File.Copy(assemblyPath, _tempAssemblyPath, true);
+                return ModuleDefMD.Load(_tempAssemblyPath);
+            }
+            return null;
         }
 
         /// <summary>

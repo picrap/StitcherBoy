@@ -1,0 +1,2 @@
+﻿..\..\..\TestApplication
+AssemblyPath=obj\Debug\TestApplication.exe
