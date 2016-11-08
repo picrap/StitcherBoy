@@ -11,7 +11,6 @@ namespace StitcherBoy.Reflection
     using dnlib.DotNet;
     using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
-    using Utility;
 
     /// <summary>
     /// Allows to handle a <see cref="ModuleDef"/>
@@ -54,7 +53,6 @@ namespace StitcherBoy.Reflection
                 {
                     // this occurs when module is opened somewhere else
                 }
-
             }
             // if null or true and module was not loaded, use a mirror
             if ((useTemp ?? true) && Module == null)
@@ -66,9 +64,12 @@ namespace StitcherBoy.Reflection
 
             if (usePdb)
             {
-                _pdbPath = Path.GetFullPath(PathEx.ChangeExtension(assemblyPath, ".pdb"));
+                var pdbPath = Path.ChangeExtension(assemblyPath, ".pdb");
                 if (File.Exists(_pdbPath))
+                {
+                    _pdbPath = Path.GetFullPath(pdbPath);
                     Module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(_pdbPath));
+                }
             }
         }
 
@@ -81,14 +82,14 @@ namespace StitcherBoy.Reflection
             if (Module.IsILOnly)
             {
                 var moduleWriterOptions = new ModuleWriterOptions(Module);
-                moduleWriterOptions.WritePdb = true;
+                moduleWriterOptions.WritePdb = _usePdb;
                 moduleWriterOptions.PdbFileName = _pdbPath;
                 Module.Write(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, moduleWriterOptions));
             }
             else
             {
                 var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module);
-                nativeModuleWriterOptions.WritePdb = true;
+                nativeModuleWriterOptions.WritePdb = _usePdb;
                 nativeModuleWriterOptions.PdbFileName = _pdbPath;
                 Module.NativeWrite(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, nativeModuleWriterOptions));
             }
