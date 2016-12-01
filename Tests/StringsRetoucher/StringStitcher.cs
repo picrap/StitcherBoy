@@ -47,9 +47,11 @@
 
         protected override bool Process(AssemblyStitcherContext context)
         {
+#if DEBUG
             var r = new Resolver(context.AssemblyResolver);
             var typeRef = context.Module.EntryPoint.Parameters[0].Type.Next.TryGetTypeRef();
             var fullType = r.Resolve(typeRef, context.Module);
+#endif
             return false;
         }
     }
