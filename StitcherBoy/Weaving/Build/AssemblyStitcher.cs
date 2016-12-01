@@ -71,7 +71,7 @@ namespace StitcherBoy.Weaving.Build
                         TaskAssemblyPath = entryAssemblyPath,
                         Configuration = configuration,
                     };
-                    context.AssemblyResolver = new AssemblyStitcherResolver(context.Dependencies.Select(d => d.Path));
+                    context.AssemblyResolver = new ReadonlyAssemblyResolver(context.Dependencies.Select(d => d.Path));
                     ok = Process(context);
                 }
                 catch (Exception e)

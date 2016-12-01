@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="BlobberHelper.cs" />
     <Compile Include="Logging\RemoteLogging.cs" />
+    <Compile Include="Reflection\AssemblyEqualityComparer.cs" />
+    <Compile Include="Reflection\AssemblyNameMatchingLevel.cs" />
     <Compile Include="Reflection\ModuleManager.cs" />
     <Compile Include="Reflection\TypeRelocator.cs" />
     <Compile Include="Utility\StringExtensions.cs" />
@@ -70,6 +72,8 @@
     <Compile Include="Weaving\Build\AssemblyStitcher.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcherContext.cs" />
     <Compile Include="Weaving\Build\AssemblyStitcherResolver.cs" />
+    <Compile Include="Weaving\Build\ReadonlyAssemblyResolver.cs" />
+    <Compile Include="Weaving\Build\ReadonlyAssemblyResolver.GAC.cs" />
     <Compile Include="Weaving\Compatibility.cs" />
     <Compile Include="Weaving\MSBuild\Project\ProjectDefinitionLoadErrorEventArgs.cs" />
     <Compile Include="Weaving\MSBuild\Extensions\BuildEngineExtensions.cs" />
