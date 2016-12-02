@@ -60,6 +60,12 @@ namespace StitcherBoy.Weaving.Build
             return assemblyDef;
         }
 
+        /// <summary>
+        /// Resolves from list.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="paths">The paths.</param>
+        /// <returns></returns>
         protected virtual AssemblyDef ResolveFromList(IAssembly assembly, IEnumerable<string> paths)
         {
             foreach (var extraAssembly in paths)
@@ -101,6 +107,7 @@ namespace StitcherBoy.Weaving.Build
         {
             var assemblyBytes = File.ReadAllBytes(path);
             var assemblyDef = AssemblyDef.Load(assemblyBytes);
+            assemblyDef.ManifestModule.Location = path;
             _cache[assemblyDef] = assemblyDef;
             return assemblyDef;
         }
