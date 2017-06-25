@@ -37,8 +37,6 @@
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -47,17 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ReferencedLibrary2\ReferencedLibrary2.csproj">
-      <Project>{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37}</Project>
-      <Name>ReferencedLibrary2</Name>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ReferencedLibrary\ReferencedLibrary.csproj">
-      <Project>{2FB7A447-5667-4269-8285-3EE1F5B3C63F}</Project>
-      <Name>ReferencedLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

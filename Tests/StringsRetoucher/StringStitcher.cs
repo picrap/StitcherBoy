@@ -42,17 +42,17 @@
             F(r);
             var a = AppDomain.CurrentDomain;
             var n = a.FriendlyName;
-            return false;
+            return true;
         }
 
         protected override bool Process(AssemblyStitcherContext context)
         {
-#if DEBUG
+#if DEBUG1
             var r = new Resolver(context.AssemblyResolver);
             var typeRef = context.Module.EntryPoint.Parameters[0].Type.Next.TryGetTypeRef();
             var fullType = r.Resolve(typeRef, context.Module);
 #endif
-            return false;
+            return true;
         }
     }
 }

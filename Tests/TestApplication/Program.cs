@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace TestApplication
 {
-    using ReferencedLibrary;
-    using ReferencedLibrary2;
 
+#if no
     class Program
     {
         static void Main(string[] args)
@@ -20,5 +19,28 @@ namespace TestApplication
             var r2 = new ReferencedClass2();
             r2.G();
         }
+    }
+#endif
+}
+
+class Program
+{
+    static void Main()
+    {
+        Async().GetAwaiter().GetResult();
+        Non_Async();
+    }
+
+    static async Task Async()
+    {
+        var foo = "bar";
+        // can see foo in debug
+        // but not after dnlib read/write :'(
+    }
+
+    static void Non_Async()
+    {
+        var foo = "bar";
+        // can see foo in debug
     }
 }

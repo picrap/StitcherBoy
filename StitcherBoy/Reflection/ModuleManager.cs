@@ -51,7 +51,7 @@ namespace StitcherBoy.Reflection
                 if (File.Exists(pdbPath))
                 {
                     _pdbPath = Path.GetFullPath(pdbPath);
-                    Module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(_pdbPath));
+                    Module.LoadPdb(PdbImplType.Managed, File.ReadAllBytes(_pdbPath));
                 }
             }
         }
