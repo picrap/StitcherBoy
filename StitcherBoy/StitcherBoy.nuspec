@@ -17,7 +17,7 @@
     <tags>tasks</tags>
     <developmentDependency>false</developmentDependency>
   </metadata>
-  <files>
+  <!--<files>
     <file src="$ProjectDir$bin\$ConfigurationName$\StitcherBoy.xml" target="lib\net40"/>
-  </files>
+  </files>-->
 </package>
