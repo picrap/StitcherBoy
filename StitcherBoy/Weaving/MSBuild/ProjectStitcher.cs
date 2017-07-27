@@ -84,7 +84,7 @@ namespace StitcherBoy.Weaving.MSBuild
                 using (var module = ModuleDefMD.Load(tempAssemblyPath))
                 {
                     if (File.Exists(pdbPath))
-                        module.LoadPdb(PdbImplType.MicrosoftCOM, File.ReadAllBytes(pdbPath));
+                        module.LoadPdb(PdbImplType.Managed, File.ReadAllBytes(pdbPath));
                     bool ok;
                     try
                     {
