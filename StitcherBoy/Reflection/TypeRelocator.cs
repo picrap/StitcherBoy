@@ -58,7 +58,36 @@ namespace StitcherBoy.Reflection
                 return typeDefOrRef?.ToTypeSig();
             }
 
-            throw new InvalidOperationException();
+            var cModOptSig = typeSig as CModOptSig;
+            if (cModOptSig != null)
+            {
+                var next = TryRelocateTypeSig(cModOptSig.Next);
+                var modifier = TryRelocateTypeDefOrRef(cModOptSig.Modifier);
+                if (next == null && modifier == null)
+                    return null;
+                return new CModOptSig(modifier ?? cModOptSig.Modifier, next ?? cModOptSig.Next);
+            }
+
+            var cModReqdSig = typeSig as CModReqdSig;
+            if (cModReqdSig != null)
+            {
+                var next = TryRelocateTypeSig(cModReqdSig.Next);
+                var modifier = TryRelocateTypeDefOrRef(cModReqdSig.Modifier);
+                if (next == null && modifier == null)
+                    return null;
+                return new CModReqdSig(modifier ?? cModReqdSig.Modifier, next ?? cModReqdSig.Next);
+            }
+
+            if (typeSig is FnPtrSig)
+                return null; // TODO
+
+            if (typeSig is PtrSig)
+            {
+                var next = TryRelocateTypeSig(typeSig.Next);
+                return next != null ? new PtrSig(next) : null;
+            }
+
+            throw new InvalidOperationException($"type {typeSig.GetType()} not supported (MoFo)");
         }
 
         /// <summary>
