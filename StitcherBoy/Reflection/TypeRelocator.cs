@@ -87,6 +87,12 @@ namespace StitcherBoy.Reflection
                 return next != null ? new PtrSig(next) : null;
             }
 
+            if (typeSig is PinnedSig)
+            {
+                var next = TryRelocateTypeSig(typeSig.Next);
+                return next != null ? new PinnedSig(next) : null;
+            }
+
             throw new InvalidOperationException($"type {typeSig.GetType()} not supported (MoFo)");
         }
 
