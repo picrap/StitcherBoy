@@ -37,5 +37,13 @@ namespace StitcherBoy
             Loader?.GetMethod("Setup").Invoke(null, new object[0]);
         }
 
+        /// <summary>
+        /// Forces the resolver to register.
+        /// </summary>
+        public static void SetupResolver()
+        {
+            Loader?.GetMethod("SetupResolver").Invoke(null, new object[0]);
+        }
+
     }
 }
