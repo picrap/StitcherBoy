@@ -51,7 +51,16 @@ namespace StitcherBoy.Reflection
                 if (File.Exists(pdbPath))
                 {
                     _pdbPath = Path.GetFullPath(pdbPath);
-                    Module.LoadPdb(PdbImplType.Managed, File.ReadAllBytes(_pdbPath));
+                    var pdbBytes = File.ReadAllBytes(_pdbPath);
+                    // forcing header is dirty.
+                    var acceptedHeader = new byte[]
+                    {
+                        0x4D, 0x69, 0x63, 0x72, 0x6F, 0x73, 0x6F, 0x66, 0x74, 0x20,
+                        0x43, 0x2F, 0x43, 0x2B, 0x2B, 0x20, 0x4D, 0x53, 0x46, 0x20,
+                        0x37, 0x2E, 0x30, 0x30, 0x0D, 0x0A, 0x1A, 0x44, 0x53, 0x00
+                    };
+                    Buffer.BlockCopy(acceptedHeader, 0, pdbBytes, 0, 30);
+                    Module.LoadPdb(PdbImplType.Managed, pdbBytes);
                 }
             }
         }
