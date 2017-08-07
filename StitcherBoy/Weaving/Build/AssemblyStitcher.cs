@@ -102,7 +102,7 @@ namespace StitcherBoy.Weaving.Build
             // when assembly is not provided... Do not load it :)
             if (string.IsNullOrEmpty(assemblyPath))
                 return null;
-            return new ModuleManager(assemblyPath, true, true);
+            return new ModuleManager(assemblyPath, true, true, logger: Logging);
         }
 
         private static IEnumerable<AssemblyDependency> EnumerateDependencies(string referencePath, string referenceCopyLocalPaths)

@@ -11,6 +11,7 @@ namespace StitcherBoy.Reflection
     using dnlib.DotNet;
     using dnlib.DotNet.Pdb;
     using dnlib.DotNet.Writer;
+    using Logging;
 
     /// <summary>
     /// Allows to handle a <see cref="ModuleDef"/>
@@ -38,7 +39,8 @@ namespace StitcherBoy.Reflection
         /// <param name="assemblyPath">The path.</param>
         /// <param name="usePdb">if set to <c>true</c> [load PDB].</param>
         /// <param name="useTemp">if set to <c>true</c> [use temporary].</param>
-        public ModuleManager(string assemblyPath, bool usePdb, bool? useTemp = true)
+        /// <param name="logger">The logger.</param>
+        public ModuleManager(string assemblyPath, bool usePdb, bool? useTemp = true, ILogging logger = null)
         {
             _assemblyPath = assemblyPath;
             _usePdb = usePdb;
@@ -52,14 +54,14 @@ namespace StitcherBoy.Reflection
                 {
                     _pdbPath = Path.GetFullPath(pdbPath);
                     var pdbBytes = File.ReadAllBytes(_pdbPath);
-                    // forcing header is dirty.
-                    var acceptedHeader = new byte[]
+
+                    if (pdbBytes[0] == 0x42 && pdbBytes[1] == 0x53 && pdbBytes[2] == 0x4A && pdbBytes[3] == 0x42)
                     {
-                        0x4D, 0x69, 0x63, 0x72, 0x6F, 0x73, 0x6F, 0x66, 0x74, 0x20,
-                        0x43, 0x2F, 0x43, 0x2B, 0x2B, 0x20, 0x4D, 0x53, 0x46, 0x20,
-                        0x37, 0x2E, 0x30, 0x30, 0x0D, 0x0A, 0x1A, 0x44, 0x53, 0x00
-                    };
-                    Buffer.BlockCopy(acceptedHeader, 0, pdbBytes, 0, 30);
+                        logger?.WriteError("Debug info is using portable format which is unsupported now. Please upvote the issue at https://github.com/0xd4d/dnlib/issues/128");
+                        _usePdb = false;
+                        return;
+                    }
+
                     Module.LoadPdb(PdbImplType.Managed, pdbBytes);
                 }
             }
