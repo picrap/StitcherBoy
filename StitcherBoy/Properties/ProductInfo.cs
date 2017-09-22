@@ -7,7 +7,7 @@ using System.Reflection;
 [assembly: AssemblyDescription("Classes for post-build tasks, to modify assemblies after generation (using dnlib). Allows to run from command-line or build task.")]
 [assembly: AssemblyCompany("openstore.craponne.fr")]
 [assembly: AssemblyProduct("StitcherBoy")]
-[assembly: AssemblyCopyright("MIT License http://opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyCopyright("MIT License http://opensource.org/licenses/MIT")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
