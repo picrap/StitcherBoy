@@ -55,12 +55,14 @@ namespace StitcherBoy.Reflection
                     _pdbPath = Path.GetFullPath(pdbPath);
                     var pdbBytes = File.ReadAllBytes(_pdbPath);
 
+#if dnlibOldVersion
                     if (pdbBytes[0] == 0x42 && pdbBytes[1] == 0x53 && pdbBytes[2] == 0x4A && pdbBytes[3] == 0x42)
                     {
                         logger?.WriteError("Debug info is using portable format which is unsupported now. Please upvote the issue at https://github.com/0xd4d/dnlib/issues/128");
                         _usePdb = false;
                         return;
                     }
+#endif
 
                     Module.LoadPdb(PdbImplType.Managed, pdbBytes);
                 }
