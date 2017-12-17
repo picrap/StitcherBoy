@@ -45,5 +45,15 @@ namespace StitcherBoy
             Loader?.GetMethod("SetupResolver").Invoke(null, new object[0]);
         }
 
+        /// <summary>
+        /// Loads the assembly.
+        /// </summary>
+        /// <param name="resourceAssembly">The resource assembly.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns></returns>
+        public static Assembly LoadAssembly(Assembly resourceAssembly, string assemblyName)
+        {
+            return (Assembly)Loader?.GetMethod("Resolve").Invoke(null, new object[] { resourceAssembly, assemblyName });
+        }
     }
 }
