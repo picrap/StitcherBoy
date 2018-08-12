@@ -1,0 +1,10 @@
+﻿﻿# Rules file
+# syntax is:
+# [<scope>]<nameMatch>: <action>
+# <scope>: +|- (+ public assemblies, - private assemblies, defaulting to private assemblies)
+# <nameMatch>: a full or wildcard name match
+# <action>: embed|merge|none
+# Lines are all processed, so work from less specific to most specific.
+# A default line is always inserted first: "*: embed"
+
+(Release)+*: merge
