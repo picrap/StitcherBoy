@@ -84,7 +84,7 @@ namespace StitcherBoy.Weaving.MSBuild
                 using (var module = ModuleDefMD.Load(tempAssemblyPath))
                 {
                     if (File.Exists(pdbPath))
-                        module.LoadPdb(PdbImplType.Managed, File.ReadAllBytes(pdbPath));
+                        module.LoadPdb(File.ReadAllBytes(pdbPath));
                     bool ok;
                     try
                     {
@@ -120,7 +120,7 @@ namespace StitcherBoy.Weaving.MSBuild
                         }
                         else
                         {
-                            var nativeModuleWriterOptions = new NativeModuleWriterOptions(module);
+                            var nativeModuleWriterOptions = new NativeModuleWriterOptions(module, true);
                             nativeModuleWriterOptions.WritePdb = true;
                             nativeModuleWriterOptions.PdbFileName = pdbPath;
                             module.NativeWrite(assemblyPath, SetWriterOptions(project, module, nativeModuleWriterOptions));

@@ -64,7 +64,7 @@ namespace StitcherBoy.Reflection
                     }
 #endif
 
-                    Module.LoadPdb(PdbImplType.Managed, pdbBytes);
+                    Module.LoadPdb(pdbBytes);
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace StitcherBoy.Reflection
             }
             else
             {
-                var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module);
+                var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module, true);
                 nativeModuleWriterOptions.WritePdb = _usePdb;
                 nativeModuleWriterOptions.PdbFileName = _pdbPath;
                 Module.NativeWrite(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, nativeModuleWriterOptions));
