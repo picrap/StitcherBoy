@@ -121,7 +121,7 @@ namespace StitcherBoy.Reflection
             }
             else
             {
-                var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module, true);
+                var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module, false);
                 nativeModuleWriterOptions.WritePdb = _usePdb;
                 nativeModuleWriterOptions.PdbFileName = _pdbPath;
                 Module.NativeWrite(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, nativeModuleWriterOptions));
