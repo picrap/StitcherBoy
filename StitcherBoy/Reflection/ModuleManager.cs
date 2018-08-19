@@ -112,20 +112,33 @@ namespace StitcherBoy.Reflection
         /// <param name="assemblyOriginatorKeyFile">The assembly originator key file.</param>
         public void Write(string assemblyOriginatorKeyFile)
         {
-            if (Module.IsILOnly)
-            {
-                var moduleWriterOptions = new ModuleWriterOptions(Module);
-                moduleWriterOptions.WritePdb = _usePdb;
-                moduleWriterOptions.PdbFileName = _pdbPath;
-                Module.Write(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, moduleWriterOptions));
-            }
+            var moduleWriterOptions = CreateModuleWriter();
+            moduleWriterOptions.PdbOptions = PdbWriterOptions.NoOldDiaSymReader | PdbWriterOptions.NoDiaSymReader;
+            moduleWriterOptions.WritePdb = _usePdb;
+            moduleWriterOptions.PdbFileName = _pdbPath;
+            WriteModule(SetWriterOptions(assemblyOriginatorKeyFile, moduleWriterOptions));
+        }
+
+        /// <summary>
+        /// Writes the module, using the given options.
+        /// </summary>
+        /// <param name="moduleWriterOptionsBase">The module writer options base.</param>
+        /// <exception cref="InvalidOperationException"></exception>
+        private void WriteModule(ModuleWriterOptionsBase moduleWriterOptionsBase)
+        {
+            if (moduleWriterOptionsBase is ModuleWriterOptions moduleWriterOptions)
+                Module.Write(_assemblyPath, moduleWriterOptions);
+            else if (moduleWriterOptionsBase is NativeModuleWriterOptions nativeModuleWriterOptions)
+                Module.NativeWrite(_assemblyPath, nativeModuleWriterOptions);
             else
-            {
-                var nativeModuleWriterOptions = new NativeModuleWriterOptions(Module, false);
-                nativeModuleWriterOptions.WritePdb = _usePdb;
-                nativeModuleWriterOptions.PdbFileName = _pdbPath;
-                Module.NativeWrite(_assemblyPath, SetWriterOptions(assemblyOriginatorKeyFile, nativeModuleWriterOptions));
-            }
+                throw new InvalidOperationException();
+        }
+
+        private ModuleWriterOptionsBase CreateModuleWriter()
+        {
+            if (Module.IsILOnly)
+                return new ModuleWriterOptions(Module);
+            return new NativeModuleWriterOptions(Module, true);
         }
 
         private TOptions SetWriterOptions<TOptions>(string snkPath, TOptions options)
