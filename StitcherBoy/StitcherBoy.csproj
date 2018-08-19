@@ -111,6 +111,7 @@
     <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
 
 rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" 
+echo Running ILMerge
 "$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
 
 :cassos
