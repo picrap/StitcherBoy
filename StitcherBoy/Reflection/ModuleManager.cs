@@ -22,7 +22,7 @@ namespace StitcherBoy.Reflection
     {
         private readonly string _assemblyPath;
         private readonly bool _usePdb;
-        private readonly string _pdbPath;
+        private string _pdbPath;
         private string _tempAssemblyPath;
 
         /// <summary>
@@ -46,8 +46,12 @@ namespace StitcherBoy.Reflection
             _usePdb = usePdb;
 
             Module = LoadDirect(assemblyPath, useTemp) ?? LoadWithTemp(assemblyPath, useTemp);
+            LoadPdb(assemblyPath);
+        }
 
-            if (usePdb)
+        private void LoadPdb(string assemblyPath)
+        {
+            if (_usePdb)
             {
                 var pdbPath = Path.ChangeExtension(assemblyPath, ".pdb");
                 if (File.Exists(pdbPath))
@@ -63,8 +67,8 @@ namespace StitcherBoy.Reflection
                         return;
                     }
 #endif
-
-                    Module.LoadPdb(pdbBytes);
+                    // no need to call it anymore, that dnlib mofo already loads it
+                    //Module.LoadPdb(pdbBytes);
                 }
             }
         }
@@ -113,7 +117,7 @@ namespace StitcherBoy.Reflection
         public void Write(string assemblyOriginatorKeyFile)
         {
             var moduleWriterOptions = CreateModuleWriter();
-            moduleWriterOptions.PdbOptions = PdbWriterOptions.NoOldDiaSymReader | PdbWriterOptions.NoDiaSymReader;
+            //moduleWriterOptions.PdbOptions = PdbWriterOptions.NoOldDiaSymReader | PdbWriterOptions.NoDiaSymReader;
             moduleWriterOptions.WritePdb = _usePdb;
             moduleWriterOptions.PdbFileName = _pdbPath;
             WriteModule(SetWriterOptions(assemblyOriginatorKeyFile, moduleWriterOptions));

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using dnlib.DotNet;
     using StitcherBoy.Weaving;
     using StitcherBoy.Weaving.Build;
     using StitcherBoy.Weaving.MSBuild;
