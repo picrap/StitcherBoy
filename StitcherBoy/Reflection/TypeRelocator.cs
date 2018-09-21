@@ -28,20 +28,20 @@ namespace StitcherBoy.Reflection
             if (typeSig is CorLibTypeSig)
                 return null;
 
-            if (typeSig is GenericInstSig)
-                return TryRelocateGeneric((GenericInstSig)typeSig);
+            if (typeSig is GenericInstSig genericInstSig)
+                return TryRelocateGeneric(genericInstSig);
 
             if (typeSig is PtrSig)
                 return null;
 
-            if (typeSig is ByRefSig)
-                return TryRelocateByRef((ByRefSig)typeSig);
+            if (typeSig is ByRefSig byRefSig)
+                return TryRelocateByRef(byRefSig);
 
-            if (typeSig is ArraySig)
-                return TryRelocateArray((ArraySig)typeSig);
+            if (typeSig is ArraySig arraySig)
+                return TryRelocateArray(arraySig);
 
-            if (typeSig is SZArraySig)
-                return TryRelocateSZArray((SZArraySig)typeSig);
+            if (typeSig is SZArraySig szArraySig)
+                return TryRelocateSZArray(szArraySig);
 
             if (typeSig is GenericVar)
                 return null; // TODO constraints
@@ -58,8 +58,7 @@ namespace StitcherBoy.Reflection
                 return typeDefOrRef?.ToTypeSig();
             }
 
-            var cModOptSig = typeSig as CModOptSig;
-            if (cModOptSig != null)
+            if (typeSig is CModOptSig cModOptSig)
             {
                 var next = TryRelocateTypeSig(cModOptSig.Next);
                 var modifier = TryRelocateTypeDefOrRef(cModOptSig.Modifier);
@@ -68,8 +67,7 @@ namespace StitcherBoy.Reflection
                 return new CModOptSig(modifier ?? cModOptSig.Modifier, next ?? cModOptSig.Next);
             }
 
-            var cModReqdSig = typeSig as CModReqdSig;
-            if (cModReqdSig != null)
+            if (typeSig is CModReqdSig cModReqdSig)
             {
                 var next = TryRelocateTypeSig(cModReqdSig.Next);
                 var modifier = TryRelocateTypeDefOrRef(cModReqdSig.Modifier);
@@ -118,8 +116,7 @@ namespace StitcherBoy.Reflection
         protected virtual TypeSig TryRelocateGeneric(GenericInstSig genericInstSig)
         {
             bool relocated = false;
-            var genericTypeSig = TryRelocateTypeSig(genericInstSig.GenericType) as ClassOrValueTypeSig;
-            if (genericTypeSig != null)
+            if (TryRelocateTypeSig(genericInstSig.GenericType) is ClassOrValueTypeSig genericTypeSig)
             {
                 genericInstSig.GenericType = genericTypeSig;
                 relocated = true;
@@ -176,16 +173,13 @@ namespace StitcherBoy.Reflection
                 return null;
 
             // no need to relocate
-            var typeDef = typeDefOrRef as TypeDef;
-            if (typeDef != null)
+            if (typeDefOrRef is TypeDef)
                 return null;
 
-            var typeRef = typeDefOrRef as TypeRef;
-            if (typeRef != null)
+            if (typeDefOrRef is TypeRef typeRef)
                 return TryRelocateTypeRef(typeRef).ToTypeDefOrRef();
 
-            var typeSpec = typeDefOrRef as TypeSpec;
-            if (typeSpec != null)
+            if (typeDefOrRef is TypeSpec typeSpec)
                 return TryRelocateTypeSig(typeSpec.TypeSig).ToTypeDefOrRef();
 
             throw new InvalidOperationException($"typeDefOrRef of type {typeDefOrRef.GetType()} was unhandled");
