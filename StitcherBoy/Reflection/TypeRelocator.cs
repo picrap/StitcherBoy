@@ -25,14 +25,14 @@ namespace StitcherBoy.Reflection
             if (typeSig == null)
                 return null;
 
-            if (typeSig is CorLibTypeSig)
-                return null;
+            if (typeSig is CorLibTypeSig corLibTypeSig)
+                return TryRelocateCorLibTypeSig(corLibTypeSig);
 
             if (typeSig is GenericInstSig genericInstSig)
                 return TryRelocateGeneric(genericInstSig);
 
-            if (typeSig is PtrSig)
-                return null;
+            //if (typeSig is PtrSig)
+            //    return null;
 
             if (typeSig is ByRefSig byRefSig)
                 return TryRelocateByRef(byRefSig);
@@ -92,6 +92,11 @@ namespace StitcherBoy.Reflection
             }
 
             throw new InvalidOperationException($"type {typeSig.GetType()} not supported (MoFo)");
+        }
+
+        protected virtual TypeSig TryRelocateCorLibTypeSig(CorLibTypeSig corLibTypeSig)
+        {
+            return null;
         }
 
         /// <summary>
