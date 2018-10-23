@@ -55,7 +55,11 @@ namespace StitcherBoy.Reflection
                 if (typeRef != null)
                     return TryRelocateTypeRef(typeRef);
                 var typeDefOrRef = TryRelocateTypeDefOrRef(typeSig.ToTypeDefOrRef());
-                return typeDefOrRef?.ToTypeSig();
+                if (typeDefOrRef == null)
+                    return null;
+                if (typeSig is ValueTypeSig)
+                    return new ValueTypeSig(typeDefOrRef);
+                return typeDefOrRef.ToTypeSig();
             }
 
             if (typeSig is CModOptSig cModOptSig)
