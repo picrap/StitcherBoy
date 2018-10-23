@@ -49,12 +49,10 @@ namespace StitcherBoy.Reflection
             if (typeSig is GenericMVar)
                 return null; // TODO constraints
 
-            if (typeSig is ValueTypeSig || typeSig is ClassSig)
+            if (typeSig is ClassOrValueTypeSig)
             {
                 var typeRef = typeSig.TryGetTypeRef();
-                if (typeRef != null)
-                    return TryRelocateTypeRef(typeRef);
-                var typeDefOrRef = TryRelocateTypeDefOrRef(typeSig.ToTypeDefOrRef());
+                var typeDefOrRef = typeRef != null ? TryRelocateTypeRef(typeRef) : TryRelocateTypeDefOrRef(typeSig.ToTypeDefOrRef());
                 if (typeDefOrRef == null)
                     return null;
                 if (typeSig is ValueTypeSig)
@@ -188,10 +186,10 @@ namespace StitcherBoy.Reflection
 
             // no need to relocate
             if (typeDefOrRef is TypeDef typeDef)
-                return TryRelocateTypeDef(typeDef).ToTypeDefOrRef();
+                return TryRelocateTypeDef(typeDef);
 
             if (typeDefOrRef is TypeRef typeRef)
-                return TryRelocateTypeRef(typeRef).ToTypeDefOrRef();
+                return TryRelocateTypeRef(typeRef);
 
             if (typeDefOrRef is TypeSpec typeSpec)
                 return TryRelocateTypeSig(typeSpec.TypeSig).ToTypeDefOrRef();
@@ -204,13 +202,13 @@ namespace StitcherBoy.Reflection
         /// </summary>
         /// <param name="typeRef">The type reference.</param>
         /// <returns></returns>
-        protected abstract TypeSig TryRelocateTypeRef(TypeRef typeRef);
+        protected abstract ITypeDefOrRef TryRelocateTypeRef(TypeRef typeRef);
 
         /// <summary>
         /// Tries to relocate <see cref="TypeDef"/>.
         /// </summary>
         /// <param name="typeDef">The type definition.</param>
         /// <returns></returns>
-        protected abstract TypeSig TryRelocateTypeDef(TypeDef typeDef);
+        protected abstract ITypeDefOrRef TryRelocateTypeDef(TypeDef typeDef);
     }
 }
