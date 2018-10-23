@@ -94,6 +94,11 @@ namespace StitcherBoy.Reflection
             throw new InvalidOperationException($"type {typeSig.GetType()} not supported (MoFo)");
         }
 
+        /// <summary>
+        /// Tries the relocate the <see cref="CorLibTypeSig"/>.
+        /// </summary>
+        /// <param name="corLibTypeSig">The cor library type sig.</param>
+        /// <returns></returns>
         protected virtual TypeSig TryRelocateCorLibTypeSig(CorLibTypeSig corLibTypeSig)
         {
             return null;
@@ -167,7 +172,7 @@ namespace StitcherBoy.Reflection
         }
 
         /// <summary>
-        /// Tries to relocate the type definition or reference.
+        /// Tries to relocate the <see cref="ITypeDefOrRef"/>.
         /// </summary>
         /// <param name="typeDefOrRef">The type definition or reference.</param>
         /// <returns></returns>
@@ -178,8 +183,8 @@ namespace StitcherBoy.Reflection
                 return null;
 
             // no need to relocate
-            if (typeDefOrRef is TypeDef)
-                return null;
+            if (typeDefOrRef is TypeDef typeDef)
+                return TryRelocateTypeDef(typeDef).ToTypeDefOrRef();
 
             if (typeDefOrRef is TypeRef typeRef)
                 return TryRelocateTypeRef(typeRef).ToTypeDefOrRef();
@@ -191,10 +196,17 @@ namespace StitcherBoy.Reflection
         }
 
         /// <summary>
-        /// Tries to relocate type reference.
+        /// Tries to relocate <see cref="TypeRef"/>.
         /// </summary>
         /// <param name="typeRef">The type reference.</param>
         /// <returns></returns>
         protected abstract TypeSig TryRelocateTypeRef(TypeRef typeRef);
+
+        /// <summary>
+        /// Tries to relocate <see cref="TypeDef"/>.
+        /// </summary>
+        /// <param name="typeDef">The type definition.</param>
+        /// <returns></returns>
+        protected abstract TypeSig TryRelocateTypeDef(TypeDef typeDef);
     }
 }
