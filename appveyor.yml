@@ -7,6 +7,9 @@ branches:
 version: '{branch}-{build}'
 image: Visual Studio 2017
 
+environment:
+  NoTargetFrameworkNet35: true
+
 install:
   - git submodule update --init --recursive
 
@@ -19,7 +22,6 @@ nuget:
   disable_publish_on_pr: true
 
 configuration: Release
-platform: Any CPU
 
 build:
   parallel: true
