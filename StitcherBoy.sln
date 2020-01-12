@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A144C2-51D5-4893-9163-B5B1E19C69D6}"
 EndProject
@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary2", "Refer
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{AE158CE4-5670-4D26-B7DE-0BB768DD8B85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dnlib", "dnlib\src\dnlib.csproj", "{FDFC1237-143F-4919-8318-4926901F4639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dnlib", "dnlib\src\dnlib.csproj", "{FDFC1237-143F-4919-8318-4926901F4639}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoyTests", "Tests\StitcherBoyTests\StitcherBoyTests.csproj", "{E917B523-BBD5-462D-8289-25E76AAD4755}"
 EndProject
@@ -76,5 +76,8 @@ Global
 		{3E753F64-B1D4-43B8-ADE9-CF21DAA92C37} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{FDFC1237-143F-4919-8318-4926901F4639} = {AE158CE4-5670-4D26-B7DE-0BB768DD8B85}
 		{E917B523-BBD5-462D-8289-25E76AAD4755} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAD77069-D1E4-4B75-AB0F-F1E1B9FB33A8}
 	EndGlobalSection
 EndGlobal
