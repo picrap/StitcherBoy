@@ -4,6 +4,8 @@
 // MIT License - http://opensource.org/licenses/MIT
 #endregion
 
+using System.Threading;
+
 namespace StitcherBoy.Reflection
 {
     using System;
@@ -45,7 +47,9 @@ namespace StitcherBoy.Reflection
             _assemblyPath = assemblyPath;
             _usePdb = usePdb;
 
-            Module = LoadDirect(assemblyPath, useTemp) ?? LoadWithTemp(assemblyPath, useTemp);
+            Module = IORetry(() => LoadDirect(assemblyPath, useTemp), TimeSpan.FromSeconds(1))
+                     ?? IORetry(() => LoadWithTemp(assemblyPath, useTemp), TimeSpan.FromSeconds(9))
+                     ?? throw new IOException($"Miserable failure trying to load {assemblyPath}");
             LoadPdb(assemblyPath);
         }
 
@@ -79,7 +83,7 @@ namespace StitcherBoy.Reflection
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="useTemp">The use temporary.</param>
         /// <returns></returns>
-        private ModuleDefMD LoadDirect(string assemblyPath, bool? useTemp)
+        private static ModuleDefMD LoadDirect(string assemblyPath, bool? useTemp)
         {
             try
             {
@@ -108,6 +112,23 @@ namespace StitcherBoy.Reflection
                 return ModuleDefMD.Load(_tempAssemblyPath);
             }
             return null;
+        }
+
+        private TResult IORetry<TResult>(Func<TResult> action, TimeSpan timeOut)
+        {
+            var t0 = DateTime.UtcNow;
+            for (;;)
+            {
+                try
+                {
+                    return action();
+                }
+                catch (IOException) { }
+
+                if (DateTime.UtcNow - t0 >= timeOut)
+                    return default;
+                Thread.Sleep(10);
+            }
         }
 
         /// <summary>
