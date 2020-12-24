@@ -39,11 +39,9 @@ namespace StitcherBoy.Weaving.Build
         /// Processes the assembly based on given parameters.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
-        /// <param name="buildID">The build identifier.</param>
-        /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        public bool Process(StringDictionary parameters, string entryAssemblyPath)
         {
             var configuration = parameters["Configuration"];
             var assemblyPath = parameters["AssemblyPath"];
@@ -66,8 +64,6 @@ namespace StitcherBoy.Weaving.Build
                         Module = moduleHandler?.Module,
                         Dependencies = EnumerateDependencies(referencePath, referenceCopyLocalPaths).ToArray(),
                         AssemblyPath = assemblyPath,
-                        BuildID = buildID,
-                        BuildTime = buildTime,
                         TaskAssemblyPath = entryAssemblyPath,
                         Configuration = configuration,
                     };

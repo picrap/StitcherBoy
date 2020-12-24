@@ -1,25 +1,26 @@
 ﻿// Stitcher Boy - a small library to help building post-build tasks
 // https://github.com/picrap/StitcherBoy
 // MIT License - http://opensource.org/licenses/MIT
+
+using System;
+
 namespace StitcherBoy.Logging
 {
-    using Microsoft.Build.Framework;
-    using Microsoft.Build.Utilities;
-
     /// <summary>
     /// ILogging implementation for Task
     /// </summary>
     public class TaskLogging : ILogging
     {
-        private readonly TaskLoggingHelper _logging;
+        private readonly dynamic _logging;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskLogging"/> class.
         /// </summary>
         /// <param name="task">The task.</param>
-        public TaskLogging(ITask task)
+        public TaskLogging(object task)
         {
-            _logging = new TaskLoggingHelper(task);
+            var helperType = Type.GetType("Microsoft.Build.Utilities.TaskLoggingHelper");
+            _logging = Activator.CreateInstance(helperType, new object[] { task });
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace StitcherBoy.Logging
         /// <param name="parameters">The parameters.</param>
         public void Write(string format, params object[] parameters)
         {
-            _logging.LogMessage(MessageImportance.High, format, parameters);
+            _logging.LogMessage(format, parameters);
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace StitcherBoy.Logging
         public void WriteDebug(string format, params object[] parameters)
         {
 #if DEBUG
-            _logging.LogMessage(MessageImportance.High, format, parameters);
+            _logging.LogMessage(format, parameters);
 #endif
         }
     }

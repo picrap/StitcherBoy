@@ -37,15 +37,13 @@ namespace StitcherBoy.Weaving
         /// Processes the specified assembly.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
-        /// <param name="buildID">The build identifier.</param>
-        /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        public bool Process(StringDictionary parameters, string entryAssemblyPath)
         {
             var instance = (IStitcher)Activator.CreateInstance(_type);
             instance.Logging = Logging;
-            return instance.Process(parameters, buildID, buildTime, entryAssemblyPath);
+            return instance.Process(parameters, entryAssemblyPath);
         }
     }
 }

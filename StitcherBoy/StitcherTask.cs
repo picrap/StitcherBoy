@@ -7,7 +7,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Build.Framework;
 using StitcherBoy.Logging;
 using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
@@ -61,7 +60,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     public string AssemblyOriginatorKeyFile { set; get; }
 
     /// <summary>
-    /// Indicates if the assembly has to be signedd.
+    /// Indicates if the assembly has to be signed.
     /// </summary>
     /// <value>
     /// The sign assembly.
@@ -110,7 +109,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
             {
                 var singleStitcher = (IStitcher)Activator.CreateInstance(typeof(TSingleStitcher));
                 singleStitcher.Logging = Logging;
-                return singleStitcher.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
+                return singleStitcher.Process(parameters, GetType().Assembly.Location);
             }
 
             // the weaver runs isolated, since it it is going to load other modules
@@ -120,11 +119,11 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
             var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
             using (var taskAppDomain = new DisposableAppDomain("StitcherBoy", assemblyDirectory))
             {
-                var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
+                var stitcherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
                 taskAppDomain.AppDomain.Load(thisAssemblyBytes);
-                sticherProcessor.Logging = new RemoteLogging(Logging);
-                sticherProcessor.Load(type.FullName);
-                return sticherProcessor.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
+                stitcherProcessor.Logging = new RemoteLogging(Logging);
+                stitcherProcessor.Load(type.FullName);
+                return stitcherProcessor.Process(parameters, GetType().Assembly.Location);
             }
         }
         catch (Exception e)
