@@ -126,7 +126,7 @@ namespace StitcherBoy.Reflection
                 catch (IOException) { }
 
                 if (DateTime.UtcNow - t0 >= timeOut)
-                    return default;
+                    return default(TResult);
                 Thread.Sleep(10);
             }
         }
