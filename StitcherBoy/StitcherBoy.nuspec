@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/picrap/StitcherBoy</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/picrap/StitcherBoy/master/Icon/StitcherBoy.png</iconUrl>
+    <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Post build task helper</summary>
     <description>$description$</description>
@@ -17,6 +17,9 @@
     <tags>tasks</tags>
     <developmentDependency>false</developmentDependency>
   </metadata>
+  <files>
+    <file src="..\Icon\StitcherBoy.png" target="icon.png" />
+  </files>
   <!--<files>
     <file src="$ProjectDir$bin\$ConfigurationName$\StitcherBoy.xml" target="lib\net40"/>
   </files>-->
