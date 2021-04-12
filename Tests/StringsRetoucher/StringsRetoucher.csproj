@@ -46,16 +46,16 @@
     <Compile Include="StringStitcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj">
-      <Project>{8515a314-3563-465a-8303-fe26e04cfb13}</Project>
-      <Name>StitcherBoy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\StitcherBoy.NetFramework\StitcherBoy.NetFramework.csproj">
+      <Project>{8515A314-3563-465A-8303-FE26E04CFB13}</Project>
+      <Name>StitcherBoy.NetFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

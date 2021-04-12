@@ -54,12 +54,6 @@
     <Compile Include="StringTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj">
-      <Project>{8515A314-3563-465A-8303-FE26E04CFB13}</Project>
-      <Name>StitcherBoy</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
