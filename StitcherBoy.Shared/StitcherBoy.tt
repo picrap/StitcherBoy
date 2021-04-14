@@ -9,7 +9,7 @@
     <title><#=Title#></title>
     <authors><#=Company#></authors>
     <owners><#=Company#></owners>
-    <license>MIT</license>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/picrap/StitcherBoy</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

@@ -6,7 +6,7 @@
     <title>StitcherBoy</title>
     <authors>openstore.craponne.fr</authors>
     <owners>openstore.craponne.fr</owners>
-    <license>MIT</license>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/picrap/StitcherBoy</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
