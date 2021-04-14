@@ -9,7 +9,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
 
-rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" 
+rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk"
 echo Running ILMerge
 "$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
 
@@ -20,26 +20,15 @@ echo Running ILMerge
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Properties\StitcherBoy.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
-
-rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" 
-echo Running ILMerge
-"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
-
-:cassos
-</PostBuildEvent>
+    <AssemblyOriginatorKeyFile>..\StitcherBoy.Shared\StitcherBoy.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>StitcherBoy</RootNamespace>
+    <AssemblyName>StitcherBoy</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\StitcherBoy.Shared\StitcherBoy.snk" Link="Properties\StitcherBoy.snk" />
+    <None Include="..\StitcherBoy.Shared\StitcherBoy.snk" Link="Properties/StitcherBoy.snk" />
   </ItemGroup>
   <ItemGroup>
-  <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.3.0" CopyLocal="false" Publish="false" ExcludeAssets="runtime" />
-  <PackageReference Include="Microsoft.Build.Framework" Version="16.3.0" CopyLocal="false" Publish="false" ExcludeAssets="runtime" />
-  <PackageReference Include="System.Collections.Immutable" Version="1.6.0" CopyLocal="false" Publish="false" />
-  <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" CopyLocal="false" Publish="false" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dnlib\src\dnlib.csproj" />

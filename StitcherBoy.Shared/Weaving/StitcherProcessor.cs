@@ -30,7 +30,7 @@ namespace StitcherBoy.Weaving
         /// <param name="typeName">Name of the type.</param>
         public void Load(string typeName)
         {
-            _type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(typeName)).First(t => t != null);
+            _type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(typeName)).First(t => t is not null);
         }
 
         /// <summary>

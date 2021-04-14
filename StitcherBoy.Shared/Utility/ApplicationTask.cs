@@ -10,11 +10,9 @@ namespace StitcherBoy.Utility
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text.RegularExpressions;
     using Logging;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
-    using Weaving.MSBuild.Extensions;
 
     /// <summary>
     /// Allows to run the task as task or application (to debug)
@@ -30,12 +28,6 @@ namespace StitcherBoy.Utility
         /// The logging.
         /// </value>
         protected ILogging Logging { get; private set; }
-
-        /// <summary>
-        /// Gets the instance of the <see cref="T:Microsoft.Build.Framework.IBuildEngine4" /> object used by the task.
-        /// This override because the property <see cref="BuildEngine4"/> is not implemented on xbuild
-        /// </summary>
-        protected new IBuildEngine4 BuildEngine4 => BuildEngine as IBuildEngine4;
 
         private bool? _hasBuildEngine;
 
@@ -53,7 +45,7 @@ namespace StitcherBoy.Utility
                 {
                     try
                     {
-                        _hasBuildEngine = BuildEngine4 != null;
+                        _hasBuildEngine = BuildEngine4 is not null;
                     }
                     catch
                     {
@@ -62,6 +54,19 @@ namespace StitcherBoy.Utility
                 }
                 return _hasBuildEngine.Value;
             }
+        }
+
+        private TValue GetOrCreateTaskObject<TValue>(string key, Func<TValue> createToRegister,
+            Func<TValue> createStandalone = null)
+        {
+            if (!HasBuildEngine)
+                return (createStandalone ?? createToRegister)();
+            var o = BuildEngine4.GetRegisteredTaskObject(key, RegisteredTaskObjectLifetime.Build);
+            if (o is not null)
+                return (TValue)o;
+            var newValue = createToRegister();
+            BuildEngine4.RegisterTaskObject(key, newValue, RegisteredTaskObjectLifetime.Build, false);
+            return newValue;
         }
 
         private Guid? _buildID;
@@ -74,12 +79,7 @@ namespace StitcherBoy.Utility
         /// </value>
         protected Guid BuildID
         {
-            get
-            {
-                if (!_buildID.HasValue)
-                    _buildID = HasBuildEngine ? BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildID", Guid.NewGuid) : Guid.Empty;
-                return _buildID.Value;
-            }
+            get { return _buildID ??= GetOrCreateTaskObject("StitcherBoy.BuildID", Guid.NewGuid, () => Guid.Empty); }
             set { _buildID = value; }
         }
 
@@ -106,12 +106,7 @@ namespace StitcherBoy.Utility
         /// </value>
         protected DateTime BuildTime
         {
-            get
-            {
-                if (!_buildDate.HasValue)
-                    _buildDate = HasBuildEngine ? BuildEngine4.GetRegisteredTaskObject("StitcherBoy.BuildTime", () => DateTime.UtcNow) : DateTime.UtcNow;
-                return _buildDate.Value;
-            }
+            get { return _buildDate ??= GetOrCreateTaskObject("StitcherBoy.BuildTime", () => DateTime.UtcNow); }
             set { _buildDate = value; }
         }
 
@@ -148,7 +143,7 @@ namespace StitcherBoy.Utility
             foreach (var property in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.PropertyType == typeof(string)))
             {
                 var propertyValue = (string)property.GetValue(this, new object[0]);
-                if (propertyValue != null)
+                if (propertyValue is not null)
                     yield return $"\"{property.Name}={propertyValue}\"";
             }
         }
@@ -166,7 +161,7 @@ namespace StitcherBoy.Utility
             var wrappedTaskPath = GetWrappedTaskPath();
             // see if the task is just a stub, which is the case if we have a wrapped task
             // (this allows to build and debug)
-            if (wrappedTaskPath == null)
+            if (wrappedTaskPath is null)
                 return Run(false);
 
             // run the application as a command-line application
@@ -185,7 +180,7 @@ namespace StitcherBoy.Utility
             };
             process.OutputDataReceived += delegate (object sender, DataReceivedEventArgs e)
             {
-                if (e.Data != null)
+                if (e.Data is not null)
                     Logging.Write(e.Data);
             };
             process.Start();
@@ -217,20 +212,26 @@ namespace StitcherBoy.Utility
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
+        /// <param name="fromExe"></param>
         /// <returns></returns>
-        protected static int Run(ApplicationTask<TActualProgram> instance, string[] args)
+        protected static int Run(ApplicationTask<TActualProgram> instance, string[] args, bool fromExe = true)
         {
             instance.Logging = new ConsoleLogging();
+            LoadArgs(instance, args);
+            return instance.Run(fromExe) ? 0 : 1;
+        }
+
+        private static void LoadArgs(ApplicationTask<TActualProgram> instance, string[] args)
+        {
             foreach (var arg in LoadArgs(args))
             {
                 var argument = GetArgument(arg);
-                if (argument != null)
+                if (argument is not null)
                 {
                     var propertyInfo = instance.GetType().GetProperty(argument.Item1);
                     propertyInfo?.SetValue(instance, argument.Item2, new object[0]);
                 }
             }
-            return instance.Run(true) ? 0 : 1;
         }
 
         /// <summary>
@@ -240,7 +241,7 @@ namespace StitcherBoy.Utility
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <returns></returns>
-        private static IList<string> LoadArgs(string[] args)
+        private static IEnumerable<string> LoadArgs(string[] args)
         {
             if (args.Length != 1)
                 return args;
@@ -251,25 +252,23 @@ namespace StitcherBoy.Utility
 
             var setDirectory = PopPrefix(ref arg, "+");
 
-            using (var fileStream = File.OpenText(arg))
+            using var fileStream = File.OpenText(arg);
+            if (setDirectory)
             {
-                if (setDirectory)
-                {
-                    var cwd = fileStream.ReadLine();
-                    Directory.SetCurrentDirectory(cwd);
-                }
-                var lines = new List<string>();
-                for (;;)
-                {
-                    var line = fileStream.ReadLine();
-                    if (line == null)
-                        break;
-                    if (line == "")
-                        continue;
-                    lines.AddRange(line.SplitArguments());
-                }
-                return lines;
+                var cwd = fileStream.ReadLine();
+                Directory.SetCurrentDirectory(cwd);
             }
+            var lines = new List<string>();
+            for (; ; )
+            {
+                var line = fileStream.ReadLine();
+                if (line is null)
+                    break;
+                if (line == "")
+                    continue;
+                lines.AddRange(line.SplitArguments());
+            }
+            return lines;
         }
 
         /// <summary>

@@ -4,10 +4,8 @@
 
 using System;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Build.Framework;
 using StitcherBoy.Logging;
 using StitcherBoy.Utility;
 using StitcherBoy.Weaving;
@@ -61,7 +59,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     public string AssemblyOriginatorKeyFile { set; get; }
 
     /// <summary>
-    /// Indicates if the assembly has to be signedd.
+    /// Indicates if the assembly has to be signed.
     /// </summary>
     /// <value>
     /// The sign assembly.
@@ -101,9 +99,7 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
     {
         try
         {
-            var parameters = new StringDictionary();
-            foreach (var propertyInfo in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy).Where(p => p.PropertyType == typeof(string)))
-                parameters[propertyInfo.Name] = (string)propertyInfo.GetValue(this);
+            var parameters = GetArguments();
 
             // when run from a .debugTask exe, there is no need to wrap in a separate AppDomain
             if (fromExe)
@@ -114,23 +110,28 @@ public abstract class StitcherTask<TSingleStitcher> : ApplicationTask<StitcherTa
             }
 
             // the weaver runs isolated, since it it is going to load other modules
-            var type = typeof(TSingleStitcher);
-            var assemblyPath = type.Assembly.Location;
-            var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
-            var thisAssemblyBytes = File.ReadAllBytes(assemblyPath);
-            using (var taskAppDomain = new DisposableAppDomain("StitcherBoy", assemblyDirectory))
+            return Isolated.Run(delegate(StitcherProcessor stitcherProcessor)
             {
-                var sticherProcessor = taskAppDomain.AppDomain.CreateInstanceAndUnwrap<StitcherProcessor>();
-                taskAppDomain.AppDomain.Load(thisAssemblyBytes);
-                sticherProcessor.Logging = new RemoteLogging(Logging);
-                sticherProcessor.Load(type.FullName);
-                return sticherProcessor.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
-            }
+                var type = typeof(TSingleStitcher);
+                stitcherProcessor.Logging = new RemoteLogging(Logging);
+                stitcherProcessor.Load(type.FullName);
+                return stitcherProcessor.Process(parameters, BuildID, BuildTime, GetType().Assembly.Location);
+            }, typeof(TSingleStitcher).Assembly.FullName);
         }
         catch (Exception e)
         {
             Logging.WriteError("Unhandled exception: {0}", e);
         }
         return false;
+    }
+
+    private StringDictionary GetArguments()
+    {
+        var parameters = new StringDictionary();
+        foreach (var propertyInfo in GetType()
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy)
+            .Where(p => p.PropertyType == typeof(string)))
+            parameters[propertyInfo.Name] = (string) propertyInfo.GetValue(this);
+        return parameters;
     }
 }

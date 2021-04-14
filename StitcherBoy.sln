@@ -32,15 +32,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication5", "Tests\T
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StitcherBoy.Shared", "StitcherBoy.Shared\StitcherBoy.Shared.shproj", "{4EF4D719-A67D-4B12-B575-1C916BDC3991}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoy.NetFramework", "StitcherBoy.NetFramework\StitcherBoy.NetFramework.csproj", "{8515A314-3563-465A-8303-FE26E04CFB13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StitcherBoy.NetFramework", "StitcherBoy.NetFramework\StitcherBoy.NetFramework.csproj", "{8515A314-3563-465A-8303-FE26E04CFB13}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StitcherBoy.Net", "StitcherBoy.Net\StitcherBoy.Net.csproj", "{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringsRetoucher5", "Tests\StringsRetoucher5\StringsRetoucher5.csproj", "{1F88A7C2-7268-4840-95E3-1F28E4893A22}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		StitcherBoy.Shared\StitcherBoy.Shared.projitems*{4b0b68dc-07a9-46e7-ae6c-57ad11f1645a}*SharedItemsImports = 5
 		StitcherBoy.Shared\StitcherBoy.Shared.projitems*{4ef4d719-a67d-4b12-b575-1c916bdc3991}*SharedItemsImports = 13
-		StitcherBoy.Shared\StitcherBoy.Shared.projitems*{8515a314-3563-465a-8303-fe26e04cfb13}*SharedItemsImports = 4
+		StitcherBoy.Shared\StitcherBoy.Shared.projitems*{8515a314-3563-465a-8303-fe26e04cfb13}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{14E1B649-1CF5-49A4-8D36-C8748E2AAAAA} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{4F53634C-383E-4ECD-939D-0088E5563575} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70BACABD-B61B-4066-973B-EC87F575F9E4}

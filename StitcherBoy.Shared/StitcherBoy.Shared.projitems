@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\TypeRelocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StitcherTask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\ApplicationTask.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utility\DisposableAppDomain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\Build\AssemblyDependency.cs" />
@@ -30,7 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\Build\AssemblyStitcherResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\Build\ReadonlyAssemblyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\Build\ReadonlyAssemblyResolver.GAC.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Weaving\Compatibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\IStitcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\StitcherProcessor.cs" />
   </ItemGroup>

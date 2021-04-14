@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <ProjectGuid>{1F88A7C2-7268-4840-95E3-1F28E4893A22}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>StringsRetoucher</RootNamespace>
+    <AssemblyName>StringsRetoucher5</AssemblyName>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyTitle>StringsRetoucher</AssemblyTitle>
     <Product>StringsRetoucher</Product>
     <Copyright>Copyright ©  2015</Copyright>
@@ -18,14 +20,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
-    <ProjectReference Include="..\..\StitcherBoy.NetFramework\StitcherBoy.NetFramework.csproj" />
+    <ProjectReference Include="..\..\StitcherBoy.Net\StitcherBoy.Net.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
   </ItemGroup>
 </Project>
