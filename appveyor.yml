@@ -39,4 +39,4 @@ deploy:
   api_key:
     secure: cSVY4kxJ2RhSfG2ARk8KI/c0iacT2pg7bhGsxyBbCZ1qQVYSGg5rsPA+Q4fmQ6GQ
   skip_symbols: false
-  artifact: *.nupkg
+  artifact: '*.nupkg'
