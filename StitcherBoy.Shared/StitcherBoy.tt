@@ -22,9 +22,9 @@
   </metadata>
   <files>
     <file src="..\Icon\StitcherBoy.png" target="icon.png" />
-    <file src="StitcherBoy.Net\bin\Release\net5.0\StitcherBoy.dll" target="lib\net5.0"/>
-    <file src="StitcherBoy.Net\bin\Release\net5.0\StitcherBoy.xml" target="lib\net5.0"/>
-    <file src="StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.dll" target="lib\net461"/>
-    <file src="StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.xml" target="lib\net461"/>
+    <file src="..\StitcherBoy.Net\bin\Release\net5.0\StitcherBoy.dll" target="lib\net5.0"/>
+    <file src="..\StitcherBoy.Net\bin\Release\net5.0\StitcherBoy.xml" target="lib\net5.0"/>
+    <file src="..\StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.dll" target="lib\net461"/>
+    <file src="..\StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.xml" target="lib\net461"/>
   </files>
 </package>
