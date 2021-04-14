@@ -1,0 +1,30 @@
+﻿<#@ template debug="false" hostspecific="false" #>
+<#@ include file="Properties\ProductInfoValues.tt" #>
+<#@ output extension=".nuspec" #>
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>StitcherBoy</id>
+    <version><#=Version#></version>
+    <title><#=Title#></title>
+    <authors><#=Company#></authors>
+    <owners><#=Company#></owners>
+    <license>MIT</license>
+    <projectUrl>https://github.com/picrap/StitcherBoy</projectUrl>
+    <icon>icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Post build task helper</summary>
+    <description><#=Description#></description>
+    <releaseNotes></releaseNotes>
+    <copyright>Pascal Craponne</copyright>
+    <tags>tasks</tags>
+    <developmentDependency>false</developmentDependency>
+  </metadata>
+  <files>
+    <file src="..\Icon\StitcherBoy.png" target="icon.png" />
+    <file src="StitcherBoy.Net\bin\Debug\net5.0\StitcherBoy.dll" target="lib\net5.0"/>
+    <file src="StitcherBoy.Net\bin\Debug\net5.0\StitcherBoy.xml" target="lib\net5.0"/>
+    <file src="StitcherBoy.NetFramework\bin\Debug\net461\StitcherBoy.dll" target="lib\net461"/>
+    <file src="StitcherBoy.NetFramework\bin\Debug\net461\StitcherBoy.xml" target="lib\net461"/>
+  </files>
+</package>

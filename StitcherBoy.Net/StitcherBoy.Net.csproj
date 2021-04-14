@@ -25,6 +25,20 @@ echo Running ILMerge
     <AssemblyName>StitcherBoy</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\StitcherBoy.Shared\Properties\ProductInfo.cs" Link="Properties/ProductInfo.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProductInfo.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\StitcherBoy.Shared\StitcherBoy.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StitcherBoy.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\StitcherBoy.Shared\StitcherBoy.snk" Link="Properties/StitcherBoy.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -33,5 +47,16 @@ echo Running ILMerge
   <ItemGroup>
     <ProjectReference Include="..\dnlib\src\dnlib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
   <Import Project="..\StitcherBoy.Shared\StitcherBoy.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Update="C:\Users\Pascal\Documents\Developpement\StitcherBoy\StitcherBoy.Shared\Properties\ProductInfo.tt">
+      <LastGenOutput>ProductInfo.cs</LastGenOutput>
+    </None>
+    <None Update="C:\Users\Pascal\Documents\Developpement\StitcherBoy\StitcherBoy.Shared\StitcherBoy.tt">
+      <LastGenOutput>StitcherBoy.txt</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

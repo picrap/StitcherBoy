@@ -14,7 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\ILogging.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\RemoteLogging.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\TaskLogging.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Properties\ProductInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\AssemblyEqualityComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\AssemblyNameMatchingLevel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\ModuleManager.cs" />
@@ -31,5 +30,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\Build\ReadonlyAssemblyResolver.GAC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\IStitcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Weaving\StitcherProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Properties\ProductInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Properties\ProductInfoValues.tt" />
+    <None Include="$(MSBuildThisFileDirectory)StitcherBoy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A144C2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "Tests\TestApplication\TestApplication.csproj", "{8FDA90E8-CA65-465F-B81C-E60054C2C528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringsRetoucher", "Tests\StringsRetoucher\StringsRetoucher.csproj", "{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringsRetoucher", "Tests\StringsRetoucher\StringsRetoucher.csproj", "{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8FDA90E8-CA65-465F-B81C-E60054C2C528} = {8FDA90E8-CA65-465F-B81C-E60054C2C528}
 	EndProjectSection
@@ -37,6 +37,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StitcherBoy.Net", "StitcherBoy.Net\StitcherBoy.Net.csproj", "{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringsRetoucher5", "Tests\StringsRetoucher5\StringsRetoucher5.csproj", "{1F88A7C2-7268-4840-95E3-1F28E4893A22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16D77CAA-5626-4F91-81D4-D11244BF0B85}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

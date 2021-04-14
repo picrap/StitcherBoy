@@ -12,7 +12,7 @@
     <DocumentationFile>bin\$(Configuration)\StitcherBoy.XML</DocumentationFile>
     <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
 
-rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" 
+rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk"
 echo Running ILMerge
 "$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
 
@@ -36,6 +36,20 @@ echo Running ILMerge
   </PropertyGroup>
   <Import Project="..\StitcherBoy.Shared\StitcherBoy.Shared.projitems" Label="Shared" />
   <ItemGroup>
+    <Compile Include="..\StitcherBoy.Shared\Properties\ProductInfo.cs" Link="Properties/ProductInfo.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProductInfo.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\StitcherBoy.Shared\StitcherBoy.nuspec">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StitcherBoy.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
@@ -47,6 +61,17 @@ echo Running ILMerge
   <ItemGroup>
     <None Include="..\StitcherBoy.Shared\StitcherBoy.snk">
       <Link>Properties\StitcherBoy.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="C:\Users\Pascal\Documents\Developpement\StitcherBoy\StitcherBoy.Shared\Properties\ProductInfo.tt">
+      <LastGenOutput>ProductInfo.cs</LastGenOutput>
+    </None>
+    <None Update="C:\Users\Pascal\Documents\Developpement\StitcherBoy\StitcherBoy.Shared\StitcherBoy.tt">
+      <LastGenOutput>StitcherBoy.nuspec</LastGenOutput>
     </None>
   </ItemGroup>
 </Project>
