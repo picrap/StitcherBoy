@@ -27,4 +27,8 @@
     <file src="..\StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.dll" target="lib\net461"/>
     <file src="..\StitcherBoy.NetFramework\bin\Release\net461\StitcherBoy.xml" target="lib\net461"/>
   </files>
+  <dependencies>
+    <group targetFramework=".NETFramework4.6.1" />
+    <group targetFramework="net5.0" />
+  </dependencies>
 </package>
