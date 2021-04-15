@@ -5,7 +5,7 @@
 <package>
   <metadata>
     <id>StitcherBoy</id>
-    <version><#=Version#></version>
+    <version><#=Version#><#=PreVersion#></version>
     <title><#=Title#></title>
     <authors><#=Company#></authors>
     <owners><#=Company#></owners>

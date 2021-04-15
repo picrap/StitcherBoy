@@ -7,10 +7,10 @@
 // Minor is backwards-compatible changes
 // Patch is no change.
 var VersionMajor = "1";
-var VersionMinor = "4";
-var VersionPatch = "1";
+var VersionMinor = "5";
+var VersionPatch = "0";
 var Version = VersionMajor + "." + VersionMinor + "." + VersionPatch;
-var PreVersion = "";
+var PreVersion = "-test1";
 
 var Title = "StitcherBoy";
 var Company = "openstore.craponne.fr";

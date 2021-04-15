@@ -30,6 +30,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\StitcherBoy.Shared\StitcherBoy.nuspec">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StitcherBoy.tt</DependentUpon>
+    </None>
     <None Include="..\StitcherBoy.Shared\StitcherBoy.snk" Link="Properties/StitcherBoy.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +56,7 @@
       <LastGenOutput>ProductInfo.cs</LastGenOutput>
     </None>
     <None Update="C:\Users\Pascal\Documents\Developpement\StitcherBoy\StitcherBoy.Shared\StitcherBoy.tt">
-      <LastGenOutput>StitcherBoy.txt</LastGenOutput>
+      <LastGenOutput>StitcherBoy.nuspec</LastGenOutput>
     </None>
   </ItemGroup>
 </Project>
