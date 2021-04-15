@@ -10,7 +10,7 @@ var VersionMajor = "1";
 var VersionMinor = "5";
 var VersionPatch = "0";
 var Version = VersionMajor + "." + VersionMinor + "." + VersionPatch;
-var PreVersion = "-test1";
+var PreVersion = "";
 
 var Title = "StitcherBoy";
 var Company = "openstore.craponne.fr";
