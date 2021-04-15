@@ -10,15 +10,10 @@
     <AssemblyTitle>StitcherBoy</AssemblyTitle>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DocumentationFile>bin\$(Configuration)\StitcherBoy.XML</DocumentationFile>
-    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
-
-rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk"
-echo Running ILMerge
-"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
-
-:cassos
-</PostBuildEvent>
   </PropertyGroup>
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not &quot;$(ConfigurationName)&quot; == &quot;Release&quot; goto cassos&#xD;&#xA;&#xD;&#xA;&#xA;rem /keyfile:&quot;$(ProjectDir)Properties\StitcherBoy.snk&quot;&#xD;&#xA;&#xA;echo Running ILRepack&#xD;&#xA;rem &quot;$(ProjectDir)..\Libraries\ilmerge.exe&quot; /keyfile:&quot;$(ProjectDir)..\StitcherBoy.Shared\StitcherBoy.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\net461\$(TargetFileName)&quot; &quot;$(TargetDir)dnlib.dll&quot; /ndebug&#xA;&#xA;&#xD;&#xA;&quot;$(ProjectDir)..\Libraries\ilrepack.exe&quot; /keyfile:&quot;$(ProjectDir)..\StitcherBoy.Shared\StitcherBoy.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\net461\$(TargetFileName)&quot; &quot;$(TargetDir)dnlib.dll&quot; /ndebug&#xA;&#xA;&#xD;&#xA;&#xD;&#xA;:cassos" />
+</Target>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
   </PropertyGroup>

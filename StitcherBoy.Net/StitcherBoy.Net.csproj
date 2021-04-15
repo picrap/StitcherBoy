@@ -7,14 +7,12 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto cassos
-
-rem /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk"
-echo Running ILMerge
-"$(ProjectDir)..\Libraries\ilmerge.exe" /keyfile:"$(ProjectDir)Properties\StitcherBoy.snk" /out:"$(TargetPath)" "$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)" "$(TargetDir)dnlib.dll" /ndebug
-
-:cassos
-</PostBuildEvent>
+  </PropertyGroup>
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not &quot;$(ConfigurationName)&quot; == &quot;Release&quot; goto cassos&#xD;&#xA;&#xD;&#xA;&#xA;rem /keyfile:&quot;$(ProjectDir)Properties\StitcherBoy.snk&quot;&#xD;&#xA;&#xA;echo Running ILRepack&#xD;&#xA;rem &quot;$(ProjectDir)..\Libraries\ilmerge.exe&quot; /keyfile:&quot;$(ProjectDir)..\StitcherBoy.Shared\StitcherBoy.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\net5.0\$(TargetFileName)&quot; &quot;$(TargetDir)dnlib.dll&quot; /ndebug&#xA;&#xA;&#xD;&#xA;&quot;$(ProjectDir)..\Libraries\ilrepack.exe&quot; /keyfile:&quot;$(ProjectDir)..\StitcherBoy.Shared\StitcherBoy.snk&quot; /out:&quot;$(TargetPath)&quot; &quot;$(ProjectDir)obj\$(ConfigurationName)\net5.0\$(TargetFileName)&quot; &quot;$(TargetDir)dnlib.dll&quot; /ndebug&#xA;&#xA;&#xD;&#xA;&#xD;&#xA;:cassos" />
+</Target>
+  <PropertyGroup>
+    <TransformOnBuild>true</TransformOnBuild>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -32,20 +30,17 @@ echo Running ILMerge
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\StitcherBoy.Shared\StitcherBoy.txt">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StitcherBoy.tt</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\StitcherBoy.Shared\StitcherBoy.snk" Link="Properties/StitcherBoy.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0">
+      <PrivateAssets></PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dnlib\src\dnlib.csproj" />
+    <ProjectReference Include="..\dnlib\src\dnlib.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
