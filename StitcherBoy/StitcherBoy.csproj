@@ -16,7 +16,7 @@
   <PropertyGroup>
     <RootNamespace>StitcherBoy</RootNamespace>
     <AssemblyName>StitcherBoy</AssemblyName>
-    <Version>2.0.0-test1</Version>
+    <Version>2.0.0-test2</Version>
     <Authors>openstore.craponne.fr</Authors>
     <Description>Classes for post-build tasks, to modify assemblies after generation (using dnlib). Allows to run from command-line or build task.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -25,6 +25,7 @@
     <RepositoryUrl>https://github.com/picrap/StitcherBoy.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\Icon\StitcherBoy.png">
@@ -34,7 +35,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dnlib\src\dnlib.csproj">
-      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>dnlib.dll</IncludeAssets>
     </ProjectReference>
   </ItemGroup>
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
 </Project>
