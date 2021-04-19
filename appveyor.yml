@@ -4,6 +4,7 @@ branches:
   only:
     - master
     - net5
+    - target-exec
 
 version: '{branch}-{build}'
 image: Visual Studio 2019
