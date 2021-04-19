@@ -6,9 +6,7 @@
 
 namespace StitcherBoy.Weaving
 {
-    using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using Logging;
 
     /// <summary>
@@ -28,10 +26,8 @@ namespace StitcherBoy.Weaving
         /// Processes the assembly based on given parameters.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
-        /// <param name="buildID">The build identifier.</param>
-        /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        bool Process(IDictionary<string, string> parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath);
+        bool Process(IDictionary<string, string> parameters, string entryAssemblyPath);
     }
 }

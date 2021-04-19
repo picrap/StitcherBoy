@@ -26,7 +26,7 @@
                 stitcher.Logging = new ConsoleLogging();
                 var arguments = args.ParseArguments();
                 stitcher.Inject(arguments);
-                return stitcher.Process(arguments, Guid.Empty, DateTime.MinValue, Assembly.GetEntryAssembly().Location) ? 0 : 1;
+                return stitcher.Process(arguments, Assembly.GetEntryAssembly().Location) ? 0 : 1;
             }
             catch { }
 

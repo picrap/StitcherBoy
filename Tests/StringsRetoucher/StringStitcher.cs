@@ -7,6 +7,8 @@
 
     public class StringStitcher : AssemblyStitcher
     {
+        public override string Name => "Strings.NetFX";
+
         protected override bool Process(AssemblyStitcherContext context)
         {
 #if DEBUG1

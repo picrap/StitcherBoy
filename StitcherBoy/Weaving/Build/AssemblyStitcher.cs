@@ -27,6 +27,14 @@ namespace StitcherBoy.Weaving.Build
         public event EventHandler ModuleWritten;
 
         /// <summary>
+        /// Gets the name (to ensure assembly is stitched only once).
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public abstract string Name { get; }
+
+        /// <summary>
         /// Gets or sets the logging.
         /// </summary>
         /// <value>
@@ -38,15 +46,16 @@ namespace StitcherBoy.Weaving.Build
         /// Processes the assembly based on given parameters.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
-        /// <param name="buildID">The build identifier.</param>
-        /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        public bool Process(IDictionary<string, string> parameters, Guid buildID, DateTime buildTime,
+        public bool Process(IDictionary<string, string> parameters,
             string entryAssemblyPath)
         {
-            parameters.TryGetValue("Configuration", out var configuration);
             parameters.TryGetValue("AssemblyPath", out var assemblyPath);
+            var assemblyMarkerPath = assemblyPath + ".❤" + Name;
+            if (HasProcessed(assemblyPath, assemblyMarkerPath))
+                return true;
+            parameters.TryGetValue("Configuration", out var configuration);
             parameters.TryGetValue("SignAssembly", out var literalSignAssembly);
             parameters.TryGetValue("ReferencePath", out var referencePath);
             parameters.TryGetValue("ReferenceCopyLocalPaths", out var referenceCopyLocalPaths);
@@ -68,8 +77,6 @@ namespace StitcherBoy.Weaving.Build
                         Module = moduleHandler?.Module,
                         Dependencies = EnumerateDependencies(referencePath, referenceCopyLocalPaths).ToArray(),
                         AssemblyPath = assemblyPath,
-                        BuildID = buildID,
-                        BuildTime = buildTime,
                         TaskAssemblyPath = entryAssemblyPath,
                         Configuration = configuration,
                     };
@@ -82,8 +89,12 @@ namespace StitcherBoy.Weaving.Build
                     ok = false;
                     success = false;
                 }
+
                 if (ok)
+                {
                     moduleHandler?.Write(assemblyOriginatorKeyFile);
+                    SetProcessed(assemblyMarkerPath);
+                }
             }
 
             var onModuleWritten = ModuleWritten;
@@ -91,6 +102,20 @@ namespace StitcherBoy.Weaving.Build
                 onModuleWritten(this, EventArgs.Empty);
 
             return success;
+        }
+
+        private static void SetProcessed(string assemblyMarkerPath)
+        {
+            using var stream = File.Create(assemblyMarkerPath);
+        }
+
+        private static bool HasProcessed(string assemblyPath, string assemblyMarkerPath)
+        {
+            if (!File.Exists(assemblyMarkerPath))
+                return false;
+            var assemblyInfo = new FileInfo(assemblyPath);
+            var assemblyMarkerInfo = new FileInfo(assemblyMarkerPath);
+            return assemblyMarkerInfo.LastWriteTimeUtc > assemblyInfo.LastWriteTimeUtc;
         }
 
         /// <summary>

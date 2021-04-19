@@ -47,20 +47,6 @@ namespace StitcherBoy.Weaving.Build
         public string AssemblyPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the build identifier.
-        /// </summary>
-        /// <value>
-        /// The build identifier.
-        /// </value>
-        public Guid BuildID { get; set; }
-        /// <summary>
-        /// Gets or sets the build date.
-        /// </summary>
-        /// <value>
-        /// The build date.
-        /// </value>
-        public DateTime BuildTime { get; set; }
-        /// <summary>
         /// Gets or sets the entry task assembly path.
         /// </summary>
         /// <value>

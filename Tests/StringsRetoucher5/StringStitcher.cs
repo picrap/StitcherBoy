@@ -4,6 +4,8 @@
 
     public class StringStitcher : AssemblyStitcher
     {
+        public override string Name => "Strings.NetCore";
+
         protected override bool Process(AssemblyStitcherContext context)
         {
             foreach (var type in context.Module.Types)
