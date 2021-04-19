@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,6 +10,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)/../StringsRetoucher5/StringsRetoucher.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)/../StringsRetoucher5/StringsRetoucher.targets" Condition=" '$(Configuration)' == 'Debug' " />
 
 </Project>
