@@ -8,7 +8,6 @@ namespace StitcherBoy.Weaving.Build
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
     using dnlib.DotNet;
@@ -43,17 +42,20 @@ namespace StitcherBoy.Weaving.Build
         /// <param name="buildTime">The build time.</param>
         /// <param name="entryAssemblyPath">The entry assembly path.</param>
         /// <returns></returns>
-        public bool Process(StringDictionary parameters, Guid buildID, DateTime buildTime, string entryAssemblyPath)
+        public bool Process(IDictionary<string, string> parameters, Guid buildID, DateTime buildTime,
+            string entryAssemblyPath)
         {
-            var configuration = parameters["Configuration"];
-            var assemblyPath = parameters["AssemblyPath"];
-            var literalSignAssembly = parameters["SignAssembly"];
-            var referencePath = parameters["ReferencePath"];
-            var referenceCopyLocalPaths = parameters["ReferenceCopyLocalPaths"];
+            parameters.TryGetValue("Configuration", out var configuration);
+            parameters.TryGetValue("AssemblyPath", out var assemblyPath);
+            parameters.TryGetValue("SignAssembly", out var literalSignAssembly);
+            parameters.TryGetValue("ReferencePath", out var referencePath);
+            parameters.TryGetValue("ReferenceCopyLocalPaths", out var referenceCopyLocalPaths);
             bool signAssembly = false;
             if (literalSignAssembly is not null)
                 bool.TryParse(literalSignAssembly, out signAssembly);
-            var assemblyOriginatorKeyFile = signAssembly ? parameters["AssemblyOriginatorKeyFile"] : null;
+            parameters.TryGetValue("AssemblyOriginatorKeyFile", out var assemblyOriginatorKeyFile);
+            if (!signAssembly)
+                assemblyOriginatorKeyFile = null;
 
             bool success = true;
             using (var moduleHandler = LoadModule(assemblyPath))
@@ -85,7 +87,7 @@ namespace StitcherBoy.Weaving.Build
             }
 
             var onModuleWritten = ModuleWritten;
-            if (onModuleWritten != null)
+            if (onModuleWritten is not null)
                 onModuleWritten(this, EventArgs.Empty);
 
             return success;
@@ -114,7 +116,7 @@ namespace StitcherBoy.Weaving.Build
 
         private static IEnumerable<string> GetList(string paths)
         {
-            if (paths != null)
+            if (paths is not null)
             {
                 foreach (var path in paths.Split(';'))
                 {

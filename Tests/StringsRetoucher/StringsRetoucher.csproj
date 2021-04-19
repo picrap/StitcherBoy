@@ -7,6 +7,7 @@
     <Product>StringsRetoucher</Product>
     <Copyright>Copyright ©  2015</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -18,14 +19,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
-    <ProjectReference Include="..\..\StitcherBoy.NetFramework\StitcherBoy.NetFramework.csproj" />
+    <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj" />
   </ItemGroup>
 </Project>

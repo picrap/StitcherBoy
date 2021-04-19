@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}</ProjectGuid>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <DocumentationFile>bin\$(Configuration)\StitcherBoy.XML</DocumentationFile>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Properties\StitcherBoy.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>StitcherBoy</RootNamespace>
+    <AssemblyName>StitcherBoy</AssemblyName>
+    <Version>2.0.0</Version>
+    <Authors>openstore.craponne.fr</Authors>
+    <Description>Classes for post-build tasks, to modify assemblies after generation (using dnlib). Allows to run from command-line or build task.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/picrap/StitcherBoy</PackageProjectUrl>
+    <PackageIcon>StitcherBoy.png</PackageIcon>
+    <RepositoryUrl>https://github.com/picrap/StitcherBoy.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\Icon\StitcherBoy.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dnlib\src\dnlib.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -24,9 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
-    <ProjectReference Include="..\..\StitcherBoy.Net\StitcherBoy.Net.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.9.0" />
+    <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj" />
   </ItemGroup>
 </Project>
