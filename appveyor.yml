@@ -27,10 +27,13 @@ configuration: Release
 
 build:
   parallel: true
-  publish_nuget: true
+  publish_nuget: false
   publish_nuget_symbols: true
   verbosity: minimal
   project: StitcherBoy.sln
+
+after_build:
+  - .nuget\NuGet.exe pack .\StitcherBoy.Shared\StitcherBoy.nuspec -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=Release -Symbols
 
 deploy:
   provider: NuGet
