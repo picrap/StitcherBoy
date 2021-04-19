@@ -48,7 +48,7 @@ namespace StitcherBoy.Reflection
 
             Module = IORetry(() => LoadDirect(assemblyPath, useTemp), TimeSpan.FromSeconds(1))
                      ?? IORetry(() => LoadWithTemp(assemblyPath, useTemp), TimeSpan.FromSeconds(9))
-                     ?? throw new IOException($"Miserable failure trying to load {assemblyPath}");
+                     ?? throw new IOException($"Miserable failure trying to load {assemblyPath} (cwd={Directory.GetCurrentDirectory()})");
             LoadPdb(assemblyPath);
         }
 

@@ -29,6 +29,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary2", "Tests\ReferencedLibrary2\ReferencedLibrary2.csproj", "{4F53634C-383E-4ECD-939D-0088E5563575}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication5", "Tests\TestApplication5\TestApplication5.csproj", "{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22} = {1F88A7C2-7268-4840-95E3-1F28E4893A22}
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StitcherBoy.Shared", "StitcherBoy.Shared\StitcherBoy.Shared.shproj", "{4EF4D719-A67D-4B12-B575-1C916BDC3991}"
 EndProject
