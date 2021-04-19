@@ -32,9 +32,6 @@ build:
   verbosity: minimal
   project: StitcherBoy.sln
 
-after_build:
-  - .nuget\NuGet.exe pack .\StitcherBoy.Shared\StitcherBoy.nuspec -Verbosity detailed -NonInteractive -IncludeReferencedProjects -NonInteractive -Tool -Properties ConfigurationName=Release -Symbols
-
 deploy:
   provider: NuGet
   api_key:
