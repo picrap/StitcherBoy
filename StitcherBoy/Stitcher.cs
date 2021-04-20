@@ -20,15 +20,18 @@
         public static int Run<TStitcher>(string[] args)
             where TStitcher : IStitcher, new()
         {
+            var logging = new ConsoleLogging();
             try
             {
-                var stitcher = new TStitcher();
-                stitcher.Logging = new ConsoleLogging();
+                var stitcher = new TStitcher { Logging = logging };
                 var arguments = args.ParseArguments();
                 stitcher.Inject(arguments);
                 return stitcher.Process(arguments, Assembly.GetEntryAssembly().Location) ? 0 : 1;
             }
-            catch { }
+            catch (Exception e)
+            {
+                logging.Write("Unhandled exception: {0}", e);
+            }
 
             return 2;
         }
