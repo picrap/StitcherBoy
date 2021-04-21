@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{1F88A7C2-7268-4840-95E3-1F28E4893A22}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>StringsRetoucher</RootNamespace>
+    <AssemblyName>StringsRetoucher5</AssemblyName>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyTitle>StringsRetoucher</AssemblyTitle>
+    <Product>StringsRetoucher</Product>
+    <Copyright>Copyright ©  2015</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="TestApplication.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
+    <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj" />
+  </ItemGroup>
+</Project>

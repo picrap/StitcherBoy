@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <StringsRetoucherTool>"$(MSBuildThisFileDirectory)bin\Debug\net5.0\StringsRetoucher5.exe"</StringsRetoucherTool>
+  </PropertyGroup>
+
+  <Target Name="StringsRetoucher" AfterTargets="CoreCompile">
+    <Exec Command='$(StringsRetoucherTool) AssemblyPath="@(IntermediateAssembly)" AssemblyOriginatorKeyFile="AssemblyOriginatorKeyFile" SignAssembly="SignAssembly"' />
+  </Target>
+</Project>

@@ -34,6 +34,7 @@ class Program
     static async Task Async()
     {
         var foo = "bar";
+        var foo2 = foo;
         // can see foo in debug
         // but not after dnlib read/write :'(
     }

@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj">
-      <Project>{8515A314-3563-465A-8303-FE26E04CFB13}</Project>
+      <Project>{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}</Project>
       <Name>StitcherBoy</Name>
     </ProjectReference>
   </ItemGroup>

@@ -66,7 +66,7 @@ namespace StitcherBoy.Reflection
         /// </summary>
         /// <param name="a">the assembly.</param>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public int GetHashCode(IAssembly a)
         {

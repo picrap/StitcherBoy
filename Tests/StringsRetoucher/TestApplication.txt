@@ -1,2 +1,5 @@
 ﻿..\..\..\TestApplication
 AssemblyPath=obj\Debug\TestApplication.exe
+
+..\..\..\TestApplication5
+AssemblyPath=obj\Debug\net5.0\TestApplication5.dll

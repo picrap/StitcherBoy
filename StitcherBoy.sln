@@ -7,12 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A144C2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "Tests\TestApplication\TestApplication.csproj", "{8FDA90E8-CA65-465F-B81C-E60054C2C528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringsRetoucher", "Tests\StringsRetoucher\StringsRetoucher.csproj", "{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringsRetoucher", "Tests\StringsRetoucher\StringsRetoucher.csproj", "{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8FDA90E8-CA65-465F-B81C-E60054C2C528} = {8FDA90E8-CA65-465F-B81C-E60054C2C528}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoy", "StitcherBoy\StitcherBoy.csproj", "{8515A314-3563-465A-8303-FE26E04CFB13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{C190A320-9603-46F8-B09F-972CB9D08930}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,6 +28,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary", "Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferencedLibrary2", "Tests\ReferencedLibrary2\ReferencedLibrary2.csproj", "{4F53634C-383E-4ECD-939D-0088E5563575}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication5", "Tests\TestApplication5\TestApplication5.csproj", "{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22} = {1F88A7C2-7268-4840-95E3-1F28E4893A22}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringsRetoucher5", "Tests\StringsRetoucher5\StringsRetoucher5.csproj", "{1F88A7C2-7268-4840-95E3-1F28E4893A22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16D77CAA-5626-4F91-81D4-D11244BF0B85}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StitcherBoy", "StitcherBoy\StitcherBoy.csproj", "{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +57,6 @@ Global
 		{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AB1C5D0-3F22-4504-8C97-14831DB7ED89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8515A314-3563-465A-8303-FE26E04CFB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8515A314-3563-465A-8303-FE26E04CFB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8515A314-3563-465A-8303-FE26E04CFB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8515A314-3563-465A-8303-FE26E04CFB13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDFC1237-143F-4919-8318-4926901F4639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDFC1237-143F-4919-8318-4926901F4639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDFC1237-143F-4919-8318-4926901F4639}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,6 +73,18 @@ Global
 		{4F53634C-383E-4ECD-939D-0088E5563575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F53634C-383E-4ECD-939D-0088E5563575}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F53634C-383E-4ECD-939D-0088E5563575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +96,8 @@ Global
 		{E917B523-BBD5-462D-8289-25E76AAD4755} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{14E1B649-1CF5-49A4-8D36-C8748E2AAAAA} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 		{4F53634C-383E-4ECD-939D-0088E5563575} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+		{8B0E0E76-E68A-4CAF-BF90-E20529AF2737} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
+		{1F88A7C2-7268-4840-95E3-1F28E4893A22} = {A1A144C2-51D5-4893-9163-B5B1E19C69D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70BACABD-B61B-4066-973B-EC87F575F9E4}

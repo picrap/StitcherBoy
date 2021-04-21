@@ -9,4 +9,5 @@ MIT License - http://opensource.org/licenses/MIT&#xD;
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=7E4A95FFB30AFA4A8AF670A3F70B6647/AbsolutePath/@EntryValue">C:\Documents\Pascal\Developpement\StitcherBoy\StitcherBoy.sln.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=7E4A95FFB30AFA4A8AF670A3F70B6647/RelativePath/@EntryValue"></s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File7E4A95FFB30AFA4A8AF670A3F70B6647/@KeyIndexDefined">True</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File7E4A95FFB30AFA4A8AF670A3F70B6647/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File7E4A95FFB30AFA4A8AF670A3F70B6647/RelativePriority/@EntryValue">1</s:Double>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Stitcher/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
