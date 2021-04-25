@@ -134,23 +134,47 @@ namespace StitcherBoy.Weaving.Build
 
         private static IEnumerable<AssemblyDependency> EnumerateDependencies(string referencePath, string referenceCopyLocalPaths)
         {
-            var referenceCopyLocalPathsList = GetList(referenceCopyLocalPaths).ToList();
-            var referencePathList = GetList(referencePath).Where(s => !referenceCopyLocalPathsList.Any(r => string.Equals(r, s, StringComparison.InvariantCultureIgnoreCase))).ToList();
+            var referenceCopyLocalPathsList = GetAssemblyList(referenceCopyLocalPaths).ToList();
+            var referencePathList = GetAssemblyList(referencePath).Where(s => !referenceCopyLocalPathsList.Any(r => string.Equals(r, s, StringComparison.InvariantCultureIgnoreCase))).ToList();
             return referenceCopyLocalPathsList.Select(p => new AssemblyDependency(p, true)).Concat(referencePathList.Select(p => new AssemblyDependency(p, false)));
         }
 
-        private static IEnumerable<string> GetList(string paths)
+        private static IEnumerable<string> GetAssemblyList(string paths)
         {
-            if (paths is not null)
+            return GetRawList(paths).Select(p => p.Trim()).Where(IsAssembly);
+        }
+
+        private static IEnumerable<string> GetRawList(string paths)
+        {
+            if (paths is null)
+                return new string[0];
+            if (paths.StartsWith("@"))
+                return GetFileList(paths.Substring(1));
+            return GetDirectList(paths);
+        }
+
+        private static IEnumerable<string> GetFileList(string path)
+        {
+            using var listReader = File.OpenText(path);
+            for (; ; )
             {
-                foreach (var path in paths.Split(';'))
-                {
-                    var extension = Path.GetExtension(path);
-                    if (string.Equals(extension, ".exe", StringComparison.InvariantCultureIgnoreCase) ||
-                        string.Equals(extension, ".dll", StringComparison.InvariantCultureIgnoreCase))
-                        yield return path;
-                }
+                var line = listReader.ReadLine();
+                if (line is null)
+                    yield break;
+                yield return line;
             }
+        }
+
+        private static IEnumerable<string> GetDirectList(string paths)
+        {
+            return paths.Split(';');
+        }
+
+        private static bool IsAssembly(string path)
+        {
+            var extension = Path.GetExtension(path);
+            return string.Equals(extension, ".exe", StringComparison.InvariantCultureIgnoreCase) ||
+                   string.Equals(extension, ".dll", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static TOptions SetWriterOptions<TOptions>(string snkPath, TOptions options)
