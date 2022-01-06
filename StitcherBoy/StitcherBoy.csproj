@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}</ProjectGuid>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <DocumentationFile>bin\$(Configuration)\StitcherBoy.XML</DocumentationFile>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Properties\StitcherBoy.snk</AssemblyOriginatorKeyFile>
@@ -16,7 +16,7 @@
   <PropertyGroup>
     <RootNamespace>StitcherBoy</RootNamespace>
     <AssemblyName>StitcherBoy</AssemblyName>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <Authors>openstore.craponne.fr</Authors>
     <Description>Classes for post-build tasks, to modify assemblies after generation (using dnlib). Allows to run from command-line or build task.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
