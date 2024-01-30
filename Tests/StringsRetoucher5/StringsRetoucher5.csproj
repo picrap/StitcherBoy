@@ -23,7 +23,10 @@
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
+    <PackageReference Include="dnlib" Version="4.4.0" />
+    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.7.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj" />
   </ItemGroup>
 </Project>
