@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{4B0B68DC-07A9-46E7-AE6C-57AD11F1645A}</ProjectGuid>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <DocumentationFile>bin\$(Configuration)\StitcherBoy.XML</DocumentationFile>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>full</DebugType>
