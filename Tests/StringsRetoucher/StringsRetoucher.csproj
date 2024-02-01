@@ -22,7 +22,6 @@
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dnlib\src\dnlib.csproj" />
     <ProjectReference Include="..\..\StitcherBoy\StitcherBoy.csproj" />
   </ItemGroup>
 </Project>
