@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A144C2-51D5-4893-9163-B5B1E19C69D6}"
 EndProject
@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{C190A320-9
 		Icon\StitcherBoy.ai = Icon\StitcherBoy.ai
 		Icon\StitcherBoy.png = Icon\StitcherBoy.png
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{AE158CE4-5670-4D26-B7DE-0BB768DD8B85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitcherBoyTests", "Tests\StitcherBoyTests\StitcherBoyTests.csproj", "{E917B523-BBD5-462D-8289-25E76AAD4755}"
 EndProject
