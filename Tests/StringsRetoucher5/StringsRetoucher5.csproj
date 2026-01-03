@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>StringsRetoucher</RootNamespace>
     <AssemblyName>StringsRetoucher5</AssemblyName>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;net10.0</TargetFrameworks>
     <AssemblyTitle>StringsRetoucher</AssemblyTitle>
     <Product>StringsRetoucher</Product>
     <Copyright>Copyright ©  2015</Copyright>
@@ -23,7 +23,7 @@
     <Content Include="TestApplication.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="dnlib" Version="4.4.0" />
+    <PackageReference Include="dnlib" Version="4.5.0" />
     <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
