@@ -11,10 +11,10 @@ environment:
   NoTargetFrameworkNet35: true
 
 install:
+ - git submodule update --init --recursive
  - ps: |
     Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
     & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.100' -InstallDir "$env:ProgramFiles\dotnet"
-  - git submodule update --init --recursive
 
 before_build:
   - nuget restore
